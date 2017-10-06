@@ -21,8 +21,8 @@ import java.util.Stack;
  */
 public class DeckOfCards {
 
-    final int NUM_SUITS = 4;
-    final int NUM_RANKS = 13;
+    private final int NUM_SUITS = 4;
+    private final int NUM_RANKS = 13;
 
     // changechangechange
     private int numCards;
