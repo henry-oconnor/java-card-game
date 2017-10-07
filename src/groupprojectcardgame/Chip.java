@@ -16,10 +16,10 @@ import java.util.Map;
 public class Chip {
     public static enum Color{
         WHITE(1), RED(5), BLUE(10), GREEN(25), BLACK(100);
-        private final int id;
+        private final int ID;
         
         private Color(int id) {
-          this.id = id;
+          this.ID = id;
         }
 
         // hashmap storing int values and corresponding colors, allows
@@ -30,12 +30,12 @@ public class Chip {
         // initialize hashmap with values and colors
         static{
         for (Color c : EnumSet.allOf(Color.class))
-            lookup.put(c.id, c);
+            lookup.put(c.ID, c);
         }
         
         // takes a color, returns its value
         public int getValue(){
-            return id;
+            return ID;
         }
         
         // takes an int, returns the corresponding color
