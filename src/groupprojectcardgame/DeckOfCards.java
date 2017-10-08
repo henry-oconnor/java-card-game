@@ -15,11 +15,15 @@ import java.util.Stack;
  * A collection of card objects, stored in a stack because a deck of cards is
  * literally a stack.
  *
- * MODIFICATIONS:
- *
+ * MODIFICATIONS: 10/06/17 — changed the setDeck() function to create 52
+ * distinct cards, thirteen of each suit, four suits
  *
  */
 public class DeckOfCards {
+
+    private final int NUM_SUITS = 4;
+    private final int NUM_RANKS = 13;
+
     // changechangechange
     private int numCards;
     private Stack<Card> deck;
@@ -31,9 +35,11 @@ public class DeckOfCards {
         setDeck();
     }
 
-    // Shuffles the deck by interweaving the cards and cutting it.
-    // Randomness can be added later (rather than interweaving neatly, it can
-    // interweave the cards in uneven chunks)
+    /**
+     * Shuffles the deck by interweaving the cards and cutting it. Randomness
+     * can be added later (rather than interweaving neatly, it can interweave
+     * the cards in uneven chunks)
+     */
     public void shuffle() {
         // First, split the deck into two pieces
         Stack<Card> firstHalf = new Stack<>();
@@ -61,8 +67,10 @@ public class DeckOfCards {
         cut();
     }
 
-    // Selects a random number of cards from 1-numCards from the top and 
-    // moves them to the bottom.
+    /**
+     * Selects a random number of cards from 1-numCards from the top and moves
+     * them to the bottom.
+     */
     public void cut() {
         Stack<Card> top = new Stack<>();
         Stack<Card> bottom = new Stack<>();
@@ -73,48 +81,53 @@ public class DeckOfCards {
         for (int i = 0; i < randomNumber; i++) {
             top.push(deck.pop());
         }
-        for(int i = randomNumber; i<numCards; i++){
+        for (int i = randomNumber; i < numCards; i++) {
             bottom.push(deck.pop());
         }
         // Return cards to deck, putting the top in first
-        for(int i =0; i<randomNumber;i++){
+        for (int i = 0; i < randomNumber; i++) {
             deck.push(top.pop());
         }
-        for(int i = randomNumber; i<numCards; i++){
+        for (int i = randomNumber; i < numCards; i++) {
             deck.push(bottom.pop());
         }
-        
+
         // By popping the values then pushing them back in, reverseStack()
         // doesn't need to be called. The pushing and popping reverses then 
         // un-reverses the deck automatically.
     }
 
-    // Pops items from a stack and pushes them into a new stack, 
-    // reversing the order
+    /**
+     * Pops items from a stack and pushes them into a new stack, reversing the
+     * order
+     *
+     * FUNCTIONALITY NOT ALL HERE. USING FUNCTION CAUSES ERRORS.
+     *
+     */
     public Stack<Card> reverseStack(Stack<Card> stack) {
         Stack<Card> newStack = new Stack<>();
         newStack.push(stack.pop());
         return newStack;
     }
-    
-    
-    // Deals a card off the top of the deck.
-    // Pops an object off the top of the stack.
-    public Card dealCard(){
+
+    /**
+     * Deals a card off the top of the deck. Pops an object off the top of the
+     * stack.
+     */
+    public Card dealCard() {
         return deck.pop();
     }
-    
 
-    // NOTE: Not complete function. When the card class is completed, this
-    // function will create the 52 card objects (4 suits, 13 cards each)
-    // that it needs. It will fill the deck in order (no shuffling yet)
-    // For now, it just creates a dummy card object that takes a single integer.
-    // In the future, it can take two ints (enumerators) that represent
-    // the suit and the value (2-10, ace, king, queen, jack)
+    /**
+     * Sets the deck to new deck order (from top to bottom): Hearts, Clubs,
+     * Diamonds, Spades A-K, A-K, K-A, K-A.
+     */
     public void setDeck() {
         deck = new Stack<>();
-        for (int i = 0; i < numCards; i++) {
-            deck.push(new Card(i));
+        for (Suit suit : Suit.values()) {
+            for (Rank rank : Rank.values()) {
+                deck.push(new Card(suit, rank));
+            }
         }
     }
 
@@ -129,7 +142,4 @@ public class DeckOfCards {
     public void setNumCards(int numCards) {
         this.numCards = numCards;
     }
-
-    
-    // Testing github by making a comment to commit.
 }
