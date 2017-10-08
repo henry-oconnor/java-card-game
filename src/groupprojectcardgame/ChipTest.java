@@ -12,18 +12,22 @@ import java.util.Stack;
  * @author henoc
  */
 public class ChipTest {
-    static final int BUYIN_VALUE = 1000;
+    static final int BUYIN_VALUE = 200;
     
     public static void main(String args[]){
         
-        
-        Chip c = new Chip(Chip.Color.BLACK);
-        
-        PlayerBank bank = new PlayerBank(BUYIN_VALUE);
-        
-        Stack<Chip> allInStk = bank.allIn();
+        PlayerBank p1Bank = new PlayerBank(BUYIN_VALUE);
         
         int chipCount = 0;
+        Stack<Chip> betStk = p1Bank.placeBet(100);
+        while(!betStk.isEmpty()){
+            System.out.print(++chipCount + ": ");
+            System.out.println(betStk.pop().toString());
+        }
+        
+        Stack<Chip> allInStk = p1Bank.allIn();
+        
+        chipCount = 0;
         while(!allInStk.isEmpty()){
             System.out.print(++chipCount + ": ");
             System.out.println(allInStk.pop().toString());

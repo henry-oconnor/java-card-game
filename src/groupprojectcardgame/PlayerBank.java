@@ -13,6 +13,8 @@ import java.util.Stack;
  */
 public class PlayerBank {
     private Integer total;
+
+
     private Stack<Chip> whiteChips;
     private Stack<Chip> redChips;
     private Stack<Chip> blueChips;
@@ -26,17 +28,19 @@ public class PlayerBank {
         bank = new HashMap<>();
         double remaining = buyin;
         total = buyin;
+        
+        blackChips = new Stack<>();
+        bank.put(Chip.Color.BLACK, blackChips);
         if(remaining > 500){
-            blackChips = new Stack<>();
-            bank.put(Chip.Color.BLACK, blackChips);
             while(remaining / buyin > .7){
                 blackChips.push(new Chip(Chip.Color.BLACK));
                 remaining -= 100;
             }
         }
+        
+        greenChips = new Stack<>();
+        bank.put(Chip.Color.GREEN, greenChips);
         if(remaining > 100){
-            greenChips = new Stack<>();
-            bank.put(Chip.Color.GREEN, greenChips);
             while(remaining / buyin > .4){
                 greenChips.push(new Chip(Chip.Color.GREEN));
                 remaining -= 25;
@@ -74,10 +78,10 @@ public class PlayerBank {
      * 
      * @param winnings 
      */
-    public void takeWinnings(Stack<Chip> winnings){
+    public void takeChips(Stack<Chip> newChips){
         Chip temp;
-        while(!winnings.empty()){
-            temp = winnings.pop();
+        while(!newChips.empty()){
+            temp = newChips.pop();
             total += temp.color.getValue();
             bank.get(temp.color).push(temp);
         }
@@ -97,6 +101,29 @@ public class PlayerBank {
     }
     
     /**
+     * Returns a stack of chips equal in value to betAmount
+     * 
+     * @param betAmount
+     * @return 
+     */
+    public Stack<Chip> placeBet(int betAmount){
+        Stack<Chip> callStack = new Stack<>();
+        
+        Chip.Color[] colors = Chip.Color.values();
+        
+        for(int i = colors.length - 1; i >= 0; i--){
+            Stack<Chip> stk = bank.get(colors[i]);
+            while(betAmount > colors[i].getValue() && !stk.isEmpty()){
+                callStack.push(stk.pop());
+                betAmount -= colors[i].getValue();
+            }
+        }
+        
+        return callStack;
+    }
+    
+    
+    /**
      * 
      * Returns stack of all player's chips
      * 
@@ -104,14 +131,19 @@ public class PlayerBank {
      */    
     public Stack<Chip> allIn(){
         Stack<Chip> allMyMoney = new Stack<>();
-        for(Chip.Color c: Chip.Color.values()){
-            Stack<Chip> stk = bank.get(c);
+        // iterates through all color stks and pops them onto new stk
+
+        for(Chip.Color color: Chip.Color.values()){
+            Stack<Chip> stk = bank.get(color);
             while(!stk.isEmpty()){
                 allMyMoney.push(stk.pop());
             }
         }
-        
         return allMyMoney;
+    }
+    
+    public Integer getTotal() {
+        return total;
     }
     
 }
