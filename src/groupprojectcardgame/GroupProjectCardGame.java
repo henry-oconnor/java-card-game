@@ -5,6 +5,7 @@
  */
 package groupprojectcardgame;
 
+import java.util.EmptyStackException;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
 import javafx.collections.FXCollections;
@@ -37,7 +38,7 @@ public class GroupProjectCardGame extends Application {
 
         DeckOfCards deck = new DeckOfCards();
         DeckOfCards secondDeck = new DeckOfCards();
-        
+
         // To test the shuffle function
         if (DEBUG_SHUFFLE) {
             int i = 0;
@@ -51,7 +52,7 @@ public class GroupProjectCardGame extends Application {
         // TEST OF THE DECKOFCARDS CLASS
         ObservableList<String> deckList = FXCollections.observableArrayList();
         ObservableList<String> secondDeckList = FXCollections.observableArrayList();
-        for (int i = 0; i < deck.getNumCards(); i++) {
+        for (int i = 0; i < deck.getDeckSize(); i++) {
             deckList.add(deck.dealCard().toString());
             secondDeckList.add(secondDeck.dealCard().toString());
         }
@@ -59,8 +60,19 @@ public class GroupProjectCardGame extends Application {
         ListView listViewDeck = new ListView(deckList);
         ListView listViewSecondDeck = new ListView(secondDeckList);
 
+        
+        DeckOfCards handTestDeck = new DeckOfCards();
+        ObservableList<String> handList = FXCollections.observableArrayList();
+        HoldemHand hand = makeTestHand(handTestDeck);
+
+        for (Card card : hand.getHand()) {
+            handList.add(card.toString());
+        }
+        ListView listViewHand = new ListView(handList);
+
         root.setLeft(listViewDeck);
-        root.setRight(listViewSecondDeck);
+        //      root.setRight(listViewSecondDeck);
+        root.setRight(listViewHand);
 
         Scene scene = new Scene(root, 500, 500);
 
@@ -76,6 +88,24 @@ public class GroupProjectCardGame extends Application {
      */
     public static void main(String[] args) {
         launch(args);
+    }
+
+    /**
+     * Create a HoldemHand object and deal cards to it.
+     *
+     * @param deck
+     * @return a HoldemHand with two cards dealt from the top of the deck
+     */
+    public HoldemHand makeTestHand(DeckOfCards deck) {
+        HoldemHand hand = new HoldemHand();
+        for (int i = 0; i < hand.getHandSize(); i++) {
+            try {
+                hand.addCard(deck.dealCard());
+            } catch (EmptyStackException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+        return hand;
     }
 
 }

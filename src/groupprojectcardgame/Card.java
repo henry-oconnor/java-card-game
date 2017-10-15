@@ -12,7 +12,7 @@ package groupprojectcardgame;
  * Modified on 10/06/17 Gave cards a suit and rank, based on two enumerators:
  * Suit and Rank.
  */
-class Card {
+public class Card {
 
     private Suit suit;
     private Rank rank;
@@ -50,8 +50,8 @@ class Card {
     }
 
     /**
-     * Like setSuit, setRank also creates an Ace if the rank is invalid.
-     * So invalid inputs become Aces of Spades.
+     * Like setSuit, setRank also creates an Ace if the rank is invalid. So
+     * invalid inputs become Aces of Spades.
      */
     public void setRank(Rank rank) {
         if (rank.compareTo(Rank.TWO) < 0 || rank.compareTo(Rank.ACE) > 0) {
@@ -62,13 +62,11 @@ class Card {
     }
 
     /**
-     * Takes the suit and rank and creates a string from them. 
-     * EX. ACE and SPADE becomes Ace of Spades.
+     * Takes the suit and rank and creates a string from them. EX. ACE and SPADE
+     * becomes Ace of Spades.
      */
     public String toString() {
-
         return rank.toString() + " of " + suit.toString();
-
     }
 
 }
