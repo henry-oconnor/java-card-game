@@ -20,7 +20,7 @@ public class PlayerBank {
     private Stack<Chip> blueChips;
     private Stack<Chip> greenChips;
     private Stack<Chip> blackChips;
-    private HashMap<Chip.Color,Stack<Chip>> bank;
+    private HashMap<ChipColor,Stack<Chip>> bank;
             
     // buyin should be in multiples of 100
     // creates a reasonable chip distribution from buyin amount
@@ -30,42 +30,42 @@ public class PlayerBank {
         total = buyin;
         
         blackChips = new Stack<>();
-        bank.put(Chip.Color.BLACK, blackChips);
+        bank.put(ChipColor.BLACK, blackChips);
         if(remaining > 500){
             while(remaining / buyin > .7){
-                blackChips.push(new Chip(Chip.Color.BLACK));
+                blackChips.push(new Chip(ChipColor.BLACK));
                 remaining -= 100;
             }
         }
         
         greenChips = new Stack<>();
-        bank.put(Chip.Color.GREEN, greenChips);
+        bank.put(ChipColor.GREEN, greenChips);
         if(remaining > 100){
             while(remaining / buyin > .4){
-                greenChips.push(new Chip(Chip.Color.GREEN));
+                greenChips.push(new Chip(ChipColor.GREEN));
                 remaining -= 25;
             }
                 
         }
         
         blueChips = new Stack<>();
-        bank.put(Chip.Color.BLUE, blueChips);
+        bank.put(ChipColor.BLUE, blueChips);
         while(remaining / buyin > .25){
-            blueChips.push(new Chip(Chip.Color.BLUE));
+            blueChips.push(new Chip(ChipColor.BLUE));
             remaining -= 10;
         }
         
         redChips = new Stack<>();
-        bank.put(Chip.Color.RED, redChips);
+        bank.put(ChipColor.RED, redChips);
         while(remaining / buyin > .05){
-            redChips.push(new Chip(Chip.Color.RED));
+            redChips.push(new Chip(ChipColor.RED));
             remaining -= 5;
         }
         
         whiteChips = new Stack<>();
-        bank.put(Chip.Color.WHITE, whiteChips);
+        bank.put(ChipColor.WHITE, whiteChips);
         while(remaining > 0){
-            whiteChips.push(new Chip(Chip.Color.WHITE));
+            whiteChips.push(new Chip(ChipColor.WHITE));
             remaining -= 1;
         }
                 
@@ -95,7 +95,7 @@ public class PlayerBank {
      * @param c 
      * @return Chip
      */
-    public Chip popChip(Chip.Color c){
+    public Chip popChip(ChipColor c){
         total -= c.getValue();
         return bank.get(c).pop();
     }
@@ -109,7 +109,7 @@ public class PlayerBank {
     public Stack<Chip> placeBet(int betAmount){
         Stack<Chip> callStack = new Stack<>();
         
-        Chip.Color[] colors = Chip.Color.values();
+        ChipColor[] colors = ChipColor.values();
         
         for(int i = colors.length - 1; i >= 0; i--){
             Stack<Chip> stk = bank.get(colors[i]);
@@ -133,7 +133,7 @@ public class PlayerBank {
         Stack<Chip> allMyMoney = new Stack<>();
         // iterates through all color stks and pops them onto new stk
 
-        for(Chip.Color color: Chip.Color.values()){
+        for(ChipColor color: ChipColor.values()){
             Stack<Chip> stk = bank.get(color);
             while(!stk.isEmpty()){
                 allMyMoney.push(stk.pop());
@@ -145,5 +145,4 @@ public class PlayerBank {
     public Integer getTotal() {
         return total;
     }
-    
 }
