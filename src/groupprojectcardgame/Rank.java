@@ -3,12 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package groupprojectcardgame;
 
 /**
  *
- * @author Bernard Heres Enum for the card ranks: 2-10, J, Q, K, A The JOKER is
- * used when an input is invalid
+ * @author jiach
  */
 public enum Rank {
     TWO("Two"), THREE("Three"), FOUR("Four"),

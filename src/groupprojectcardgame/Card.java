@@ -1,38 +1,42 @@
+
+import javafx.scene.image.Image;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package groupprojectcardgame;
 
 /**
  *
- * @author Bernard Heres
- *
- * Modified on 10/06/17 Gave cards a suit and rank, based on two enumerators:
- * Suit and Rank.
+ * @author jiach
  */
 public class Card {
-
     private Suit suit;
     private Rank rank;
-
+    private CardImage image;
+    
     // Default card
     public Card() {
         setSuit(Suit.HEARTS);
         setRank(Rank.FOUR);
+        image=new CardImage();
     }
 
     public Card(Suit suit, Rank rank) {
         setSuit(suit);
         setRank(rank);
+        image=new CardImage(rank,suit);
     }
 
     // Getters and setters
     public Suit getSuit() {
         return suit;
     }
-
+    public CardImage getImage(){
+        return image;
+    }
+    
     /**
      * Doesn't allow the suit to be set as anything outside the bounds of the
      * enumerator. If it is outside the bounds, it sets the card to a spade.
@@ -68,5 +72,4 @@ public class Card {
     public String toString() {
         return rank.toString() + " of " + suit.toString();
     }
-
 }

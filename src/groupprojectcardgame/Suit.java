@@ -3,17 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package groupprojectcardgame;
 
 /**
  *
- * @author Bernard Heres
- * Enum to hold the suits of cards. 
- * The joker isn't a suit, but is used when a card is set incorrectly, that is
- * the setter/constructor tries to set the card as some fifth suit.
- * 
- * Has a private constructor so each integer of the enum also has a string
- * associated with it.
+ * @author jiach
  */
 public enum Suit {
     HEARTS("Hearts"), CLUBS("Clubs"), DIAMONDS("Diamonds"), SPADES("Spades");
