@@ -23,5 +23,9 @@ public class HoldemHand extends Hand {
         super();
         super.setHandSize(TEXAS_HOLDEM_HAND_SIZE);       
     }
+    public HoldemHand(Card...cards){
+        super(cards);
+        super.setHandSize(TEXAS_HOLDEM_HAND_SIZE);
+    }
 
 }

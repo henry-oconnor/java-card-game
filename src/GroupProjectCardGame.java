@@ -65,7 +65,7 @@ public class GroupProjectCardGame extends Application {
         ObservableList<String> handList = FXCollections.observableArrayList();
         HoldemHand hand = makeTestHand(handTestDeck);
 
-        for (Card card : hand.getHand()) {
+        for (Card card : hand.getCards()) {
             handList.add(card.toString());
         }
         ListView listViewHand = new ListView(handList);

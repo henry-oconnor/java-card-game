@@ -6,6 +6,7 @@
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  *
@@ -17,16 +18,31 @@ import java.util.ArrayList;
 public abstract class Hand {
 
     private int handSize;
-    private ArrayList<Card> hand = new ArrayList<>();
+    private ArrayList<Card> cards = new ArrayList<>();
 
+    public Hand(){     
+    }
+    /**
+     * Will take any number of card objects and add them
+     * to the cards ArrayList
+     * @param inCards 
+     */
+    public Hand(Card...inCards){
+        this.cards.addAll(Arrays.asList(inCards));
+    }
+    
     public void setHand() {
         setHandSize(handSize);
     }
 
-    public ArrayList<Card> getHand() {
-        return hand;
+    public ArrayList<Card> getCards() {
+        return cards;
     }
 
+    public void setCards(ArrayList<Card> inCards){
+        this.cards = inCards;
+    }
+    
     public void setHandSize(int handSize) {
         this.handSize = handSize;
     }
@@ -36,15 +52,15 @@ public abstract class Hand {
     }
     
     /**
-     * Takes a card and adds it to the hand 
+     * Takes a card and adds it to the cards 
      * @param card 
      */
     public void addCard(Card card){
-        hand.add(card);
+        cards.add(card);
     } 
     public String toString(){
         String str = "";
-        for(Card card : hand){
+        for(Card card : cards){
             str += card.toString() + "\n";
         }
         return str;
