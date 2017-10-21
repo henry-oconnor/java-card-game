@@ -3,14 +3,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/GitHub/java-card-game/src/Suit.java</file>
-            <file>file:/D:/GitHub/java-card-game/src/CardImage.java</file>
+            <file>file:/D:/GitHub/java-card-game/src/FiveCardHand.java</file>
+            <file>file:/D:/GitHub/java-card-game/src/Hand.java</file>
+            <file>file:/D:/GitHub/java-card-game/src/HoldemHand.java</file>
+            <file>file:/D:/GitHub/java-card-game/src/PotentialHands.java</file>
+            <file>file:/D:/GitHub/java-card-game/src/BestHand.java</file>
             <file>file:/D:/GitHub/java-card-game/src/Client.java</file>
-            <file>file:/D:/GitHub/java-card-game/src/SettingPane.java</file>
-            <file>file:/D:/GitHub/java-card-game/src/GamePane.java</file>
-            <file>file:/D:/GitHub/java-card-game/src/Card.java</file>
-            <file>file:/D:/GitHub/java-card-game/src/Rank.java</file>
-            <file>file:/D:/GitHub/java-card-game/src/cards.png</file>
         </group>
     </open-files>
 </project-private>
