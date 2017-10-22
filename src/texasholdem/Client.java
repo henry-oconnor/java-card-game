@@ -33,7 +33,7 @@ public class Client extends Application {
         // Calling this function for testing purposes.
         // Keeps the music from playing each time the program is started up.
         // Will be removed.
-        bgm.muteMusic();
+        // bgm.muteMusic();
 
         bgm.getMediaPlayer().play();
 
