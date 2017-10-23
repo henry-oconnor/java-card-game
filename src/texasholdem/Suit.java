@@ -11,12 +11,16 @@ package texasholdem;
  * @author jiach
  */
 public enum Suit {
-    HEARTS("Hearts"), CLUBS("Clubs"), DIAMONDS("Diamonds"), SPADES("Spades");
+    HEARTS  ("Hearts"), 
+    CLUBS   ("Clubs"), 
+    DIAMONDS("Diamonds"), 
+    SPADES  ("Spades");
     
-    private String suitName;
+    private final String suitName;
     private Suit(String suitName){
         this.suitName = suitName;
     }
+    @Override
     public String toString(){
         return suitName;
     }

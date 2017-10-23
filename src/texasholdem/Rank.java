@@ -7,21 +7,51 @@ package texasholdem;
  */
 
 /**
- *
- * @author jiach
+ * Hexadecimal rankValues for each rank
+ * Two      = 2 
+ * Three    = 3 
+ * Four     = 4 
+ * Five     = 5
+ * Six      = 6 
+ * Seven    = 7 
+ * Eight    = 8 
+ * Nine     = 9 
+ * Ten      = A 
+ * Jack     = B 
+ * Queen    = C 
+ * King     = D 
+ * Ace      = E
  */
 public enum Rank {
-    TWO("Two"), THREE("Three"), FOUR("Four"),
-    FIVE("Five"), SIX("Six"), SEVEN("Seven"),
-    EIGHT("Eight"), NINE("Nine"), TEN("Ten"),
-    JACK("Jack"), QUEEN("Queen"), KING("King"), ACE("Ace");
+    TWO     ("Two",     "2"), 
+    THREE   ("Three",   "3"),
+    FOUR    ("Four",    "4"),
+    FIVE    ("Five",    "5"), 
+    SIX     ("Six",     "6"), 
+    SEVEN   ("Seven",   "7"),
+    EIGHT   ("Eight",   "8"), 
+    NINE    ("Nine",    "9"), 
+    TEN     ("Ten",     "A"),
+    JACK    ("Jack",    "B"), 
+    QUEEN   ("Queen",   "C"), 
+    KING    ("King",    "D"), 
+    ACE     ("Ace",     "E");
 
-    private String rankName;
+    private final String rankName;
+    
+    // rankValue is the hexadecimal value a rank would have
+    private final String rankValue;
 
-    private Rank(String rankName) {
+    Rank(String rankName, String rankValue) {
         this.rankName = rankName;
+        this.rankValue = rankValue;
     }
 
+    public String getRankValue(){
+        return rankValue;
+    }
+    
+    @Override
     public String toString() {
         return rankName;
     }

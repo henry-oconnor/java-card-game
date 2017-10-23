@@ -5,7 +5,6 @@ package texasholdem;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 import java.util.EmptyStackException;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
@@ -80,25 +79,36 @@ public class GroupProjectCardGame extends Application {
                 new Card(Suit.HEARTS, Rank.NINE));
         FiveCardHand fiveCard = new FiveCardHand(
                 new Card(Suit.HEARTS, Rank.EIGHT),
-                new Card(Suit.HEARTS, Rank.ACE),
+                new Card(Suit.SPADES, Rank.ACE),
                 new Card(Suit.HEARTS, Rank.THREE),
                 new Card(Suit.HEARTS, Rank.SIX),
                 new Card(Suit.HEARTS, Rank.ACE));
+        FiveCardHand secondHand = new FiveCardHand(
+                new Card(Suit.HEARTS, Rank.ACE),
+                new Card(Suit.HEARTS, Rank.TWO),
+                new Card(Suit.HEARTS, Rank.THREE),
+                new Card(Suit.HEARTS, Rank.FOUR),
+                new Card(Suit.HEARTS, Rank.FIVE));
 
         PotentialHands hands = new PotentialHands(holdem, fiveCard);
-        hands.performCombination();
-        // Testing the sort method in the BestHand class
-        int indexToTest = 1;
-        BestHand best = new BestHand(hands);
+        hands.calcCombinations();
 
-        FiveCardHand fiveCardHand;
+//        System.out.println("Pre-sorted hand: \n" + fiveCard.showHand());
+//        SingleHandScore singleHand = new SingleHandScore(fiveCard);
+//        singleHand.sortHand();
+//        System.out.println("Post-sorted hand: \n" + fiveCard.showHand());
+//
+//        singleHand.scoreHand();
+//        String score = singleHand.getScore();
+//        System.out.println("Hand score hex: " + score);
+//        System.out.println("Hand score decimal: " + Integer.parseInt(score, 16));
 
-        fiveCardHand = best.getFiveCardHand(indexToTest);
-        System.out.println("Pre-sorted hand: \n" + fiveCardHand.showHand());
-
-        best.sortAllHands();
-        fiveCardHand = best.getFiveCardHand(indexToTest);
-        System.out.println("Post-sorted hand: \n" + fiveCardHand.showHand());
+        SingleHandScore secondSingleHand = new SingleHandScore(secondHand);
+        secondSingleHand.sortHand();
+        secondSingleHand.scoreHand();
+        String secondScore = secondSingleHand.getScore();
+        System.out.println("Hand score hex: " + secondScore);
+        System.out.println("Hand score decimal: " + Integer.parseInt(secondScore, 16));
 
         Scene scene = new Scene(root, 500, 500);
 

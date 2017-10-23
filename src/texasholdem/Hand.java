@@ -17,7 +17,7 @@ import java.util.Arrays;
  * Hand object with no specific size. Inherited by HoldemHand and FiveCardHand
  * which have 2 and 5 cards, respectively
  */
-public abstract class Hand {
+public abstract class Hand{
 
     private int handSize;
     private ArrayList<Card> cards = new ArrayList<>();
@@ -60,6 +60,7 @@ public abstract class Hand {
     public void addCard(Card card){
         cards.add(card);
     } 
+    @Override
     public String toString(){
         String str = "";
         for(Card card : cards){

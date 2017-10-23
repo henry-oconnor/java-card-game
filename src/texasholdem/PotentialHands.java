@@ -22,7 +22,7 @@ public class PotentialHands {
     private final FiveCardHand communityCards;
     private final ArrayList<Card> allCards = new ArrayList<>();
 
-    private ArrayList<FiveCardHand> potentialHandsArr = new ArrayList<>();
+    private ArrayList<FiveCardHand> allHands = new ArrayList<>();
 
     public PotentialHands(HoldemHand twoCards, FiveCardHand fiveCards) {
         this.holeCards = twoCards;
@@ -55,7 +55,7 @@ public class PotentialHands {
                 }
             }
             // After getting 5 cards, store the cards in potentialHandsArr
-            potentialHandsArr.add(hand);
+            allHands.add(hand);
             return;
         }
         if (start == allCards.size()) {
@@ -69,9 +69,9 @@ public class PotentialHands {
     }
 
     /**
-     * Wrapper function for performCombination
+     * Wrapper function for calcCombinations
      */
-    public void performCombination() {
+    public void calcCombinations() {
         int subsetSize = communityCards.getHandSize();
         boolean used[] = new boolean[allCards.size()];
         FiveCardHand hand = new FiveCardHand();
@@ -79,8 +79,8 @@ public class PotentialHands {
         performCombination(subsetSize, 0, 0, used);
     }
 
-    public ArrayList<FiveCardHand> getPotentialHands() {
-        return potentialHandsArr;
+    public ArrayList<FiveCardHand> getAllHands() {
+        return allHands;
     }
 
     /**
@@ -90,7 +90,7 @@ public class PotentialHands {
     public String toString() {
         String str = "";
         int i = 1;
-        for (FiveCardHand hand : potentialHandsArr) {
+        for (FiveCardHand hand : allHands) {
             str += "Hand #" + i + "\n" + hand.showHand() + "\n";
             i++;
         }

@@ -1,8 +1,5 @@
 package texasholdem;
 
-
-import javafx.scene.image.Image;
-
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -16,18 +13,34 @@ public class Card implements Comparable {
 
     private Suit suit;
     private Rank rank;
+    private String scoreValue;
     private CardImage image;
 
     // Default card
     public Card() {
         setSuit(Suit.HEARTS);
         setRank(Rank.FOUR);
+        setScoreValue();
+        image = new CardImage();
+    }
+    
+    /**
+     * Special constructor used when 
+     * a card must be made but the suit doesn't matter.
+     * Has a use in SingleHandScore.hasStraight() method.
+     * @param rank 
+     */
+    public Card(Rank rank){
+        setSuit(Suit.SPADES);
+        setRank(rank);
+        setScoreValue();
         image = new CardImage();
     }
 
     public Card(Suit suit, Rank rank) {
         setSuit(suit);
         setRank(rank);
+        setScoreValue();
         image = new CardImage(rank, suit);
     }
 
@@ -43,10 +56,12 @@ public class Card implements Comparable {
     /**
      * Doesn't allow the suit to be set as anything outside the bounds of the
      * enumerator. If it is outside the bounds, it sets the card to a spade.
+     *
+     * @param suit
      */
-    public void setSuit(Suit suit) {
+    public final void setSuit(Suit suit) {
         if (suit.compareTo(Suit.HEARTS) < 0 || suit.compareTo(Suit.SPADES) > 0) {
-            this.suit = Suit.SPADES;
+            this.suit = Suit.HEARTS;
         } else {
             this.suit = suit;
         }
@@ -59,23 +74,46 @@ public class Card implements Comparable {
     /**
      * Like setSuit, setRank also creates an Ace if the rank is invalid. So
      * invalid inputs become Aces of Spades.
+     *
+     * @param rank
      */
-    public void setRank(Rank rank) {
+    public final void setRank(Rank rank) {
         if (rank.compareTo(Rank.TWO) < 0 || rank.compareTo(Rank.ACE) > 0) {
-            this.rank = Rank.ACE;
+            this.rank = Rank.FOUR;
         } else {
             this.rank = rank;
         }
     }
 
+    public String getScoreValue() {
+        return scoreValue;
+    }
+
     /**
-     * Takes the suit and rank and creates a string from them. EX. ACE and SPADE
-     * becomes Ace of Spades.
+     * Sets the Card's rank's rankValue to scoreValue
      */
+    public final void setScoreValue() {
+        this.scoreValue = rank.getRankValue();
+    }
+
+    /**
+     * Takes the suit and rank and creates a string from them.
+     *
+     * @return EX. ACE and SPADE becomes Ace of Spades.
+     */
+    @Override
     public String toString() {
         return rank.toString() + " of " + suit.toString();
     }
 
+    /**
+     * ONLY COMPARES RANK, NOT SUIT
+     * @param t
+     * @return 
+     * 1 if this.rank is greater than t.rank, 
+     * 0 if this.rank is the same t.rank, 
+     * -1 if this.rank is less than t.rank
+     */
     @Override
     public int compareTo(Object t) {
         return this.rank.compareTo(((Card) t).getRank());
