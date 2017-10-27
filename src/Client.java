@@ -19,35 +19,54 @@ import javafx.stage.Stage;
  * @author jiach
  */
 public class Client extends Application {
-    
+
     @Override
     public void start(Stage primaryStage) {
-        BackGroundMusic bgm=new BackGroundMusic();
-        GamePane gamePane=new GamePane();
-        SettingPane settingPane=new SettingPane(bgm);
-        Scene scene=new Scene(gamePane,1200,800);
-        Scene settingScene=new Scene(settingPane,300,400);
-        
+        BackGroundMusic bgm = new BackGroundMusic();
+        GamePane gamePane = new GamePane();
+        SettingPane settingPane = new SettingPane(bgm);
+        Scene scene = new Scene(gamePane, 1200, 800);
+        Scene settingScene = new Scene(settingPane, 300, 400);
+
         bgm.getMediaPlayer().play();
-        
-        Card card1,card2;
-        card1=new Card();
-        card2=new Card();
-        
-        ChipImage c=new ChipImage(1);
-        
-        gamePane.getHoleCards().getChildren().addAll(card1.getImage().getImageView(),card2.getImage().getImageView());
-        gamePane.getHoleCards1().getChildren().addAll(new Rectangle(72,98),new Rectangle(72,98));
-        gamePane.getHoleCards2().getChildren().addAll(new Rectangle(72,98),new Rectangle(72,98));
-        gamePane.getHoleCards3().getChildren().addAll(new Rectangle(72,98),new Rectangle(72,98));
-        gamePane.getCommunityCards().getChildren().addAll(new Rectangle(72,98),new Rectangle(72,98),new Rectangle(72,98),new Rectangle(72,98),new Rectangle(72,98));
-        
-        gamePane.getSettingBtm().setOnAction(e-> {primaryStage.setScene(settingScene);});
-        settingPane.getDoneBtm().setOnAction(e-> {primaryStage.setScene(scene);});
-        
-        
+
+        Card card1, card2;
+        card1 = new Card();
+        card2 = new Card();
+
+        ChipImage c = new ChipImage(1);
+
+        gamePane.getHoleCards().getChildren().addAll(card1.getImage().getImageView(), card2.getImage().getImageView());
+        gamePane.getHoleCards1().getChildren().addAll(new Rectangle(72, 98), new Rectangle(72, 98));
+        gamePane.getHoleCards2().getChildren().addAll(new Rectangle(72, 98), new Rectangle(72, 98));
+        gamePane.getHoleCards3().getChildren().addAll(new Rectangle(72, 98), new Rectangle(72, 98));
+        gamePane.getCommunityCards().getChildren().addAll(new Rectangle(72, 98), new Rectangle(72, 98), new Rectangle(72, 98), new Rectangle(72, 98), new Rectangle(72, 98));
+
+        gamePane.getSettingBtm().setOnAction(e -> {
+            primaryStage.setScene(settingScene);
+        });
+        settingPane.getDoneBtm().setOnAction(e -> {
+            primaryStage.setScene(scene);
+        });
+
         primaryStage.setScene(settingScene);
         primaryStage.setTitle("Texas Hold'em");
+
+        /*
+        // Testing PotentialHands class
+        HoldemHand holdem = new HoldemHand(
+                new Card(Suit.HEARTS, Rank.ACE), 
+                new Card(Suit.HEARTS, Rank.KING));
+        FiveCardHand fiveCard = new FiveCardHand(
+                new Card(Suit.HEARTS, Rank.QUEEN), 
+                new Card(Suit.HEARTS, Rank.JACK), 
+                new Card(Suit.HEARTS, Rank.TEN), 
+                new Card(Suit.HEARTS, Rank.NINE), 
+                new Card(Suit.HEARTS, Rank.EIGHT));
+
+        PotentialHands hands = new PotentialHands(holdem, fiveCard);
+        hands.performCombination();
+        */
         /*
         primaryStage.setMaxHeight(800);
         primaryStage.setMaxWidth(1200);
@@ -62,5 +81,5 @@ public class Client extends Application {
     public static void main(String[] args) {
         launch(args);
     }
-    
+
 }
