@@ -27,7 +27,7 @@ public class ChipTest {
             System.out.println(betStk.pop().toString());
         }
         
-        Stack<Chip> allInStk = p1Bank.allIn();
+        Stack<Chip> allInStk = p1Bank.popAll();
         
         chipCount = 0;
         while(!allInStk.isEmpty()){

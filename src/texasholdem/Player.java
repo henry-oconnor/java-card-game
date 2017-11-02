@@ -3,14 +3,15 @@
  */
 package texasholdem;
 
-import java.util.ArrayList;
+import java.util.Stack;
 
 /**
  *
  * @author henoc
  */
 public class Player {
-    ArrayList<Card> hand;
-    PlayerBank bank;
+    private HoldemHand hand;
+    private PlayerBank bank;
+    
     
 }

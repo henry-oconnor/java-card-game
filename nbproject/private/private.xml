@@ -5,7 +5,9 @@
         <group>
             <file>file:/C:/Users/henoc/OneDrive/Documents/NetBeansProjects/GroupProjectCardGame/java-card-game/src/texasholdem/DeckOfCards.java</file>
             <file>file:/C:/Users/henoc/OneDrive/Documents/NetBeansProjects/GroupProjectCardGame/java-card-game/src/texasholdem/Player.java</file>
+            <file>file:/C:/Users/henoc/OneDrive/Documents/NetBeansProjects/GroupProjectCardGame/java-card-game/src/texasholdem/Pot.java</file>
             <file>file:/C:/Users/henoc/OneDrive/Documents/NetBeansProjects/GroupProjectCardGame/java-card-game/src/texasholdem/GameBoard.java</file>
+            <file>file:/C:/Users/henoc/OneDrive/Documents/NetBeansProjects/GroupProjectCardGame/java-card-game/src/texasholdem/PlayerBank.java</file>
         </group>
     </open-files>
 </project-private>

@@ -127,6 +127,19 @@ public class DeckOfCards {
             throw new EmptyStackException();
         }
     }
+    /**
+     * Deals a card off the top of the deck. Pops an object off the top of the
+     * stack.
+     *
+     * @return top card off the deck
+     */
+    public Card dealToPlayer() {
+        if (!deck.isEmpty()) {
+            return deck.pop();
+        } else {
+            throw new EmptyStackException();
+        }
+    }
 
     /**
      * Creates a deck of 52 cards.
