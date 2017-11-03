@@ -8,7 +8,11 @@
   </information>
   <resources>
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
+<<<<<<< HEAD
     <jar href="TexasHoldem.jar" size="14255633" download="eager" />
+=======
+    <jar href="TexasHoldem.jar" size="14255558" download="eager" />
+>>>>>>> e47e2d794c19d28426ac3110f5012c6586c637e9
   </resources>
   <applet-desc  width="800" height="600" main-class="com.javafx.main.NoJavaFXFallback"  name="TexasHoldem" >
     <param name="requiredFXVersion" value="8.0+"/>

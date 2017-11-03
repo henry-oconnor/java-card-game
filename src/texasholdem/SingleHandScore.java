@@ -297,4 +297,11 @@ public class SingleHandScore {
         return this.score;
     }
 
+    /**
+     * Converts the score string from hex to a decimal integer
+     * @return integer score
+     */
+    public int getScoreAsInt() {
+        return Integer.parseInt(score, 16);
+    }
 }

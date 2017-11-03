@@ -67,23 +67,23 @@ public class PlayerBank extends Bank{
     /**
      * Returns a stack of chips equal in value to betAmount
      * 
-     * @param betAmount
+     * @param value
      * @return 
      */
-    public Stack<Chip> placeBet(int betAmount){
-        Stack<Chip> betStack = new Stack<>();
+    public Stack<Chip> getChips(int value){
+        Stack<Chip> returnStack = new Stack<>();
         
         Chip.Color[] colors = Chip.Color.values();
         
         for(int i = colors.length - 1; i >= 0; i--){
             Stack<Chip> stk = stackLookup.get(colors[i]);
-            while(betAmount > colors[i].getValue() && !stk.isEmpty()){
-                betStack.push(stk.pop());
-                betAmount -= colors[i].getValue();
+            while(value > colors[i].getValue() && !stk.isEmpty()){
+                returnStack.push(stk.pop());
+                value -= colors[i].getValue();
             }
         }
         
-        return betStack;
+        return returnStack;
     }
 
 }

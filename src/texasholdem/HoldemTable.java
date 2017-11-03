@@ -9,8 +9,8 @@ import java.util.ArrayList;
  *
  * @author henoc
  */
-public class GameBoard {
-    ArrayList<Player> players;
+public class HoldemTable {
+    ArrayList<HoldemPlayer> players;
     ArrayList<Card> gameCards;
     int pool;
     DeckOfCards deck;
@@ -21,10 +21,9 @@ public class GameBoard {
         gameCards.add(card);
     }
     
-    Card deal(){
-        for(int i = 0; i < players.size(); i++){
-            deck.dealCard();
-        }
-     
-   }
+    void deal(HoldemPlayer player){
+        player.addCard(deck.dealCard());
+    }
+    
+    
 }

@@ -21,7 +21,7 @@ public class ChipTest {
         PlayerBank p1Bank = new PlayerBank(BUYIN_VALUE);
         
         int chipCount = 0;
-        Stack<Chip> betStk = p1Bank.placeBet(100);
+        Stack<Chip> betStk = p1Bank.getChips(100);
         while(!betStk.isEmpty()){
             System.out.print(++chipCount + ": ");
             System.out.println(betStk.pop().toString());
