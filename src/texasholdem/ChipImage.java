@@ -16,71 +16,51 @@ import javafx.scene.image.ImageView;
  * @author jiach
  */
 public class ChipImage {
+    private final int IMAGEVIEW_HEIGHT=15,IMAGEVIEW_WIDTH=15;
     private Image image;
     private ImageView imageView;
     
     public ChipImage()
     {
-        image=new Image("Image/Chips.png");
+        image=new Image(findFile(10));
         imageView=new ImageView(image);
-        imageView.setFitHeight(30);
-        imageView.setFitWidth(30);
-        setImageView(1);
+        imageView.setFitHeight(IMAGEVIEW_HEIGHT);
+        imageView.setFitWidth(IMAGEVIEW_WIDTH);
     }
     public ChipImage(int num)
     {
-        image=new Image("Image/Chips.png");
+        image=new Image(findFile(num));
         imageView=new ImageView(image);
-        imageView.setFitHeight(30);
-        imageView.setFitWidth(30);
-        setImageView(num);
+        imageView.setFitHeight(IMAGEVIEW_HEIGHT);
+        imageView.setFitWidth(IMAGEVIEW_WIDTH);
     }
     
     // getter
     public Image getImage() { return image;}
     public ImageView getImageView() { return imageView;}
+    public int getImageViewHeight() { return IMAGEVIEW_HEIGHT;}
+    public int getImageViewWidth() { return IMAGEVIEW_WIDTH;}
     
-    private void setImageView(int num)
-    {
-        int x,y;
-        x=findXCoordinate(num);
-        y=findYCoordinate(num);
-        imageView.setViewport(new Rectangle2D(x,y,150,150));
-    }
-    
-    private int findXCoordinate(int num)
-    {
-        switch(num)
-        {
-            case 1: 
-                return 150;
-            case 5:
-                return 0;
-            case 10:
-                return 300;
-            case 25:
-                return 150;
-            case 100:
-                return 0;
-        }
-        return 0;
-    }
-    
-    private int findYCoordinate(int num)
+    /**
+     * find chip image location 
+     * @param num
+     * @return 
+     */
+    private String findFile(int num)
     {
         switch(num)
         {
-            case 1: 
-                return 150;
-            case 5:
-                return 150;
-            case 10:
-                return 300;
-            case 25:
-                return 300;
+            case 10: 
+                return "Image/whileChips.png";
+            case 50:
+                return "Image/redChips.png";
             case 100:
-                return 0;
+                return "Image/blueChips.png";
+            case 200:
+                return "Image/greenChips.png";
+            case 500:
+                return "Image/blackChips.png";
         }
-        return 0;
+        return "Image/whileChips.png";
     }
 }

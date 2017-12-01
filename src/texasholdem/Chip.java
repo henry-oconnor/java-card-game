@@ -18,12 +18,16 @@ import java.util.Map;
 public class Chip {
     public static enum Color{
         WHITE(1), RED(5), BLUE(10), GREEN(25), BLACK(100);
+        private ChipImage chipImage;
         private final int ID;
         
         private Color(int id) {
           this.ID = id;
+          chipImage=new ChipImage(id);
         }
 
+        public ChipImage getChipImage() { return chipImage;}
+        
         // hashmap storing int values and corresponding colors, allows
         // lookup of colors with an int input
         private static final Map<Integer, Color> lookup

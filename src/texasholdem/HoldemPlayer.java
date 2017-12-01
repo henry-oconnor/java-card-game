@@ -21,6 +21,8 @@ public class HoldemPlayer {
         holeCards.addCard(card);
     } 
     
+    
+    public PlayerBank getPlayerBank() { return bank;}
     /**
      * 
      * @param betAmount

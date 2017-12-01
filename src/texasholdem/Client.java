@@ -13,6 +13,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
 import javafx.scene.media.MediaPlayer;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
@@ -24,47 +25,61 @@ public class Client extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        BackGroundMusic bgm = new BackGroundMusic();
-        GamePane gamePane = new GamePane();
-        SettingPane settingPane = new SettingPane(bgm);
-        Scene scene = new Scene(gamePane, 1200, 800);
-        Scene settingScene = new Scene(settingPane, 300, 400);
-
-        // Calling this function for testing purposes.
-        // Keeps the music from playing each time the program is started up.
-        // Will be removed.
-        // bgm.muteMusic();
-
-        bgm.getMediaPlayer().play();
-
-        Card card1, card2;
-        card1 = new Card();
-        card2 = new Card();
-
-        ChipImage c = new ChipImage(1);
-
-        gamePane.getHoleCards().getChildren().addAll(card1.getImage().getImageView(), card2.getImage().getImageView());
-        gamePane.getHoleCards1().getChildren().addAll(new Rectangle(72, 98), new Rectangle(72, 98));
-        gamePane.getHoleCards2().getChildren().addAll(new Rectangle(72, 98), new Rectangle(72, 98));
-        gamePane.getHoleCards3().getChildren().addAll(new Rectangle(72, 98), new Rectangle(72, 98));
-        gamePane.getCommunityCards().getChildren().addAll(new Rectangle(72, 98), new Rectangle(72, 98), new Rectangle(72, 98), new Rectangle(72, 98), new Rectangle(72, 98));
-
-        gamePane.getSettingBtm().setOnAction(e -> {
-            primaryStage.setScene(settingScene);
-        });
-        settingPane.getDoneBtm().setOnAction(e -> {
-            primaryStage.setScene(scene);
-        });
-
-        primaryStage.setScene(settingScene);
+        GamePane gamePane=new GamePane();
+        LoginPane logn=new LoginPane();
+        Scene scene=new Scene(gamePane,1200,800);
+        
+        //LoginPane logn=new LoginPane();
+        
+        Card card1,card2;
+        card1=new Card();
+        card2=new Card();
+        
+        ChipImage c=new ChipImage(1);
+        
+        gamePane.getSelfHoleCards().getChildren().addAll(card1.getImage().getImageView(),card2.getImage().getImageView());
+        gamePane.getLeftHoleCards().getChildren().addAll(new Rectangle(72,98),new Rectangle(72,98));
+        gamePane.getTopHoleCards().getChildren().addAll(new Rectangle(72,98),new Rectangle(72,98));
+        gamePane.getRightHoleCards().getChildren().addAll(new Rectangle(72,98),new Rectangle(72,98));
+        gamePane.getCommunityCards().getChildren().addAll(new Rectangle(72,98),new Rectangle(72,98),new Rectangle(72,98),new Rectangle(72,98),new Rectangle(72,98));
+        
+        scene.setFill(Color.BLACK);
+        primaryStage.setScene(scene);
         primaryStage.setTitle("Texas Hold'em");
-
-        /*
-        primaryStage.setMaxHeight(800);
-        primaryStage.setMaxWidth(1200);
-        primaryStage.setMinHeight(800);
-        primaryStage.setMinWidth(1200);*/
         primaryStage.show();
+        
+        PlayerBank a=new PlayerBank(1000);
+        
+        gamePane.addBlackChips(0,55);
+     //   gamePane.addBlackChips(79);
+        gamePane.addGreenChips(0,80);
+        gamePane.addBlueChips(0,80);
+        gamePane.addRedChips(0,80);
+        gamePane.addWhiteChips(0,80);
+        
+        gamePane.addBlackChips(1,55);
+     //   gamePane.addBlackChips(79);
+        gamePane.addGreenChips(1,80);
+        gamePane.addBlueChips(1,80);
+        gamePane.addRedChips(1,80);
+        gamePane.addWhiteChips(1,80);
+        
+        gamePane.addBlackChips(2,55);
+     //   gamePane.addBlackChips(79);
+        gamePane.addGreenChips(2,80);
+        gamePane.addBlueChips(2,80);
+        gamePane.addRedChips(2,80);
+        gamePane.addWhiteChips(2,80);
+        
+        gamePane.addBlackChips(3,55);
+     //   gamePane.addBlackChips(79);
+        gamePane.addGreenChips(3,80);
+        gamePane.addBlueChips(3,80);
+        gamePane.addRedChips(3,80);
+        gamePane.addWhiteChips(3,80);
+
+        
+        HoldemPlayer b=new HoldemPlayer();
     }
 
     /**
