@@ -18,10 +18,10 @@ public class Card implements Comparable {
 
     // Default card
     public Card() {
-        setSuit(Suit.HEARTS);
+        setSuit(Suit.DIAMONDS);
         setRank(Rank.FOUR);
         setScoreValue();
-        image = new CardImage();
+        image = new CardImage(rank,suit);
     }
     
     /**
