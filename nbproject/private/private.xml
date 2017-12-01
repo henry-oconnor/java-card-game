@@ -3,20 +3,14 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-<<<<<<< HEAD
-            <file>file:/C:/Users/henoc/OneDrive/Documents/NetBeansProjects/GroupProjectCardGame/java-card-game/src/texasholdem/DeckOfCards.java</file>
+            <file>file:/C:/Users/henoc/OneDrive/Documents/NetBeansProjects/GroupProjectCardGame/java-card-game/src/texasholdem/Chip.java</file>
             <file>file:/C:/Users/henoc/OneDrive/Documents/NetBeansProjects/GroupProjectCardGame/java-card-game/src/texasholdem/Player.java</file>
-            <file>file:/C:/Users/henoc/OneDrive/Documents/NetBeansProjects/GroupProjectCardGame/java-card-game/src/texasholdem/Pot.java</file>
+            <file>file:/C:/Users/henoc/OneDrive/Documents/NetBeansProjects/GroupProjectCardGame/java-card-game/src/texasholdem/Bank.java</file>
+            <file>file:/C:/Users/henoc/OneDrive/Documents/NetBeansProjects/GroupProjectCardGame/java-card-game/test/texasholdem/BankTest.java</file>
+            <file>file:/C:/Users/henoc/OneDrive/Documents/NetBeansProjects/GroupProjectCardGame/java-card-game/src/texasholdem/HoldemPlayer.java</file>
+            <file>file:/C:/Users/henoc/OneDrive/Documents/NetBeansProjects/GroupProjectCardGame/java-card-game/src/texasholdem/Hand.java</file>
+            <file>file:/C:/Users/henoc/OneDrive/Documents/NetBeansProjects/GroupProjectCardGame/java-card-game/test/texasholdem/ChipTest.java</file>
             <file>file:/C:/Users/henoc/OneDrive/Documents/NetBeansProjects/GroupProjectCardGame/java-card-game/src/texasholdem/GameBoard.java</file>
-            <file>file:/C:/Users/henoc/OneDrive/Documents/NetBeansProjects/GroupProjectCardGame/java-card-game/src/texasholdem/PlayerBank.java</file>
-=======
-            <file>file:/D:/GitHub/java-card-game/src/texasholdem/SingleHandScore.java</file>
-            <file>file:/D:/GitHub/java-card-game/src/texasholdem/PokerHandRanking.java</file>
-            <file>file:/D:/GitHub/java-card-game/src/texasholdem/BestHand.java</file>
-            <file>file:/D:/GitHub/java-card-game/src/texasholdem/PotentialHands.java</file>
-            <file>file:/D:/GitHub/java-card-game/src/texasholdem/FiveCardHand.java</file>
-            <file>file:/D:/GitHub/java-card-game/src/texasholdem/Suit.java</file>
->>>>>>> e47e2d794c19d28426ac3110f5012c6586c637e9
         </group>
     </open-files>
 </project-private>

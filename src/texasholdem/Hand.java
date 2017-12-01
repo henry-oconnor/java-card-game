@@ -60,6 +60,7 @@ public abstract class Hand{
     public void addCard(Card card){
         cards.add(card);
     } 
+    
     @Override
     public String toString(){
         String str = "";

@@ -17,7 +17,7 @@ import java.util.Map;
 
 public class Chip {
     public static enum Color{
-        WHITE(1), RED(5), BLUE(10), GREEN(25), BLACK(100);
+        WHITE(10), RED(50), BLUE(100), GREEN(200), BLACK(500);
         private final int ID;
         
         private Color(int id) {
