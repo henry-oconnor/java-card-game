@@ -1,30 +1,11 @@
-<<<<<<< HEAD
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/henoc/OneDrive/Documents/NetBeansProjects/GroupProjectCardGame/java-card-game/src/texasholdem/Chip.java</file>
-            <file>file:/C:/Users/henoc/OneDrive/Documents/NetBeansProjects/GroupProjectCardGame/java-card-game/src/texasholdem/Player.java</file>
-            <file>file:/C:/Users/henoc/OneDrive/Documents/NetBeansProjects/GroupProjectCardGame/java-card-game/src/texasholdem/Bank.java</file>
-            <file>file:/C:/Users/henoc/OneDrive/Documents/NetBeansProjects/GroupProjectCardGame/java-card-game/test/texasholdem/BankTest.java</file>
-            <file>file:/C:/Users/henoc/OneDrive/Documents/NetBeansProjects/GroupProjectCardGame/java-card-game/src/texasholdem/HoldemPlayer.java</file>
-            <file>file:/C:/Users/henoc/OneDrive/Documents/NetBeansProjects/GroupProjectCardGame/java-card-game/src/texasholdem/Hand.java</file>
-            <file>file:/C:/Users/henoc/OneDrive/Documents/NetBeansProjects/GroupProjectCardGame/java-card-game/test/texasholdem/ChipTest.java</file>
-            <file>file:/C:/Users/henoc/OneDrive/Documents/NetBeansProjects/GroupProjectCardGame/java-card-game/src/texasholdem/GameBoard.java</file>
+            <file>file:/D:/GitHub/java-card-game/src/texasholdem/GamePane.java</file>
+            <file>file:/D:/GitHub/java-card-game/src/texasholdem/GameBoard.java</file>
+            <file>file:/D:/GitHub/java-card-game/src/texasholdem/HoldemTable.java</file>
         </group>
     </open-files>
 </project-private>
-=======
-<?xml version="1.0" encoding="UTF-8"?>
-<project-private xmlns="http://www.netbeans.org/ns/project-private/1">
-    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
-    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group>
-            <file>file:/C:/Computer%20Sciences/java-card-game/java-card-game/src/texasholdem/ChipImage.java</file>
-            <file>file:/C:/Computer%20Sciences/java-card-game/java-card-game/src/texasholdem/Chip.java</file>
-            <file>file:/C:/Computer%20Sciences/java-card-game/java-card-game/src/texasholdem/ChipTest.java</file>
-        </group>
-    </open-files>
-</project-private>
->>>>>>> deba65cdd6fca32eaff02d7355e029a703af5485

@@ -1,6 +1,5 @@
 package texasholdem;
 
-
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -85,6 +84,7 @@ public class PotentialHands {
 
     /**
      * To see what hands have been made (and display how many there are).
+     *
      * @return a list of 21 different poker hands.
      */
     public String toString() {

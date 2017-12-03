@@ -5,8 +5,6 @@ package texasholdem;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
-
 import java.util.EmptyStackException;
 import java.util.Random;
 import java.util.Stack;
@@ -25,7 +23,6 @@ import java.util.Stack;
  * should have a specific number of cards.
  *
  */
-
 public class DeckOfCards {
 
     private final int NUM_SUITS = 4;
@@ -39,11 +36,19 @@ public class DeckOfCards {
     }
 
     /**
+     * Calls the shuffle function multiple times to get a good mix of the cards.
+     */
+    public void manyShuffles(int numShuffles) {
+        for (int i = 0; i < numShuffles; i++) {
+            shuffle();
+        }
+    }
+
+    /**
      * Shuffles the deck by interweaving the cards and cutting it. Randomness
      * can be added later (rather than interweaving neatly, it can interweave
      * the cards in uneven chunks)
      */
-    
     public void shuffle() {
         // First, split the deck into two pieces
         Stack<Card> firstHalf = new Stack<>();
@@ -66,8 +71,8 @@ public class DeckOfCards {
             } else {
                 deck.push(secondHalf.pop());
             }
-        } 
-       // Take a chunk off the bottom of the deck and put it at the bottom
+        }
+        // Take a chunk off the bottom of the deck and put it at the bottom
         cut();
     }
 
@@ -127,24 +132,10 @@ public class DeckOfCards {
             throw new EmptyStackException();
         }
     }
-    /**
-     * Deals a card off the top of the deck. Pops an object off the top of the
-     * stack.
-     *
-     * @return top card off the deck
-     */
-    public Card dealToPlayer() {
-        if (!deck.isEmpty()) {
-            return deck.pop();
-        } else {
-            throw new EmptyStackException();
-        }
-    }
 
     /**
-     * Creates a deck of 52 cards.
-     * Put in the order: 2 - A, Hearts, Clubs, Diamonds, Spades
-     * Because it's a stack, the top card is the Ace of Spades
+     * Creates a deck of 52 cards. Put in the order: 2 - A, Hearts, Clubs,
+     * Diamonds, Spades Because it's a stack, the top card is the Ace of Spades
      */
     public void setDeck() {
         deck = new Stack<>();

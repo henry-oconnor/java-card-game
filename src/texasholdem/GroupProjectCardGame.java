@@ -102,7 +102,6 @@ public class GroupProjectCardGame extends Application {
 //        String score = singleHand.getScore();
 //        System.out.println("Hand score hex: " + score);
 //        System.out.println("Hand score decimal: " + Integer.parseInt(score, 16));
-
         SingleHandScore secondSingleHand = new SingleHandScore(secondHand);
         secondSingleHand.sortHand();
         secondSingleHand.scoreHand();

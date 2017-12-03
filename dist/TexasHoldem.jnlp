@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <?xml version="1.0" encoding="utf-8"?>
 <jnlp spec="1.0" xmlns:jfx="http://javafx.com" href="TexasHoldem.jnlp">
   <information>
@@ -9,7 +8,7 @@
   </information>
   <resources>
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
-    <jar href="TexasHoldem.jar" size="21829946" download="eager" />
+    <jar href="TexasHoldem.jar" size="21836733" download="eager" />
   </resources>
   <applet-desc  width="800" height="600" main-class="com.javafx.main.NoJavaFXFallback"  name="TexasHoldem" >
     <param name="requiredFXVersion" value="8.0+"/>
@@ -17,23 +16,3 @@
   <jfx:javafx-desc  width="800" height="600" main-class="texasholdem.Client"  name="TexasHoldem" />
   <update check="always"/>
 </jnlp>
-=======
-<?xml version="1.0" encoding="utf-8"?>
-<jnlp spec="1.0" xmlns:jfx="http://javafx.com" href="TexasHoldem.jnlp">
-  <information>
-    <title>TexasHoldem</title>
-    <vendor>jiach</vendor>
-    <description>null</description>
-    <offline-allowed/>
-  </information>
-  <resources>
-    <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
-    <jar href="TexasHoldem.jar" size="21829684" download="eager" />
-  </resources>
-  <applet-desc  width="800" height="600" main-class="com.javafx.main.NoJavaFXFallback"  name="TexasHoldem" >
-    <param name="requiredFXVersion" value="8.0+"/>
-  </applet-desc>
-  <jfx:javafx-desc  width="800" height="600" main-class="texasholdem.Client"  name="TexasHoldem" />
-  <update check="always"/>
-</jnlp>
->>>>>>> deba65cdd6fca32eaff02d7355e029a703af5485

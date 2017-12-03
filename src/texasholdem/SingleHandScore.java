@@ -299,6 +299,7 @@ public class SingleHandScore {
 
     /**
      * Converts the score string from hex to a decimal integer
+     *
      * @return integer score
      */
     public int getScoreAsInt() {

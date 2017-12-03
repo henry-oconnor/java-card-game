@@ -21,16 +21,16 @@ public class Card implements Comparable {
         setSuit(Suit.DIAMONDS);
         setRank(Rank.FOUR);
         setScoreValue();
-        image = new CardImage(rank,suit);
+        image = new CardImage(rank, suit);
     }
-    
+
     /**
-     * Special constructor used when 
-     * a card must be made but the suit doesn't matter.
-     * Has a use in SingleHandScore.hasStraight() method.
-     * @param rank 
+     * Special constructor used when a card must be made but the suit doesn't
+     * matter. Has a use in SingleHandScore.hasStraight() method.
+     *
+     * @param rank
      */
-    public Card(Rank rank){
+    public Card(Rank rank) {
         setSuit(Suit.SPADES);
         setRank(rank);
         setScoreValue();
@@ -108,11 +108,10 @@ public class Card implements Comparable {
 
     /**
      * ONLY COMPARES RANK, NOT SUIT
+     *
      * @param t
-     * @return 
-     * 1 if this.rank is greater than t.rank, 
-     * 0 if this.rank is the same t.rank, 
-     * -1 if this.rank is less than t.rank
+     * @return 1 if this.rank is greater than t.rank, 0 if this.rank is the same
+     * t.rank, -1 if this.rank is less than t.rank
      */
     @Override
     public int compareTo(Object t) {

@@ -5,23 +5,24 @@ package texasholdem;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 /**
  *
  * @author jiach
  */
 public enum Suit {
-    HEARTS  ("Hearts"), 
-    CLUBS   ("Clubs"), 
-    DIAMONDS("Diamonds"), 
-    SPADES  ("Spades");
-    
+    HEARTS("Hearts"),
+    CLUBS("Clubs"),
+    DIAMONDS("Diamonds"),
+    SPADES("Spades");
+
     private final String suitName;
-    private Suit(String suitName){
+
+    private Suit(String suitName) {
         this.suitName = suitName;
     }
+
     @Override
-    public String toString(){
+    public String toString() {
         return suitName;
     }
 }

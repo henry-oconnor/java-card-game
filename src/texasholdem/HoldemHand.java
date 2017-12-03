@@ -5,8 +5,6 @@ package texasholdem;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
-
 /**
  *
  * @author Bernard Heres
@@ -23,9 +21,10 @@ public class HoldemHand extends Hand {
      */
     public HoldemHand() {
         super();
-        super.setHandSize(TEXAS_HOLDEM_HAND_SIZE);       
+        super.setHandSize(TEXAS_HOLDEM_HAND_SIZE);
     }
-    public HoldemHand(Card...cards){
+
+    public HoldemHand(Card... cards) {
         super(cards);
         super.setHandSize(TEXAS_HOLDEM_HAND_SIZE);
     }

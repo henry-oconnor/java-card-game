@@ -20,6 +20,7 @@ public final class BestHand {
     private ArrayList<SingleHandScore> scoredHands;
 
     private SingleHandScore bestHand;
+    private int bestHandScore;
 
     public BestHand(PotentialHands potential) {
         this.potentialHands = potential;
@@ -29,14 +30,14 @@ public final class BestHand {
         setHighestScore();  // set bestHand
 
     }
-    
-    /** 
-     * Takes any number of FiveCardHand objects and determines the best hand 
-     * out of all of them.
-     * Useful to compare the BestHand objects of each player.
-     * @param hands 
+
+    /**
+     * Takes any number of FiveCardHand objects and determines the best hand out
+     * of all of them. Useful to compare the BestHand objects of each player.
+     *
+     * @param hands
      */
-    public BestHand(FiveCardHand...hands){
+    public BestHand(FiveCardHand... hands) {
         // Use for-each to set argument of unknown size
         allHands.addAll(Arrays.asList(hands));
         setScoredHands();
@@ -88,9 +89,14 @@ public final class BestHand {
 
     /**
      * Return the bestHand SingleHandScore
+     *
      * @return the bestHand SingleHandScore
      */
     public SingleHandScore getBestHand() {
         return bestHand;
+    }
+
+    public int getBestHandScore() {
+        return bestHand.getScoreAsInt();
     }
 }
