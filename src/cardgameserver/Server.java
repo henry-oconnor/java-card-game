@@ -8,14 +8,15 @@ import javafx.application.Platform;
 import javafx.scene.*;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+import texasholdem.GameBoard;
 
-public class Server extends Application{
+public class Server extends Application
+            implements HoldemConstants{
     
     private InetAddress ip;
     private int port;
     private Thread listenThread;
     private ServerSocket serverSocket;
-    private Socket socket;
     private DataInputStream clientInput;
     private DataOutputStream serverOutput;
     
@@ -38,16 +39,63 @@ public class Server extends Application{
                     + ": Waiting for players"));
                     
                     Socket player1 = serverSocket.accept();
-                    Platform.runLater(()->log.appendText(new Date() + ": Player 1 joined session\n"));
-                        
-                        
+                    Platform.runLater(()->
+                            log.appendText(new Date() + ": Player 1 joined session\n"));
+                    
+                    new DataOutputStream(
+                            player1.getOutputStream()).writeInt(PLAYER1);
+                    
+                    
+                    Socket player2 = serverSocket.accept();
+                    Platform.runLater(()->
+                            log.appendText(new Date() + ": Player 2 joined session\n"));
+                    new DataOutputStream(
+                            player2.getOutputStream()).writeInt(PLAYER2);                    
+                    
+                    
+                    Socket player3 = serverSocket.accept();
+                    new DataOutputStream(
+                            player3.getOutputStream()).writeInt(PLAYER4);
+                    Platform.runLater(()->
+                            log.appendText(new Date() + ": Player 3 joined session\n"));
+                    
+                    
+                    Socket player4 = serverSocket.accept();
+                    new DataOutputStream(
+                            player4.getOutputStream()).writeInt(PLAYER4);
+                    Platform.runLater(()->
+                            log.appendText(new Date() + ": Player 4 joined session\n"));
+                            
+                    Platform.runLater(()->
+                            log.appendText(new Date() + ": Starting game..."));
+                    
+                    
+                    new Thread(new SessionHandler(player1, player2, player3, player4)).start();
                     
                 }
             }catch(Exception ex){
                 ex.printStackTrace();
             }
-        });
-
+        }).start();
+    }
+    
+    class SessionHandler implements Runnable, HoldemConstants{
+        private GameBoard gameBoard;
+        private Socket player1;
+        private Socket player2;
+        private Socket player3;
+        private Socket player4;
+        
+        public SessionHandler(Socket p1, Socket p2, Socket p3, Socket p4){
+            player1 = p1;
+            player2 = p2;
+            player3 = p3;
+            player4 = p4;
+        }
+        
+        public void run(){
+            
+        }
     }
 
 }
