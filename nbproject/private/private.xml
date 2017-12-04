@@ -3,9 +3,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/GitHub/java-card-game/src/texasholdem/GamePane.java</file>
-            <file>file:/D:/GitHub/java-card-game/src/texasholdem/GameBoard.java</file>
-            <file>file:/D:/GitHub/java-card-game/src/texasholdem/HoldemTable.java</file>
+            <file>file:/C:/Users/henoc/OneDrive/Documents/NetBeansProjects/GroupProjectCardGame/java-card-game/java-card-game/src/texasholdem/GameBoard.java</file>
+            <file>file:/C:/Users/henoc/OneDrive/Documents/NetBeansProjects/GroupProjectCardGame/java-card-game/java-card-game/src/texasholdem/GamePane.java</file>
+            <file>file:/C:/Users/henoc/OneDrive/Documents/NetBeansProjects/GroupProjectCardGame/java-card-game/java-card-game/src/texasholdem/Client.java</file>
+            <file>file:/C:/Users/henoc/OneDrive/Documents/NetBeansProjects/GroupProjectCardGame/java-card-game/java-card-game/src/texasholdem/HoldemConstants.java</file>
+            <file>file:/C:/Users/henoc/OneDrive/Documents/NetBeansProjects/GroupProjectCardGame/java-card-game/java-card-game/src/texasholdem/Server.java</file>
         </group>
     </open-files>
 </project-private>

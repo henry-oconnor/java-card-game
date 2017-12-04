@@ -62,7 +62,7 @@ public class GameBoard {
     public void determineBestScores() {
         for (HoldemPlayer player : players) {
             if (player.isPlaying()) {
-                BestHand bestHand = new BestHand(new PotentialHands(player.getHoleCards(), communityCards));
+                BestHand bestHand = new BestHand(new PotentialHands(player.getHand(), communityCards));
                 player.setBestHandScore(bestHand.getBestHandScore());
             } else {
                 // Marker to tell us that this player didn't have a hand to score
@@ -156,7 +156,7 @@ public class GameBoard {
      * number of cards (in the case of Texas Holdem, 2 cards).
      */
     public void dealHands() {
-        while (players.get(players.size() - 1).getHoleCards().getHandSize() != HAND_SIZE) {
+        while (players.get(players.size() - 1).getHand().getHandSize() != HAND_SIZE) {
             for (HoldemPlayer player : players) {
                 if (player.isPlaying()) {
                     player.addCard(deck.dealCard());

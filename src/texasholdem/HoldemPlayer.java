@@ -45,7 +45,7 @@ public class HoldemPlayer implements Serializable {
         return bank.getChips(bank.getTotal());
     }
 
-    public HoldemHand getHoleCards() {
+    public HoldemHand getHand() {
         return hand;
     }
 

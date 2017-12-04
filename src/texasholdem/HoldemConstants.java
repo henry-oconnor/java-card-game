@@ -1,17 +1,17 @@
 /*
  * Henry O'Connor
  */
-package cardgameserver;
+package texasholdem;
 
 /**
  *
  * @author henoc
  */
 public interface HoldemConstants {
-    public static int PLAYER1 = 1;
-    public static int PLAYER2 = 2;
-    public static int PLAYER3 = 3;
-    public static int PLAYER4 = 4;
+    public static int PLAYER1 = 0;
+    public static int PLAYER2 = 1;
+    public static int PLAYER3 = 2;
+    public static int PLAYER4 = 3;
     public static int CONTINUE = 0;
     public static int PLAYER1_WON = 1;
     public static int PLAYER2_WON = 2;
