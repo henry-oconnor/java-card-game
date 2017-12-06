@@ -12,5 +12,5 @@ package texasholdem;
  * @author Bernard Heres
  */
 public enum PlayerChoice {
-    Fold, Check, Call, Raise;
+    FOLD, CHECK, CALL, RAISE;
 }

@@ -19,6 +19,11 @@ public abstract class Bank {
     protected Stack<Chip> blueChips;
     protected Stack<Chip> greenChips;
     protected Stack<Chip> blackChips;
+    
+    public Bank(){}
+    public Bank(Integer total){
+        this.total = total;
+    }
 
     /**
      *

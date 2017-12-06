@@ -53,47 +53,76 @@ public class CardImage {
     }
 
     private double findYCoordinate(Suit suit) {
-        if (suit.toString().compareTo("Clubs") == 0) {
-            return 0.5;
-        } else if (suit.toString().compareTo("Spades") == 0) {
-            return 98.5;
-        } else if (suit.toString().compareTo("Hearts") == 0) {
-            return 196.5;
-        } else if (suit.toString().compareTo("Diamonds") == 0) {
-            return 294.5;
+        final int SPACING = 98;
+        double returnVal = 0;
+        if (null != suit) 
+            switch (suit) {
+            case CLUBS:
+                returnVal = (SPACING * 0) + 0.5;
+                break;
+            case SPADES:
+                returnVal = (SPACING * 1) + 0.5;
+                break;
+            case HEARTS:
+                returnVal = (SPACING * 2) + 0.5;
+                break;
+            case DIAMONDS:
+                returnVal = (SPACING * 3) + 0.5;
+                break;
+            default:
+                break;
         }
-        return 0;
+        return returnVal;
     }
 
     private double findXCoordinate(Rank rank) {
-        if (rank == Rank.TWO) {
-            return 1;
-        } else if (rank.toString().compareTo("Three") == 0) {
-            return 74;
-        } else if (rank.toString().compareTo("Four") == 0) {
-            return 147;
-        } else if (rank.toString().compareTo("Five") == 0) {
-            return 220;
-        } else if (rank.toString().compareTo("Six") == 0) {
-            return 293;
-        } else if (rank.toString().compareTo("Seven") == 0) {
-            return 366;
-        } else if (rank.toString().compareTo("Eight") == 0) {
-            return 439;
-        } else if (rank.toString().compareTo("Nine") == 0) {
-            return 512;
-        } else if (rank.toString().compareTo("Ten") == 0) {
-            return 585;
-        } else if (rank.toString().compareTo("Jack") == 0) {
-            return 658;
-        } else if (rank.toString().compareTo("Queen") == 0) {
-            return 731;
-        } else if (rank.toString().compareTo("King") == 0) {
-            return 804;
-        } else if (rank.toString().compareTo("Ace") == 0) {
-            return 877;
+        final int SPACING = 73;
+        int returnVal = 0;
+        if (null != rank) 
+            switch (rank) {
+            case TWO:
+                returnVal = (SPACING * 1) + 1;
+                break;
+            case THREE:
+                returnVal = (SPACING * 2) + 1;
+                break;
+            case FOUR:
+                returnVal = (SPACING * 3) + 1;
+                break;
+            case FIVE:
+                returnVal = (SPACING * 4) + 1;
+                break;
+            case SIX:
+                returnVal = (SPACING * 5) + 1;
+                break;
+            case SEVEN:
+                returnVal = (SPACING * 6) + 1;
+                break;
+            case EIGHT:
+                returnVal = (SPACING * 7) + 1;
+                break;
+            case NINE:
+                returnVal = (SPACING * 8) + 1;
+                break;
+            case TEN:
+                returnVal = (SPACING * 9) + 1;
+                break;
+            case JACK:
+                returnVal = (SPACING * 10) + 1;
+                break;
+            case QUEEN:
+                returnVal = (SPACING * 11) + 1;
+                break;
+            case KING:
+                returnVal = (SPACING * 12) + 1;
+                break;
+            case ACE:
+                returnVal = (SPACING * 13) + 1;
+                break;
+            default:
+                break;
         }
-        return 0;
+        return returnVal;
     }
 
 }

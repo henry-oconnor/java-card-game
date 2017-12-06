@@ -20,7 +20,14 @@ public class HoldemPlayer implements Serializable {
     private int currentWager;
 
     private int bestHandScore;
+    
+    private String playerName;
 
+    public HoldemPlayer(){
+         hand = new HoldemHand();
+         bank = new PlayerBank(1000);
+    }
+    
     /**
      * Wrapper method for HoldemHand.addCard()
      *
@@ -75,6 +82,14 @@ public class HoldemPlayer implements Serializable {
 
     public void setBestHandScore(int bestHandScore) {
         this.bestHandScore = bestHandScore;
+    }
+
+    public String getPlayerName() {
+        return playerName;
+    }
+
+    public void setPlayerName(String playerName) {
+        this.playerName = playerName;
     }
 
 }

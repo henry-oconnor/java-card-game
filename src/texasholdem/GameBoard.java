@@ -27,6 +27,14 @@ public class GameBoard implements HoldemConstants{
     private int amountToMatch;
 
 
+    
+    public GameBoard(){
+        this.communityCards = new FiveCardHand();
+        this.deck = new DeckOfCards();
+        this.pot = new Pot();
+        this.players = new ArrayList<>();
+    }
+    
     public GameBoard(ArrayList<HoldemPlayer> players) {
         // Instantiate objects
         communityCards = new FiveCardHand();
@@ -38,7 +46,7 @@ public class GameBoard implements HoldemConstants{
     public void play() {
         deck.manyShuffles(NUM_SHUFFLES);
         collectAntes(MINIMUM_ANTE);
-        dealHands();
+   //     dealHands();
         // The players' turns change in this method
         collectWagers();
         dealFlop();
@@ -69,6 +77,7 @@ public class GameBoard implements HoldemConstants{
 
     /**
      * Looks at each player's scores, determining the winner(s)
+     * @return a list of the winners as a boolean arraylist
      */
     public ArrayList<Boolean> determineWinner() {
         ArrayList<Boolean> winners = new ArrayList<>();
@@ -110,21 +119,21 @@ public class GameBoard implements HoldemConstants{
             if (thisPlayer.isPlaying()) {
                 playerTurn = i;
                 switch (choice) {
-                    case Fold:
+                    case FOLD:
                         // Collect no more bets this round
                         thisPlayer.setPlaying(false);
                         break;
-                    case Check:
+                    case CHECK:
                         // Only possible if amountToMatch == currentWager
                         break;
-                    case Call:
+                    case CALL:
                         if (thisPlayer.getCurrentWagers() < amountToMatch) {
                             thisPlayer.placeBet(
                                     amountToMatch - thisPlayer.getCurrentWagers());
                         }
                         pot.addToTotal(amountToMatch - thisPlayer.getCurrentWagers());
                         break;
-                    case Raise:
+                    case RAISE:
                         // To raise, you must match current amount bet, and add to that
                         // Basically the player calls, then adds more.
                         thisPlayer.placeBet((amountToMatch - thisPlayer.getCurrentWagers()) + RAISE_AMOUNT);
@@ -152,7 +161,10 @@ public class GameBoard implements HoldemConstants{
      * number of cards (in the case of Texas Holdem, 2 cards).
      */
     public void dealHands() {
-        while (players.get(players.size() - 1).getHand().getHandSize() != HAND_SIZE) {
+        // Get the last player's hand, get the cards from the hand, 
+        // and look at how many cards are in the hand.
+        while (players.get(players.size() - 1).getHand().getCards() == null 
+                || players.get(players.size() - 1).getHand().getCards().size() != HAND_SIZE) {
             for (HoldemPlayer player : players) {
                 if (player.isPlaying()) {
                     player.addCard(deck.dealCard());

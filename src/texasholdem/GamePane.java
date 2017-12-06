@@ -1,7 +1,6 @@
 package texasholdem;
 
-import java.util.Stack;
-import javafx.scene.Scene;
+import java.util.ArrayList;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -9,11 +8,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-import javafx.util.Duration;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -31,7 +28,12 @@ public class GamePane extends Pane {
     private ImageView tableView;
     private HBox holeCards[], communityCards;
     private VBox blackChip[][], greenChip[][], blueChip[][], redChip[][], whiteChip[][];
-    private Button fold, call, raise, check;
+    private Button btnFold, btnCall, btnRaise, btnCheck;
+
+    private final ArrayList<HoldemPlayer> players = new ArrayList<HoldemPlayer>(){{
+        add(new HoldemPlayer());
+    }};
+    private GameBoard gameBoard = new GameBoard(players);
 
     public GamePane() {
 
@@ -69,13 +71,13 @@ public class GamePane extends Pane {
         holeCards[3] = new HBox();
 
         communityCards = new HBox();
-        fold = new Button("Fold");
-        call = new Button("Call");
-        raise = new Button("Raise");
-        check = new Button("Check");
+        btnFold = new Button("Fold");
+        btnCall = new Button("Call");
+        btnRaise = new Button("Raise");
+        btnCheck = new Button("Check");
         getChildren().addAll(name[0], name[1], name[2], name[3]);
         getChildren().addAll(holeCards[0], holeCards[1], holeCards[2], holeCards[3]);
-        getChildren().addAll(fold, call, raise, check, communityCards);
+        getChildren().addAll(btnFold, btnCall, btnRaise, btnCheck, communityCards);
 
         for (int i = 0; i < 4; i++) {
             getChildren().addAll(blackChip[i][0], blackChip[i][1], blackChip[i][2], blackChip[i][3]);
@@ -85,6 +87,29 @@ public class GamePane extends Pane {
             getChildren().addAll(whiteChip[i][0], whiteChip[i][1], whiteChip[i][2], whiteChip[i][3]);
         }
         setTo1200x800();
+
+        gameBoard.play();
+        
+        btnFold.setOnAction(e -> {
+            gameBoard.setChoice(PlayerChoice.FOLD);
+            System.out.println(gameBoard.getChoice());
+        });
+        btnCall.setOnAction(e -> {
+            gameBoard.setChoice(PlayerChoice.CALL);
+            System.out.println(gameBoard.getChoice());
+
+        });
+        btnRaise.setOnAction(e -> {
+            gameBoard.setChoice(PlayerChoice.RAISE);
+            System.out.println(gameBoard.getChoice());
+
+        });
+        btnCheck.setOnAction(e -> {
+            gameBoard.setChoice(PlayerChoice.CHECK);
+            System.out.println(gameBoard.getChoice());
+
+        });
+
     }
 
     /* public void deleteChips(int player,int numDelete)
@@ -380,19 +405,19 @@ public class GamePane extends Pane {
     }
 
     public Button getFoldBtm() {
-        return fold;
+        return btnFold;
     }
 
     public Button getCallBtm() {
-        return call;
+        return btnCall;
     }
 
     public Button getRaiseBtm() {
-        return raise;
+        return btnRaise;
     }
 
     public Button getCheckBtm() {
-        return check;
+        return btnCheck;
     }
 
     public HBox getSelfHoleCards() {
@@ -412,25 +437,25 @@ public class GamePane extends Pane {
     }
 
     public void setTo1200x800() {
-        fold.setMinSize(80, 24);
-        fold.setMaxSize(80, 24);
-        fold.setLayoutX(450);
-        fold.setLayoutY(655);
+        btnFold.setMinSize(80, 24);
+        btnFold.setMaxSize(80, 24);
+        btnFold.setLayoutX(450);
+        btnFold.setLayoutY(655);
 
-        call.setMinSize(80, 24);
-        call.setMaxSize(80, 24);
-        call.setLayoutX(530);
-        call.setLayoutY(655);
+        btnCall.setMinSize(80, 24);
+        btnCall.setMaxSize(80, 24);
+        btnCall.setLayoutX(530);
+        btnCall.setLayoutY(655);
 
-        raise.setMinSize(80, 24);
-        raise.setMaxSize(80, 24);
-        raise.setLayoutX(610);
-        raise.setLayoutY(655);
+        btnRaise.setMinSize(80, 24);
+        btnRaise.setMaxSize(80, 24);
+        btnRaise.setLayoutX(610);
+        btnRaise.setLayoutY(655);
 
-        check.setMinSize(80, 24);
-        check.setMaxSize(80, 24);
-        check.setLayoutX(690);
-        check.setLayoutY(655);
+        btnCheck.setMinSize(80, 24);
+        btnCheck.setMaxSize(80, 24);
+        btnCheck.setLayoutX(690);
+        btnCheck.setLayoutY(655);
 
         communityCards.setSpacing(7);
         communityCards.setLayoutX(400);
@@ -640,10 +665,10 @@ private Label name,name1,name2,name3;
         holeCards3=new VBox();
         
         communityCards=new HBox();
-        fold=new Button("Fold");
-        call=new Button("Call");
-        raise=new Button("Raise");
-        check=new Button("Check");
+        fold=new Button("FOLD");
+        call=new Button("CALL");
+        raise=new Button("RAISE");
+        check=new Button("CHECK");
         setting=new Button();
         getChildren().addAll(fold,call,raise,check,communityCards,setting);
         getChildren().addAll(name,iconView,holeCards);

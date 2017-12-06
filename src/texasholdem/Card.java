@@ -7,7 +7,6 @@ package texasholdem;
  */
 /**
  *
- * @author jiach
  */
 public class Card implements Comparable {
 
@@ -18,7 +17,7 @@ public class Card implements Comparable {
 
     // Default card
     public Card() {
-        setSuit(Suit.DIAMONDS);
+        setSuit(Suit.HEARTS);
         setRank(Rank.FOUR);
         setScoreValue();
         image = new CardImage(rank, suit);
@@ -31,10 +30,10 @@ public class Card implements Comparable {
      * @param rank
      */
     public Card(Rank rank) {
-        setSuit(Suit.SPADES);
+        setSuit(Suit.HEARTS);
         setRank(rank);
         setScoreValue();
-        image = new CardImage();
+        image = new CardImage(rank, suit);
     }
 
     public Card(Suit suit, Rank rank) {
