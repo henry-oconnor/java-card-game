@@ -19,11 +19,11 @@ public class Pot extends Bank {
         Stack<Chip> greenChips = new Stack<>();
         Stack<Chip> blackChips = new Stack<>();
 
-        stackLookup.put(Chip.Color.WHITE, whiteChips);
-        stackLookup.put(Chip.Color.RED, redChips);
-        stackLookup.put(Chip.Color.BLUE, blueChips);
-        stackLookup.put(Chip.Color.GREEN, greenChips);
-        stackLookup.put(Chip.Color.BLACK, blackChips);
+//        stackLookup.put(Chip.Color.WHITE, whiteChips);
+ //       stackLookup.put(Chip.Color.RED, redChips);
+  //      stackLookup.put(Chip.Color.BLUE, blueChips);
+   //     stackLookup.put(Chip.Color.GREEN, greenChips);
+    //    stackLookup.put(Chip.Color.BLACK, blackChips);
     }
 
 }
