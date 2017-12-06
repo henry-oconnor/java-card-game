@@ -9,7 +9,7 @@ import java.util.Collections;
 /**
  *
  */
-public class GameBoard {
+public class GameBoard implements HoldemConstants{
 
     private FiveCardHand communityCards;
     private ArrayList<HoldemPlayer> players;
@@ -26,10 +26,6 @@ public class GameBoard {
     // 
     private int amountToMatch;
 
-    final int MINIMUM_ANTE = 100;
-    final int RAISE_AMOUNT = 100;
-    final int NUM_SHUFFLES = 20;
-    final int HAND_SIZE = 2;
 
     public GameBoard(ArrayList<HoldemPlayer> players) {
         // Instantiate objects

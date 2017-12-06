@@ -83,8 +83,20 @@ public class Server extends Application
         }
         
         public void run(){
-
-            gameBoard.play();
+            
+        }
+        
+        // sends all clients an update of one player, the pot, and control vars
+        public void updatePlayerState(DataOutputStream out, int playerIndex) throws IOException{
+            out.flush();
+            // owwwwwwwwww object oriented. should we write a cleaner way of getting the size of each chip stack?
+            out.writeInt(gameBoard.getPlayers().get(playerIndex).getBank().whiteChips.size());
+            out.writeInt(gameBoard.getPlayers().get(playerIndex).getBank().redChips.size());
+            out.writeInt(gameBoard.getPlayers().get(playerIndex).getBank().blueChips.size());
+            out.writeInt(gameBoard.getPlayers().get(playerIndex).getBank().greenChips.size());
+            out.writeInt(gameBoard.getPlayers().get(playerIndex).getBank().blackChips.size());
+            
+            
         }
     }
 
