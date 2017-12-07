@@ -88,8 +88,7 @@ public class GamePane extends Pane {
         }
         setTo1200x800();
 
-        gameBoard.play();
-        
+                
         btnFold.setOnAction(e -> {
             gameBoard.setChoice(PlayerChoice.FOLD);
             System.out.println(gameBoard.getChoice());

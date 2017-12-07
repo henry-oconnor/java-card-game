@@ -3,22 +3,13 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-<<<<<<< HEAD
-            <file>file:/C:/Users/henoc/OneDrive/Documents/NetBeansProjects/GroupProjectCardGame/java-card-game/java-card-game/src/texasholdem/GameBoard.java</file>
-            <file>file:/C:/Users/henoc/OneDrive/Documents/NetBeansProjects/GroupProjectCardGame/java-card-game/java-card-game/src/texasholdem/GamePane.java</file>
-            <file>file:/C:/Users/henoc/OneDrive/Documents/NetBeansProjects/GroupProjectCardGame/java-card-game/java-card-game/src/texasholdem/Client.java</file>
-            <file>file:/C:/Users/henoc/OneDrive/Documents/NetBeansProjects/GroupProjectCardGame/java-card-game/java-card-game/src/texasholdem/Server.java</file>
-            <file>file:/C:/Users/henoc/OneDrive/Documents/NetBeansProjects/GroupProjectCardGame/java-card-game/java-card-game/src/texasholdem/PlayerBank.java</file>
-=======
             <file>file:/D:/GitHub/java-card-game/src/texasholdem/GamePane.java</file>
             <file>file:/D:/GitHub/java-card-game/src/texasholdem/GameBoard.java</file>
-            <file>file:/D:/GitHub/java-card-game/src/texasholdem/CardImage.java</file>
-            <file>file:/D:/GitHub/java-card-game/src/texasholdem/Card.java</file>
-            <file>file:/D:/GitHub/java-card-game/src/texasholdem/GroupProjectCardGame.java</file>
             <file>file:/D:/GitHub/java-card-game/src/texasholdem/Client.java</file>
-            <file>file:/D:/GitHub/java-card-game/src/Image/cards.png</file>
-            <file>file:/D:/GitHub/java-card-game/src/texasholdem/PlayerChoice.java</file>
->>>>>>> 91a187c355448f7ace34c0f8193409c4f28c0c3f
+            <file>file:/D:/GitHub/java-card-game/src/texasholdem/Server.java</file>
+            <file>file:/D:/GitHub/java-card-game/src/texasholdem/HoldemConstants.java</file>
+            <file>file:/D:/GitHub/java-card-game/src/texasholdem/DeckOfCards.java</file>
+            <file>file:/D:/GitHub/java-card-game/src/texasholdem/Bank.java</file>
         </group>
     </open-files>
 </project-private>

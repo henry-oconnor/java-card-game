@@ -83,4 +83,8 @@ public abstract class Bank {
     public void addToTotal(int toAdd) {
         total += toAdd;
     }
+    
+        void decreaseTotal(int toRemove) {
+            total -= toRemove;
+        }
 }

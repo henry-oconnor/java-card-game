@@ -132,6 +132,13 @@ public class DeckOfCards {
             throw new EmptyStackException();
         }
     }
+    
+    /**
+     * Pops a card off the deck and lets it vanish into the digital ether.
+     */
+    public void burnCard(){
+        dealCard();
+    }
 
     /**
      * Creates a deck of 52 cards. Put in the order: 2 - A, Hearts, Clubs,
