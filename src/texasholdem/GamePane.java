@@ -29,6 +29,9 @@ public class GamePane extends Pane {
     private HBox holeCards[], communityCards;
     private VBox blackChip[][], greenChip[][], blueChip[][], redChip[][], whiteChip[][];
     private Button btnFold, btnCall, btnRaise, btnCheck;
+    
+    private boolean buttonPressed = false;
+    private int buttonID;
 
     private final ArrayList<HoldemPlayer> players = new ArrayList<HoldemPlayer>(){{
         add(new HoldemPlayer());
@@ -92,20 +95,24 @@ public class GamePane extends Pane {
         btnFold.setOnAction(e -> {
             gameBoard.setChoice(PlayerChoice.FOLD);
             System.out.println(gameBoard.getChoice());
+            buttonPressed = true;
         });
         btnCall.setOnAction(e -> {
             gameBoard.setChoice(PlayerChoice.CALL);
             System.out.println(gameBoard.getChoice());
+            buttonPressed = true;
 
         });
         btnRaise.setOnAction(e -> {
             gameBoard.setChoice(PlayerChoice.RAISE);
             System.out.println(gameBoard.getChoice());
+            buttonPressed = true;
 
         });
         btnCheck.setOnAction(e -> {
             gameBoard.setChoice(PlayerChoice.CHECK);
             System.out.println(gameBoard.getChoice());
+            buttonPressed = true;
 
         });
 
@@ -629,6 +636,13 @@ public class GamePane extends Pane {
             whiteChip[3][i].setSpacing(-16);
             rightChipY += 15;
         }
+    }
+
+    void getButtonPressed() {
+        
+        while(!buttonPressed);
+        buttonPressed = false;
+        
     }
 
 }

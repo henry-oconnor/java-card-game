@@ -60,6 +60,20 @@ public class Client extends Application implements HoldemConstants{
         primaryStage.setTitle("Texas Hold'em");
         primaryStage.show();
 
+        myTurn = false;
+        
+        // game loop
+        while(true){
+            // server should be in collectWagers function at this point waiting for an int
+            gamePane.getButtonPressed();
+            
+            // i THINK this will make the program pause until a bool is received from the server
+            myTurn = false;
+            myTurn = in.readBoolean();
+        }
+        
+        
+        
         
         // the commented code below should go in a function
         
