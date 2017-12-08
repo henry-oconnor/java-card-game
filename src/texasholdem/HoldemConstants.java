@@ -33,6 +33,10 @@ public interface HoldemConstants {
     
     // Server/client flags
     public static final int SEND_REDUCE_USER_BANK = 10;
+    
+    
+    public static final String SERVER_NAME = "localhost";
+    public static final int PORT_NUMBER = 8000;
 
 }
 

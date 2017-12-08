@@ -214,7 +214,9 @@ public class GamePane extends Pane {
             }
         }
     }
-
+    
+    
+    // probly shouldn't use this function at all
     public void addChips(int player, int num) {
         int black, green, blue, red;
         black = num / 100; // cal number of black chips need to add

@@ -21,8 +21,8 @@ public class Server extends Application
     // client sockets
     private ArrayList<Socket> socketList;
 
-    private DataOutputStream playerOutputStream;
-    private DataInputStream playerInputStream;
+    private DataOutputStream out;
+    private DataInputStream in;
 
     public void start(Stage primaryStage) {
         TextArea log = new TextArea();
@@ -93,6 +93,9 @@ public class Server extends Application
         @Override
         public void run() {
             try {
+                // send player count and chip counts to player
+                initializeClientGui();
+                
                 collectAntes();
                 dealCards();
                 sendCards();
@@ -114,8 +117,8 @@ public class Server extends Application
             for (int i = 0; i < socketList.size(); i++) {
                 HoldemPlayer player = gameBoard.getPlayers().get(i);
                 if (player.isPlaying()) {
-                    playerInputStream = new DataInputStream(socketList.get(i).getInputStream());
-                    int userChoice = playerInputStream.readInt();
+                    in = new DataInputStream(socketList.get(i).getInputStream());
+                    int userChoice = in.readInt();
 
                     int amountToMatch = gameBoard.getAmountToMatch();
                     int playerTotal = gameBoard.getPlayers().get(i).getBank().getTotal();
@@ -156,11 +159,11 @@ public class Server extends Application
             gameBoard.getPot().addToTotal(amount);
             gameBoard.getPlayers().get(playerIndex)
                     .getBank().decreaseTotal(amount);
-            playerOutputStream
+            out
                     = new DataOutputStream(socketList
                             .get(socketIndex).getOutputStream());
             // Reduce player's pot by this much
-            playerOutputStream.writeInt(amount);
+            out.writeInt(amount);
         }
 
         /**
@@ -219,11 +222,9 @@ public class Server extends Application
         }
 
         public void updateClientBank(int amount, int playerIndex, int socketIndex) throws IOException {
-            playerOutputStream
-                    = new DataOutputStream(socketList
-                            .get(socketIndex).getOutputStream());
+            out = new DataOutputStream(socketList.get(socketIndex).getOutputStream());
             // Reduce player's pot by this much
-            playerOutputStream.writeInt(amount);
+            out.writeInt(amount);
         }
 
         /**
@@ -279,8 +280,16 @@ public class Server extends Application
                     players.get(i).setPlaying(false);
                 } else {
                     gameBoard.getPot().addToTotal(MINIMUM_ANTE);
-                    playerOutputStream = new DataOutputStream(socketList.get(i).getOutputStream());
-                    playerOutputStream.writeInt(SEND_REDUCE_USER_BANK);
+                    
+                // reduce player chip count
+                    players.get(i).getBank().decreaseTotal(MINIMUM_ANTE);
+                    
+                    out = new DataOutputStream(socketList.get(i).getOutputStream());
+                    out.writeInt(SEND_REDUCE_USER_BANK);
+                    
+                // send new chip totals to client
+                    updateClientBank(MINIMUM_ANTE, i, i);
+                    
                 }
             }
         }
@@ -332,23 +341,35 @@ public class Server extends Application
             int rankInt = card.getRank().ordinal();
             int suitInt = card.getSuit().ordinal();
 
-            playerOutputStream = new DataOutputStream(socket.getOutputStream());
+            out = new DataOutputStream(socket.getOutputStream());
             // Send values to the client
-            playerOutputStream.writeInt(rankInt);
-            playerOutputStream.writeInt(suitInt);
+            out.writeInt(rankInt);
+            out.writeInt(suitInt);
 
         }
 
         // sends all clients an update of one player, the pot, and control vars
-        public void updatePlayerState(DataOutputStream out, int playerIndex) throws IOException {
+        public void updatePlayerState(int playerIndex) throws IOException {
             out.flush();
-            // owwwwwwwwww object oriented. should we write a cleaner way of getting the size of each chip stack?
+            
             out.writeInt(gameBoard.getPlayers().get(playerIndex).getBank().whiteChips.size());
             out.writeInt(gameBoard.getPlayers().get(playerIndex).getBank().redChips.size());
             out.writeInt(gameBoard.getPlayers().get(playerIndex).getBank().blueChips.size());
             out.writeInt(gameBoard.getPlayers().get(playerIndex).getBank().greenChips.size());
             out.writeInt(gameBoard.getPlayers().get(playerIndex).getBank().blackChips.size());
 
+        }
+
+        // send client the number of players, and chip counts for each player
+        private void initializeClientGui() throws IOException {
+            for(int i = 0; i < socketList.size(); i++){
+                out = new DataOutputStream(socketList.get(i).getOutputStream());
+                out.writeInt(socketList.size());
+                
+                for(int j = 0; j < socketList.size(); j++){
+                    updatePlayerState(j);
+                }
+            }
         }
 
     }
