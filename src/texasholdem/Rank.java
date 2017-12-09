@@ -1,5 +1,8 @@
 package texasholdem;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -28,10 +31,23 @@ public enum Rank {
 
     // rankValue is the hexadecimal value a rank would have
     private final String rankValue;
+    private final int enumValue;
+    private static Map map = new HashMap<>();
 
-    Rank(String rankName, String rankValue) {
+    private Rank(String rankName, String rankValue) {
         this.rankName = rankName;
         this.rankValue = rankValue;
+        this.enumValue = Integer.parseInt(rankValue, 16);
+    }
+
+    static {
+        for (Rank rank : Rank.values()) {
+            map.put(rank.enumValue, rank);
+        }
+    }
+
+    public static Rank valueOf(int rankInt) {
+        return (Rank) map.get(rankInt);
     }
 
     public String getRankValue() {

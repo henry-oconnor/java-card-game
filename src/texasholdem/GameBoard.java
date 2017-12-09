@@ -42,6 +42,10 @@ public class GameBoard implements HoldemConstants {
         pot = new Pot();
     }
 
+    public void addCardToBoard(Card card){
+        communityCards.addCard(card);
+    }
+    
     public FiveCardHand getCommunityCards() {
         return communityCards;
     }

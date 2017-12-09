@@ -93,25 +93,19 @@ public class GamePane extends Pane {
 
                 
         btnFold.setOnAction(e -> {
-            gameBoard.setChoice(PlayerChoice.FOLD);
-            System.out.println(gameBoard.getChoice());
+            this.buttonID = HoldemConstants.FOLD;
             buttonPressed = true;
         });
         btnCall.setOnAction(e -> {
-            gameBoard.setChoice(PlayerChoice.CALL);
-            System.out.println(gameBoard.getChoice());
+            this.buttonID = HoldemConstants.CALL;
             buttonPressed = true;
-
         });
         btnRaise.setOnAction(e -> {
-            gameBoard.setChoice(PlayerChoice.RAISE);
-            System.out.println(gameBoard.getChoice());
+            this.buttonID = HoldemConstants.RAISE;
             buttonPressed = true;
-
         });
         btnCheck.setOnAction(e -> {
-            gameBoard.setChoice(PlayerChoice.CHECK);
-            System.out.println(gameBoard.getChoice());
+            this.buttonID = HoldemConstants.CHECK;
             buttonPressed = true;
 
         });
@@ -407,7 +401,7 @@ public class GamePane extends Pane {
         }
     }
 
-    //gettter
+    //getter
     public HBox getCommunityCards() {
         return communityCards;
     }
@@ -444,6 +438,23 @@ public class GamePane extends Pane {
         return holeCards[3];
     }
 
+    public int getButtonID() {
+        return buttonID;
+    }
+    
+    public FiveCardHand getCommunityCardsList(){
+        return gameBoard.getCommunityCards();
+    }
+
+    public void setButtonID(int buttonID) {
+        this.buttonID = buttonID;
+    }
+    
+    public void addToCommunityCards(Card card){
+        gameBoard.addCardToBoard(card);
+    }
+    
+    
     public void setTo1200x800() {
         btnFold.setMinSize(80, 24);
         btnFold.setMaxSize(80, 24);
@@ -638,11 +649,9 @@ public class GamePane extends Pane {
         }
     }
 
-    void getButtonPressed() {
-        
+    void getButtonPressed() {        
         while(!buttonPressed);
-        buttonPressed = false;
-        
+        buttonPressed = false;      
     }
 
 }

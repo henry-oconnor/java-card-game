@@ -1,5 +1,8 @@
 package texasholdem;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -7,18 +10,34 @@ package texasholdem;
  */
 /**
  *
- * @author jiach
  */
 public enum Suit {
-    HEARTS("Hearts"),
-    CLUBS("Clubs"),
-    DIAMONDS("Diamonds"),
-    SPADES("Spades");
+    HEARTS("Hearts", 0),
+    CLUBS("Clubs", 1),
+    DIAMONDS("Diamonds", 2),
+    SPADES("Spades", 3);
 
+    private final int value;
     private final String suitName;
+    private static Map map = new HashMap<>();
 
-    private Suit(String suitName) {
+    private Suit(String suitName, int value) {
         this.suitName = suitName;
+        this.value = value;
+    }
+
+    static {
+        for (Suit suit : Suit.values()) {
+            map.put(suit.suitName, suit);
+        }
+    }
+
+    public static Suit valueOf(int suitInt) {
+        return (Suit) map.get(suitInt);
+    }
+
+    public String getSuitName() {
+        return suitName;
     }
 
     @Override

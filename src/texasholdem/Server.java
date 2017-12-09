@@ -23,9 +23,10 @@ public class Server extends Application
 
     private DataOutputStream out;
     private DataInputStream in;
+    private TextArea log = new TextArea();
 
+    @Override
     public void start(Stage primaryStage) {
-        TextArea log = new TextArea();
 
         Scene scene = new Scene(new ScrollPane(log), 450, 200);
         primaryStage.setTitle("Texas Hold'em Server");
@@ -38,18 +39,19 @@ public class Server extends Application
                 Platform.runLater(() -> log.appendText(new Date()
                         + ": Running\n"));
 
-                ServerSocket serverSocket = new ServerSocket(8000);
+                ServerSocket serverSocket = new ServerSocket(PORT_NUMBER);
                 Platform.runLater(() -> log.appendText(new Date()
-                        + ": Server started at port 8000\n"));
+                        + ": Server started at port " + PORT_NUMBER + "\n"));
 
                 while (true) {
                     socketList = new ArrayList<>();
-                    while (socketList.size() < 4) {
+                    while (socketList.size() < 1) {
 
                         Platform.runLater(() -> log.appendText(new Date()
-                                + ": Waiting for players"));
+                                + ": Waiting for players\n"));
 
-                        socketList.add(serverSocket.accept());
+                        Socket client = serverSocket.accept();
+                        socketList.add(client);
                         Platform.runLater(()
                                 -> log.appendText(new Date() + ": Player " + socketList.size() + " joined session\n"));
 
@@ -94,11 +96,11 @@ public class Server extends Application
         public void run() {
             try {
                 // send player count and chip counts to player
-                initializeClientGui();
-                
+                //initializeClientGui();
+
                 collectAntes();
                 dealCards();
-                sendCards();
+                sendHandCards();
                 collectWagers();
                 dealFlop();
                 collectWagers();
@@ -113,7 +115,12 @@ public class Server extends Application
             }
         }
 
+        public void beginGame() throws IOException {
+            out.writeInt(BEGINNING_GAME);
+        }
+
         public void collectWagers() throws IOException {
+            out.writeInt(COLLECTING_WAGERS);        // Client flag
             for (int i = 0; i < socketList.size(); i++) {
                 HoldemPlayer player = gameBoard.getPlayers().get(i);
                 if (player.isPlaying()) {
@@ -126,9 +133,11 @@ public class Server extends Application
                     switch (userChoice) {
                         case FOLD:
                             player.setPlaying(false);
+                            out.writeBoolean(true);    // Choice was good
                             break;
                         case CHECK:
-                            // Do nothing
+                            // If nothing needs to be bet, it's okay to check
+                            out.writeBoolean(amountToMatch == 0);
                             break;
                         case CALL:
                             if (player.getBank().getTotal() > amountToMatch) {
@@ -137,10 +146,17 @@ public class Server extends Application
                             } else {
                                 updatePot(playerTotal, i, i);
                             }
+                            out.writeBoolean(true);
                             break;
                         case RAISE:
-                            updatePot(RAISE_AMOUNT + amountToMatch, i, i);
-                            amountToMatch += RAISE_AMOUNT;
+                            if (player.getBank().getTotal() >= RAISE_AMOUNT + amountToMatch) {
+                                updatePot(RAISE_AMOUNT + amountToMatch, i, i);
+                                amountToMatch += RAISE_AMOUNT;
+                                out.writeBoolean(true);
+                            } else {
+                                out.writeBoolean(false);
+                            }
+                            break;
                     }
                 }
             }
@@ -159,9 +175,8 @@ public class Server extends Application
             gameBoard.getPot().addToTotal(amount);
             gameBoard.getPlayers().get(playerIndex)
                     .getBank().decreaseTotal(amount);
-            out
-                    = new DataOutputStream(socketList
-                            .get(socketIndex).getOutputStream());
+            out = new DataOutputStream(socketList
+                    .get(socketIndex).getOutputStream());
             // Reduce player's pot by this much
             out.writeInt(amount);
         }
@@ -210,18 +225,22 @@ public class Server extends Application
         }
 
         public void awardWinnings(ArrayList<Boolean> winners) throws IOException {
+            out.writeInt(AWARDING_WINNINGS);
             int numWinners = Collections.frequency(winners, true);
             int award = gameBoard.getPot().getTotal() / numWinners;
 
             for (int i = 0; i < gameBoard.getPlayers().size(); i++) {
                 if (winners.get(i)) {
                     gameBoard.getPlayers().get(i).getBank().addToTotal(award);
-                    updateClientBank(award, i, i);
+                    out.writeInt(WINNING_PLAYER);
+                    out.writeInt(award);
+                } else {
+                    out.writeInt(LOSING_PLAYER);
                 }
             }
         }
 
-        public void updateClientBank(int amount, int playerIndex, int socketIndex) throws IOException {
+        public void updateClientBank(int amount, int socketIndex) throws IOException {
             out = new DataOutputStream(socketList.get(socketIndex).getOutputStream());
             // Reduce player's pot by this much
             out.writeInt(amount);
@@ -232,6 +251,7 @@ public class Server extends Application
          * cards.
          */
         public void dealFlop() throws IOException {
+            out.writeInt(DEALING_FLOP);
             dealCardToBoard(3);
         }
 
@@ -241,10 +261,12 @@ public class Server extends Application
          * gameboard.
          */
         public void dealTurn() throws IOException {
+            out.writeInt(DEALING_TURN);
             dealCardToBoard(1);
         }
 
         public void dealRiver() throws IOException {
+            out.writeInt(DEALING_RIVER);
             dealCardToBoard(1);
         }
 
@@ -280,16 +302,13 @@ public class Server extends Application
                     players.get(i).setPlaying(false);
                 } else {
                     gameBoard.getPot().addToTotal(MINIMUM_ANTE);
-                    
-                // reduce player chip count
+
+                    // reduce player chip count
                     players.get(i).getBank().decreaseTotal(MINIMUM_ANTE);
-                    
+
                     out = new DataOutputStream(socketList.get(i).getOutputStream());
                     out.writeInt(SEND_REDUCE_USER_BANK);
-                    
-                // send new chip totals to client
-                    updateClientBank(MINIMUM_ANTE, i, i);
-                    
+
                 }
             }
         }
@@ -305,14 +324,16 @@ public class Server extends Application
                 }
             }
         }
+
         /**
          * Puts amountToMatch back to 0 and creates a new shuffled deck
          */
-        public void reset(){
+        public void reset() throws IOException {
             gameBoard.setAmountToMatch(0);
             DeckOfCards deck = new DeckOfCards();
             deck.manyShuffles(NUM_SHUFFLES);
             gameBoard.setDeck(deck);
+            out.writeInt(RESETTING_GAME);
         }
 
         /**
@@ -320,7 +341,8 @@ public class Server extends Application
          *
          * @throws IOException
          */
-        public void sendCards() throws IOException {
+        public void sendHandCards() throws IOException {
+            out.writeInt(SENDING_CARDS);
             ArrayList<HoldemPlayer> players = gameBoard.getPlayers();
             for (int i = 0; i < players.size(); i++) {
                 Card firstCard = players.get(i).getHand().getCards().get(0);
@@ -351,7 +373,7 @@ public class Server extends Application
         // sends all clients an update of one player, the pot, and control vars
         public void updatePlayerState(int playerIndex) throws IOException {
             out.flush();
-            
+
             out.writeInt(gameBoard.getPlayers().get(playerIndex).getBank().whiteChips.size());
             out.writeInt(gameBoard.getPlayers().get(playerIndex).getBank().redChips.size());
             out.writeInt(gameBoard.getPlayers().get(playerIndex).getBank().blueChips.size());
@@ -362,11 +384,11 @@ public class Server extends Application
 
         // send client the number of players, and chip counts for each player
         private void initializeClientGui() throws IOException {
-            for(int i = 0; i < socketList.size(); i++){
+            for (int i = 0; i < socketList.size(); i++) {
                 out = new DataOutputStream(socketList.get(i).getOutputStream());
                 out.writeInt(socketList.size());
-                
-                for(int j = 0; j < socketList.size(); j++){
+
+                for (int j = 0; j < socketList.size(); j++) {
                     updatePlayerState(j);
                 }
             }

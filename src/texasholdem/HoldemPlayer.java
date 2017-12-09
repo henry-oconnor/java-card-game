@@ -36,6 +36,15 @@ public class HoldemPlayer implements Serializable {
     public void addCard(Card card) {
         hand.addCard(card);
     }
+    /**
+     * Adds multiple cards to a hand.
+     * @param cards 
+     */
+    public void addCards(Card...cards){
+        for(Card card : cards){
+            hand.addCard(card);
+        }
+    }
 
     /**
      * Wrapper method for Bank.getChips()
