@@ -1,32 +1,29 @@
 package texasholdem;
+<<<<<<< HEAD
 
  /* To change this template file, choose Tools | Templates
+=======
+/* To change this template file, choose Tools | Templates
+>>>>>>> 7a175635f106f663ada04ec5c98408ca7eb26f96
  * and open the template in the editor.
  */
 
+
 import javafx.animation.KeyFrame;
-import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.scene.Group;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.SceneAntialiasing;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.CycleMethod;
 import javafx.scene.paint.LinearGradient;
 import javafx.scene.paint.Stop;
 import javafx.scene.text.Font;
-import static javafx.scene.text.Font.font;
-import static javafx.scene.text.Font.font;
-import static javafx.scene.text.Font.font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.util.Duration;
+import texasholdem.StartSceneAnimaton;
 
 /**
  *
@@ -41,10 +38,10 @@ public class LoginPane extends Group{
     private LinearGradient color;
     private Timeline titleAnimation;
     private int x;
+    
     public LoginPane()
     {
         x=1;
-        System.out.println("aaaaaaaaaa");
         animation=new StartSceneAnimaton();
         titleAnimation=new Timeline();
         usernameLabel=new Label("Username: ");
