@@ -21,6 +21,10 @@ public abstract class Hand {
     private ArrayList<Card> cards = new ArrayList<>();
 
     public Hand() {
+        for(int i = 0; i < handSize; i++){
+            this.cards.add(new Card());
+            
+        }
     }
 
     /**

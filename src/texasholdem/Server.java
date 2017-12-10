@@ -62,6 +62,8 @@ public class Server extends Application
                     Platform.runLater(()
                             -> log.appendText(new Date() + ": Starting game...\n"));
 
+//                    waitForConfirmation(socketList);
+                    
                     new Thread(new SessionHandler(socketList)).start();
                 }
             } catch (Exception ex) {
@@ -96,10 +98,16 @@ public class Server extends Application
 
  //               beginGame();
                 collectAntes();
+                
                 dealCards();
                 sendHandCards();
-//                collectWagers();
+                //waitForConfirmation(socketList);
+                in.readBoolean();
+                System.out.println("asdfasdf");
+                
                 dealFlop();
+                //waitForConfirmation(socketList);
+
 //                collectWagers();
                 dealTurn();
 //                collectWagers();
@@ -156,8 +164,9 @@ public class Server extends Application
                     }
                 }
             }
-
+            
         }
+        
 
         /**
          * Adds to the pot and subtracts from the user's bank
@@ -175,6 +184,10 @@ public class Server extends Application
                     .get(socketIndex).getOutputStream());
             // Reduce player's pot by this much
             out.writeInt(amount);
+            
+            
+            waitForConfirmation(socketList);
+
         }
 
         /**
@@ -391,6 +404,12 @@ public class Server extends Application
             }
         }
 
+    }
+    
+    public void waitForConfirmation(ArrayList<Socket> socketList) throws IOException{
+        for(Socket s : socketList){
+            new DataInputStream(s.getInputStream()).readBoolean();
+        }
     }
 
     public static void main(String args[]) {

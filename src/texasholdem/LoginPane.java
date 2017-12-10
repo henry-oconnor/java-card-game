@@ -14,6 +14,7 @@ import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.CycleMethod;
 import javafx.scene.paint.LinearGradient;
@@ -28,18 +29,20 @@ import texasholdem.StartSceneAnimaton;
  *
  * @author jiach
  */
-public class LoginPane extends Group{
+public class LoginPane extends Pane{
     private StartSceneAnimaton animation;
     private Label usernameLabel,passwordLabel,titleLabel;
     private TextField usernameText,passwordText;
-    private Button loginBtm,registerBtm;
+    private Button loginBtn,registerBtn;
     private Stop[] stops;
     private LinearGradient color;
     private Timeline titleAnimation;
     private int x;
+    public boolean continueFlag;
     
     public LoginPane()
     {
+        continueFlag = false;
         x=1;
         animation=new StartSceneAnimaton();
         titleAnimation=new Timeline();
@@ -48,9 +51,14 @@ public class LoginPane extends Group{
         titleLabel=new Label("Texas hold 'em");
         usernameText=new TextField("");
         passwordText=new TextField("");
-        loginBtm=new Button("Login");
-        registerBtm=new Button("Register");
-        getChildren().addAll(animation,titleLabel,usernameLabel,passwordLabel,usernameText,passwordText,loginBtm,registerBtm);
+        loginBtn=new Button("Login");
+        registerBtn=new Button("Register");
+        getChildren().addAll(animation,titleLabel,usernameLabel,passwordLabel,usernameText,passwordText,loginBtn,registerBtn);
+        
+        registerBtn.setOnAction(e -> {
+            continueFlag = true;
+        });
+        
         
         usernameLabel.setLayoutX(130);
         usernameLabel.setLayoutY(150);
@@ -73,14 +81,14 @@ public class LoginPane extends Group{
         passwordText.setLayoutX(200);
         passwordText.setLayoutY(200);
         
-        loginBtm.setLayoutX(170);
-        loginBtm.setLayoutY(250);
-        loginBtm.setMinSize(80, 30);
-        loginBtm.setFont(Font.font("Arial",FontWeight.LIGHT,13));
-        loginBtm.setTextFill(Color.BLACK);
+        loginBtn.setLayoutX(170);
+        loginBtn.setLayoutY(250);
+        loginBtn.setMinSize(80, 30);
+        loginBtn.setFont(Font.font("Arial",FontWeight.LIGHT,13));
+        loginBtn.setTextFill(Color.BLACK);
         
-        registerBtm.setLayoutX(270);
-        registerBtm.setLayoutY(250);
+        registerBtn.setLayoutX(270);
+        registerBtn.setLayoutY(250);
         
         titleAnimation.getKeyFrames().addAll(new KeyFrame(Duration.seconds(2),e-> titleAnimations()));
         titleAnimation.setCycleCount(Timeline.INDEFINITE);
@@ -89,8 +97,8 @@ public class LoginPane extends Group{
     
     public String getUsername() { return usernameText.getText();}
     public String getPassword() { return passwordText.getText();}
-    public Button getLoginBtm() { return loginBtm;}
-    public Button getRegisterBtm() { return registerBtm;}
+    public Button getLoginBtn() { return loginBtn;}
+    public Button getRegisterBtn() { return registerBtn;}
     
     public void titleAnimations()
     {
@@ -101,4 +109,5 @@ public class LoginPane extends Group{
             titleAnimation.stop();
         titleLabel.setTextFill(color);
     }
+    
 }

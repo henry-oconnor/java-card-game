@@ -8,13 +8,15 @@ package texasholdem;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.Scene;
-import javafx.scene.layout.HBox;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
+import javafx.scene.control.Button;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 /**
@@ -23,72 +25,78 @@ import javafx.stage.Stage;
  */
 public class Client extends Application implements HoldemConstants {
 
-    private GamePane gamePane = new GamePane();
-    private LoginPane loginPane = new LoginPane();
+    private GamePane gamePane;
+    private LoginPane loginPane;
     private Scene scene;
     private Socket socket;
     private DataOutputStream out;
     private DataInputStream in;
+    private BorderPane pane;
 
     // number of players in game
     private int numPlayers;
     private boolean myTurn;
-    private HoldemPlayer thisPlayer;
+    private HoldemPlayer thisPlayer = new HoldemPlayer();
+
 
     @Override
     public void start(Stage primaryStage) throws IOException {
-
-        thisPlayer = new HoldemPlayer();
+        loginPane = new LoginPane();
+        gamePane = new GamePane();
+        
         connectToServer();
-        runGame();
 
-        // retrieves numPlayers and initial chip counts from server
-        //initializeGamePane();
-        // System.out.println(openConnection);
-        // System.out.println(in.readInt());
-        Card card1 = thisPlayer.getHand().getCards().get(FIRST_CARD);
-        Card card2 = thisPlayer.getHand().getCards().get(SECOND_CARD);
+        pane = new BorderPane();
 
-        gamePane.getSelfHoleCards().getChildren().addAll(card1.getImage().getImageView(), card2.getImage().getImageView());
-        gamePane.getLeftHoleCards().getChildren().addAll(new Rectangle(72, 98), new Rectangle(72, 98));
-        gamePane.getTopHoleCards().getChildren().addAll(new Rectangle(72, 98), new Rectangle(72, 98));
-        gamePane.getRightHoleCards().getChildren().addAll(new Rectangle(72, 98), new Rectangle(72, 98));
-        setupCommunityCards();
+        pane.setCenter(loginPane);
 
-        scene = new Scene(gamePane);
-        scene.setFill(Color.BLACK);
+        //while (!loginPane.continueFlag);
+        Button button = (Button) loginPane.getChildren().get(7);
+        button.setOnAction(e -> {
+            try {
+                setGamePane();
+            } catch (IOException ex) {
+                Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
+        //scene.setFill(Color.BLACK);
+
+        scene = new Scene(pane);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Texas Hold'em");
         primaryStage.show();
 
-//        myTurn = false;
-//        // game loop
-//        while(true){
-//            // server should be in collectWagers function at this point waiting for an int
-//            gamePane.getButtonPressed();
-//            
-//            // i THINK this will make the program pause until a bool is received from the server
-//            myTurn = false;
-//            myTurn = in.readBoolean();
-//        }
-//        Card card1, card2;
-//        card1 = thisPlayer.getHand().getCards().get(FIRST_CARD);
-//        card2 = thisPlayer.getHand().getCards().get(SECOND_CARD);
-//
-//        gamePane.getSelfHoleCards().getChildren().addAll(card1.getImage().getImageView(), card2.getImage().getImageView());
-//        gamePane.getLeftHoleCards().getChildren().addAll(new Rectangle(72, 98), new Rectangle(72, 98));
-//        gamePane.getTopHoleCards().getChildren().addAll(new Rectangle(72, 98), new Rectangle(72, 98));
-//        gamePane.getRightHoleCards().getChildren().addAll(new Rectangle(72, 98), new Rectangle(72, 98));
-//        gamePane.getCommunityCards().getChildren().addAll(new Rectangle(72, 98),
-//                new Rectangle(72, 98), new Rectangle(72, 98),
-//                new Rectangle(72, 98), new Rectangle(72, 98));
-//
-//        // launch game window
-//        scene = new Scene(gamePane);
-//        scene.setFill(Color.BLACK);
-//        primaryStage.setScene(scene);
-//        primaryStage.setTitle("Texas Hold'em");
-//        primaryStage.show();
+    }
+
+    private void setGamePane() throws IOException {
+        pane.setCenter(gamePane);
+
+        gamePane.buttonPressed.addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                System.out.println(oldValue + "changed " + "->" + newValue);
+                try {
+                    out.writeBoolean(true);
+                } catch (IOException ex) {
+                    Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+        runGame();
+
+
+        Card card1 = thisPlayer.getHand().getCards().get(FIRST_CARD);
+        Card card2 = thisPlayer.getHand().getCards().get(SECOND_CARD);
+//        Card card1 = new Card();
+//        Card card2 = new Card();
+
+        gamePane.getSelfHoleCards().getChildren().addAll(card1.getImage().getImageView(), card2.getImage().getImageView());
+        gamePane.getLeftHoleCards().getChildren().addAll(new BackOfTheCardImage().getImageView(), new BackOfTheCardImage().getImageView());
+        gamePane.getTopHoleCards().getChildren().addAll(new BackOfTheCardImage().getImageView(), new BackOfTheCardImage().getImageView());
+        gamePane.getRightHoleCards().getChildren().addAll(new BackOfTheCardImage().getImageView(), new BackOfTheCardImage().getImageView());
+        setupCommunityCards();
+
+//        out.writeBoolean(true);
     }
 
     public void runGame() throws IOException {
@@ -102,6 +110,7 @@ public class Client extends Application implements HoldemConstants {
                     break;
                 case SENDING_CARDS:
                     updateHandCards();
+                    openConnection = false;
                     break;
                 case COLLECTING_WAGERS:
                     do {
@@ -113,6 +122,7 @@ public class Client extends Application implements HoldemConstants {
                         Card card = cardFromInt(in.readInt(), in.readInt());
                         gamePane.addToCommunityCards(card);
                     }
+                    openConnection = false;
                     break;
                 case DEALING_TURN: {
                     Card card = cardFromInt(in.readInt(), in.readInt());
@@ -201,8 +211,8 @@ public class Client extends Application implements HoldemConstants {
     }
 
     public void setupCommunityCards() {
-        for(Card card : gamePane.getCommunityCardsList().getCards()){
-        gamePane.getCommunityCards().getChildren().add(card.getImage().getImageView());
+        for (Card card : gamePane.getCommunityCardsList().getCards()) {
+            gamePane.getCommunityCards().getChildren().add(card.getImage().getImageView());
         }
     }
 
