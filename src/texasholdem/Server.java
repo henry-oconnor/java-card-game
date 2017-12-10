@@ -56,11 +56,11 @@ public class Server extends Application
                                 -> log.appendText(new Date() + ": Player " + socketList.size() + " joined session\n"));
 
                         new DataOutputStream(
-                                socketList.get(socketList.size()-1).getOutputStream()).writeInt(socketList.size());
+                                socketList.get(socketList.size() - 1).getOutputStream()).writeInt(socketList.size());
 
                     }
                     Platform.runLater(()
-                            -> log.appendText(new Date() + ": Starting game..."));
+                            -> log.appendText(new Date() + ": Starting game...\n"));
 
                     new Thread(new SessionHandler(socketList)).start();
                 }
@@ -79,9 +79,7 @@ public class Server extends Application
 
         // initialize socketList
         public SessionHandler(ArrayList<Socket> argList) {
-            for (Socket arg : argList) {
-                socketList.add(arg);
-            }
+            socketList = argList;
 
             // create player for each client
             ArrayList<HoldemPlayer> playerList = new ArrayList<>();
@@ -95,19 +93,18 @@ public class Server extends Application
         @Override
         public void run() {
             try {
-                // send player count and chip counts to player
-                //initializeClientGui();
 
+ //               beginGame();
                 collectAntes();
                 dealCards();
                 sendHandCards();
-                collectWagers();
+//                collectWagers();
                 dealFlop();
-                collectWagers();
+//                collectWagers();
                 dealTurn();
-                collectWagers();
+//                collectWagers();
                 dealRiver();
-                awardWinnings(determineWinner());
+//                awardWinnings(determineWinner());
                 reset();
             } catch (IOException ex) {
                 Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
@@ -116,7 +113,7 @@ public class Server extends Application
         }
 
         public void beginGame() throws IOException {
-            out.writeInt(BEGINNING_GAME);
+            out.writeBoolean(OPEN_CONNECTION);  
         }
 
         public void collectWagers() throws IOException {
@@ -124,7 +121,6 @@ public class Server extends Application
             for (int i = 0; i < socketList.size(); i++) {
                 HoldemPlayer player = gameBoard.getPlayers().get(i);
                 if (player.isPlaying()) {
-                    in = new DataInputStream(socketList.get(i).getInputStream());
                     int userChoice = in.readInt();
 
                     int amountToMatch = gameBoard.getAmountToMatch();
@@ -282,7 +278,7 @@ public class Server extends Application
                 Card card = gameBoard.getDeck().dealCard();
                 gameBoard.getCommunityCards().addCard(card);
                 for (Socket socket : socketList) {
-                    sendCard(card, socket);
+                    sendCard(card);
                 }
             }
 
@@ -319,8 +315,10 @@ public class Server extends Application
         public void dealCards() {
             ArrayList<HoldemPlayer> players = gameBoard.getPlayers();
             for (int i = 0; i < gameBoard.getHAND_SIZE(); i++) {
-                if (players.get(i).isPlaying()) {
-                    players.get(i).addCard(gameBoard.getDeck().dealCard());
+                for (int j = 0; j < gameBoard.getPlayers().size(); j++) {
+                    if (players.get(j).isPlaying()) {
+                        players.get(j).addCard(gameBoard.getDeck().dealCard());
+                    }
                 }
             }
         }
@@ -348,8 +346,8 @@ public class Server extends Application
                 Card firstCard = players.get(i).getHand().getCards().get(0);
                 Card secondCard = players.get(i).getHand().getCards().get(1);
 
-                sendCard(firstCard, socketList.get(i));
-                sendCard(secondCard, socketList.get(i));
+                sendCard(firstCard);
+                sendCard(secondCard);
             }
         }
 
@@ -359,11 +357,10 @@ public class Server extends Application
          * @param card
          * @throws IOException
          */
-        public void sendCard(Card card, Socket socket) throws IOException {
+        public void sendCard(Card card) throws IOException {
             int rankInt = card.getRank().ordinal();
             int suitInt = card.getSuit().ordinal();
 
-            out = new DataOutputStream(socket.getOutputStream());
             // Send values to the client
             out.writeInt(rankInt);
             out.writeInt(suitInt);

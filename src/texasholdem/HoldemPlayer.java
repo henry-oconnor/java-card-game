@@ -14,7 +14,7 @@ public class HoldemPlayer implements Serializable {
 
     private HoldemHand hand;
     private PlayerBank bank;
-    private boolean playing;
+    private boolean playing = true;
 
     // Amount the player has contributed this round
     private int currentWager;

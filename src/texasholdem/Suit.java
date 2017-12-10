@@ -33,11 +33,24 @@ public enum Suit {
     }
 
     public static Suit valueOf(int suitInt) {
-        return (Suit) map.get(suitInt);
+        switch(suitInt){
+            case 0:
+                return HEARTS;
+            case 1:
+                return CLUBS;
+            case 2:
+                return DIAMONDS;
+            case 3:
+                return SPADES;
+        }
+        return null;
     }
 
     public String getSuitName() {
         return suitName;
+    }
+    public int getValue(){
+        return value;
     }
 
     @Override

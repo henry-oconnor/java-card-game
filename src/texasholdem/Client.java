@@ -12,6 +12,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
@@ -37,57 +38,29 @@ public class Client extends Application implements HoldemConstants {
     @Override
     public void start(Stage primaryStage) throws IOException {
 
+        thisPlayer = new HoldemPlayer();
         connectToServer();
-        //System.out.println(in.readInt());
-        // launch login window
-//        scene = new Scene(loginPane, 1200, 800);
-//        scene.setFill(Color.BLACK);
-//        primaryStage.setScene(scene);
-//        primaryStage.setTitle("Texas Hold'em");
-//        primaryStage.show();
+        runGame();
 
         // retrieves numPlayers and initial chip counts from server
         //initializeGamePane();
-        int intIn = in.readInt();
-        System.out.println(intIn);
-        switch (intIn) {
-            case SEND_REDUCE_USER_BANK:
-                thisPlayer.getBank().decreaseTotal(MINIMUM_ANTE);
-                break;
-            case SENDING_CARDS:
-                updateHandCards();
-                break;
-            case COLLECTING_WAGERS:
-                do {
-                    out.writeInt(gamePane.getButtonID());
-                } while (!in.readBoolean());
-                break;
-            case DEALING_FLOP:
-                for (int i = 0; i < CARDS_IN_FLOP; i++) {
-                    Card card = cardFromInt(in.readInt(), in.readInt());
-                    gamePane.addToCommunityCards(card);
-                }
-                break;
-            case DEALING_TURN: {
-                Card card = cardFromInt(in.readInt(), in.readInt());
-                gamePane.addToCommunityCards(card);
-            }
-            break;
-            case DEALING_RIVER: {
-                Card card = cardFromInt(in.readInt(), in.readInt());
-                gamePane.addToCommunityCards(card);
-            }
-            break;
-            case AWARDING_WINNINGS:
-                if (in.readInt() == WINNING_PLAYER) {
-                    thisPlayer.getBank().addToTotal(in.readInt());
-                }
-                break;
-            case RESETTING_GAME:
-                // TODO code to reset the hands, community cards, pot, etc.
-                break;
+        // System.out.println(openConnection);
+        // System.out.println(in.readInt());
+        Card card1 = thisPlayer.getHand().getCards().get(FIRST_CARD);
+        Card card2 = thisPlayer.getHand().getCards().get(SECOND_CARD);
 
-        }
+        gamePane.getSelfHoleCards().getChildren().addAll(card1.getImage().getImageView(), card2.getImage().getImageView());
+        gamePane.getLeftHoleCards().getChildren().addAll(new Rectangle(72, 98), new Rectangle(72, 98));
+        gamePane.getTopHoleCards().getChildren().addAll(new Rectangle(72, 98), new Rectangle(72, 98));
+        gamePane.getRightHoleCards().getChildren().addAll(new Rectangle(72, 98), new Rectangle(72, 98));
+        setupCommunityCards();
+
+        scene = new Scene(gamePane);
+        scene.setFill(Color.BLACK);
+        primaryStage.setScene(scene);
+        primaryStage.setTitle("Texas Hold'em");
+        primaryStage.show();
+
 //        myTurn = false;
 //        // game loop
 //        while(true){
@@ -98,25 +71,71 @@ public class Client extends Application implements HoldemConstants {
 //            myTurn = false;
 //            myTurn = in.readBoolean();
 //        }
-        Card card1, card2;
-        card1 = thisPlayer.getHand().getCards().get(FIRST_CARD);
-        card2 = thisPlayer.getHand().getCards().get(SECOND_CARD);
+//        Card card1, card2;
+//        card1 = thisPlayer.getHand().getCards().get(FIRST_CARD);
+//        card2 = thisPlayer.getHand().getCards().get(SECOND_CARD);
+//
+//        gamePane.getSelfHoleCards().getChildren().addAll(card1.getImage().getImageView(), card2.getImage().getImageView());
+//        gamePane.getLeftHoleCards().getChildren().addAll(new Rectangle(72, 98), new Rectangle(72, 98));
+//        gamePane.getTopHoleCards().getChildren().addAll(new Rectangle(72, 98), new Rectangle(72, 98));
+//        gamePane.getRightHoleCards().getChildren().addAll(new Rectangle(72, 98), new Rectangle(72, 98));
+//        gamePane.getCommunityCards().getChildren().addAll(new Rectangle(72, 98),
+//                new Rectangle(72, 98), new Rectangle(72, 98),
+//                new Rectangle(72, 98), new Rectangle(72, 98));
+//
+//        // launch game window
+//        scene = new Scene(gamePane);
+//        scene.setFill(Color.BLACK);
+//        primaryStage.setScene(scene);
+//        primaryStage.setTitle("Texas Hold'em");
+//        primaryStage.show();
+    }
 
-        gamePane.getSelfHoleCards().getChildren().addAll(card1.getImage().getImageView(), card2.getImage().getImageView());
-        gamePane.getLeftHoleCards().getChildren().addAll(new Rectangle(72, 98), new Rectangle(72, 98));
-        gamePane.getTopHoleCards().getChildren().addAll(new Rectangle(72, 98), new Rectangle(72, 98));
-        gamePane.getRightHoleCards().getChildren().addAll(new Rectangle(72, 98), new Rectangle(72, 98));
-        gamePane.getCommunityCards().getChildren().addAll(new Rectangle(72, 98),
-                new Rectangle(72, 98), new Rectangle(72, 98),
-                new Rectangle(72, 98), new Rectangle(72, 98));
+    public void runGame() throws IOException {
+        boolean openConnection = true;
+        while (openConnection) {
+            int intIn = in.readInt();
+            System.out.println("Int sent from server: " + intIn);
+            switch (intIn) {
+                case SEND_REDUCE_USER_BANK:
+                    thisPlayer.getBank().decreaseTotal(MINIMUM_ANTE);
+                    break;
+                case SENDING_CARDS:
+                    updateHandCards();
+                    break;
+                case COLLECTING_WAGERS:
+                    do {
+                        out.writeInt(gamePane.getButtonID());
+                    } while (!in.readBoolean());
+                    break;
+                case DEALING_FLOP:
+                    for (int i = 0; i < CARDS_IN_FLOP; i++) {
+                        Card card = cardFromInt(in.readInt(), in.readInt());
+                        gamePane.addToCommunityCards(card);
+                    }
+                    break;
+                case DEALING_TURN: {
+                    Card card = cardFromInt(in.readInt(), in.readInt());
+                    gamePane.addToCommunityCards(card);
+                }
+                break;
+                case DEALING_RIVER: {
+                    Card card = cardFromInt(in.readInt(), in.readInt());
+                    gamePane.addToCommunityCards(card);
+                    //System.out.println(gamePane.getCommunityCardsList().toString());
 
-        // launch game window
-        scene = new Scene(gamePane);
-        scene.setFill(Color.BLACK);
-        primaryStage.setScene(scene);
-        primaryStage.setTitle("Texas Hold'em");
-        primaryStage.show();
-
+                }
+                break;
+                case AWARDING_WINNINGS:
+                    if (in.readInt() == WINNING_PLAYER) {
+                        thisPlayer.getBank().addToTotal(in.readInt());
+                    }
+                    break;
+                case RESETTING_GAME:
+                    openConnection = false;
+                    break;
+            }
+        }
     }
 
     /**
@@ -159,6 +178,8 @@ public class Client extends Application implements HoldemConstants {
             socket = new Socket(SERVER_NAME, PORT_NUMBER);
             in = new DataInputStream(socket.getInputStream());
             out = new DataOutputStream(socket.getOutputStream());
+            numPlayers = in.readInt();
+            System.out.println("numPlayers: " + numPlayers);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -176,6 +197,12 @@ public class Client extends Application implements HoldemConstants {
             //  gamePane.addRedChips(i, in.readInt());
             //   gamePane.addBlackChips(i, in.readInt());
 
+        }
+    }
+
+    public void setupCommunityCards() {
+        for(Card card : gamePane.getCommunityCardsList().getCards()){
+        gamePane.getCommunityCards().getChildren().add(card.getImage().getImageView());
         }
     }
 

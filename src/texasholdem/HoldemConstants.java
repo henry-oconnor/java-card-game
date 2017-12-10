@@ -31,8 +31,8 @@ public interface HoldemConstants {
     public static final int NUM_SHUFFLES = 20;
     public static final int HAND_SIZE = 2;
     
-    public static final int FIRST_CARD = 1;
-    public static final int SECOND_CARD = 2;
+    public static final int FIRST_CARD = 0;
+    public static final int SECOND_CARD = 1;
     public static final int CARDS_IN_FLOP = 3;
     public static final int CARDS_IN_TURN = 1;
     public static final int CARDS_IN_RIVER = 1;
@@ -49,6 +49,9 @@ public interface HoldemConstants {
     public static final int LOSING_PLAYER = 18;
     public static final int RESETTING_GAME = 19;
     public static final int BEGINNING_GAME = 20;
+    public static final int DISPLAY_GAMEBOARD = 21;
+    
+    public static final boolean OPEN_CONNECTION = true;
     
     
     public static final String SERVER_NAME = "localhost";
