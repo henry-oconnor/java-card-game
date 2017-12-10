@@ -47,7 +47,7 @@ public class GamePane extends Pane {
         blueChip=new VBox[5][5];
         redChip=new VBox[5][5];
         whiteChip=new VBox[5][5];
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 5; j++) {
                 blackChip[i][j] = new VBox();
                 greenChip[i][j] = new VBox();
@@ -103,11 +103,11 @@ public class GamePane extends Pane {
         getChildren().addAll(settingIcon,raiseChipBox);
 
         for (int i = 0; i < 5; i++) {
-            getChildren().addAll(blackChip[i][0], blackChip[i][1], blackChip[i][2], blackChip[i][3]);
-            getChildren().addAll(greenChip[i][0], greenChip[i][1], greenChip[i][2], greenChip[i][3]);
-            getChildren().addAll(blueChip[i][0], blueChip[i][1], blueChip[i][2], blueChip[i][3]);
-            getChildren().addAll(redChip[i][0], redChip[i][1], redChip[i][2], redChip[i][3]);
-            getChildren().addAll(whiteChip[i][0], whiteChip[i][1], whiteChip[i][2], whiteChip[i][3]);
+            getChildren().addAll(blackChip[i][0], blackChip[i][1], blackChip[i][2], blackChip[i][3], blackChip[i][4]);
+            getChildren().addAll(greenChip[i][0], greenChip[i][1], greenChip[i][2], greenChip[i][3], greenChip[i][4]);
+            getChildren().addAll(blueChip[i][0], blueChip[i][1], blueChip[i][2], blueChip[i][3], blueChip[i][4]);
+            getChildren().addAll(redChip[i][0], redChip[i][1], redChip[i][2], redChip[i][3], redChip[i][4]);
+            getChildren().addAll(whiteChip[i][0], whiteChip[i][1], whiteChip[i][2], whiteChip[i][3], whiteChip[i][4]);
         }
         setTo1200x800();
 
@@ -585,7 +585,8 @@ public class GamePane extends Pane {
         int rightChipY=270;
         int betInChipX=0;
         int betInChipY=335;
-        for(int i=0;i<4;i++){
+        
+        for(int i = 0; i < 4; i++){
             //--------------self Chip layout---------------
             selfChipX = 660;
             blackChip[0][i].setLayoutX(selfChipX);

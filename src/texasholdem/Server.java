@@ -56,7 +56,7 @@ public class Server extends Application
                                 -> log.appendText(new Date() + ": Player " + socketList.size() + " joined session\n"));
 
                         new DataOutputStream(
-                                socketList.get(socketList.size()).getOutputStream()).writeInt(socketList.size());
+                                socketList.get(socketList.size()-1).getOutputStream()).writeInt(socketList.size());
 
                     }
                     Platform.runLater(()
