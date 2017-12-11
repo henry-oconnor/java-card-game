@@ -50,6 +50,7 @@ public interface HoldemConstants {
     public static final int RESETTING_GAME = 19;
     public static final int BEGINNING_GAME = 20;
     public static final int DISPLAY_GAMEBOARD = 21;
+    public static final int END_GAME = 22;
     
     public static final boolean OPEN_CONNECTION = true;
     

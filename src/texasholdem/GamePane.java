@@ -2,7 +2,9 @@ package texasholdem;
 
 import java.util.ArrayList;
 import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -34,8 +36,9 @@ public class GamePane extends Pane {
     private SettingIconAnimation settingIcon;
 
     
-    public BooleanProperty buttonPressed;
-
+    //public BooleanProperty buttonPressed;
+    public IntegerProperty changeInt;
+    
     private int buttonID;
     private final ArrayList<HoldemPlayer> players = new ArrayList<HoldemPlayer>(){{
         add(new HoldemPlayer());
@@ -43,7 +46,7 @@ public class GamePane extends Pane {
     private GameBoard gameBoard = new GameBoard(players);
 
     public GamePane() {
-        buttonPressed = new SimpleBooleanProperty(false);
+        changeInt = new SimpleIntegerProperty(0);
         blackChip=new VBox[5][5];
         greenChip=new VBox[5][5];
         blueChip=new VBox[5][5];
@@ -119,7 +122,11 @@ public class GamePane extends Pane {
                 
         btnFold.setOnAction(e -> {
             this.buttonID = HoldemConstants.FOLD;
-            buttonPressed.set(true);
+            if(changeInt.getValue() == 0){
+                changeInt.set(1);
+            } else {
+                changeInt.set(0);
+            }
         });
         btnCall.setOnAction(e -> {
             this.buttonID = HoldemConstants.CALL;
@@ -437,19 +444,19 @@ public class GamePane extends Pane {
         return communityCards;
     }
 
-    public Button getFoldBtm() {
+    public Button getFoldBtn() {
         return btnFold;
     }
 
-    public Button getCallBtm() {
+    public Button getCallBtn() {
         return btnCall;
     }
 
-    public Button getRaiseBtm() {
+    public Button getRaiseBtn() {
         return btnRaise;
     }
 
-    public Button getCheckBtm() {
+    public Button getCheckBtn() {
         return btnCheck;
     }
 

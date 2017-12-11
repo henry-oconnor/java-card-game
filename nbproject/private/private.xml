@@ -3,12 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/henoc/OneDrive/Documents/NetBeansProjects/java-card-game/src/texasholdem/Client.java</file>
-            <file>file:/C:/Users/henoc/OneDrive/Documents/NetBeansProjects/java-card-game/src/texasholdem/Server.java</file>
-            <file>file:/C:/Users/henoc/OneDrive/Documents/NetBeansProjects/java-card-game/src/texasholdem/GamePane.java</file>
-            <file>file:/C:/Users/henoc/OneDrive/Documents/NetBeansProjects/java-card-game/src/texasholdem/GameBoard.java</file>
-            <file>file:/C:/Users/henoc/OneDrive/Documents/NetBeansProjects/java-card-game/src/texasholdem/Hand.java</file>
-            <file>file:/C:/Users/henoc/OneDrive/Documents/NetBeansProjects/java-card-game/src/texasholdem/LoginPane.java</file>
+            <file>file:/D:/GitHub/java-card-game/src/texasholdem/GamePane.java</file>
+            <file>file:/D:/GitHub/java-card-game/src/texasholdem/Client.java</file>
+            <file>file:/D:/GitHub/java-card-game/src/texasholdem/Server.java</file>
+            <file>file:/D:/GitHub/java-card-game/src/texasholdem/HoldemConstants.java</file>
         </group>
     </open-files>
 </project-private>

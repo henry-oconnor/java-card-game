@@ -17,7 +17,9 @@ import javafx.beans.value.ObservableValue;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
+import static texasholdem.HoldemConstants.DEALING_FLOP;
 
 /**
  *
@@ -38,19 +40,19 @@ public class Client extends Application implements HoldemConstants {
     private boolean myTurn;
     private HoldemPlayer thisPlayer = new HoldemPlayer();
 
+    private int buttonID = 5;
 
     @Override
     public void start(Stage primaryStage) throws IOException {
         loginPane = new LoginPane();
         gamePane = new GamePane();
-        
+
         connectToServer();
 
         pane = new BorderPane();
 
         pane.setCenter(loginPane);
 
-        //while (!loginPane.continueFlag);
         Button button = (Button) loginPane.getChildren().get(7);
         button.setOnAction(e -> {
             try {
@@ -60,8 +62,13 @@ public class Client extends Application implements HoldemConstants {
             }
         });
         //scene.setFill(Color.BLACK);
+        boolean continueGame;
 
-        scene = new Scene(pane);
+        do {
+            continueGame = runGame(in.readInt());
+        } while (continueGame);
+
+        scene = new Scene(pane, gamePane.getWidth(), gamePane.getHeight());
         primaryStage.setScene(scene);
         primaryStage.setTitle("Texas Hold'em");
         primaryStage.show();
@@ -71,19 +78,18 @@ public class Client extends Application implements HoldemConstants {
     private void setGamePane() throws IOException {
         pane.setCenter(gamePane);
 
-        gamePane.buttonPressed.addListener(new ChangeListener<Boolean>() {
+        gamePane.changeInt.addListener(new ChangeListener() {
             @Override
-            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                System.out.println(oldValue + "changed " + "->" + newValue);
+            public void changed(ObservableValue observable, Object oldValue, Object newValue) {
+                System.out.println(oldValue + " changed " + "->" + newValue);
                 try {
-                    out.writeBoolean(true);
+                    int intIn = in.readInt();
+                    runGame(intIn);
                 } catch (IOException ex) {
                     Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });
-        runGame();
-
 
         Card card1 = thisPlayer.getHand().getCards().get(FIRST_CARD);
         Card card2 = thisPlayer.getHand().getCards().get(SECOND_CARD);
@@ -94,58 +100,53 @@ public class Client extends Application implements HoldemConstants {
         gamePane.getLeftHoleCards().getChildren().addAll(new BackOfTheCardImage().getImageView(), new BackOfTheCardImage().getImageView());
         gamePane.getTopHoleCards().getChildren().addAll(new BackOfTheCardImage().getImageView(), new BackOfTheCardImage().getImageView());
         gamePane.getRightHoleCards().getChildren().addAll(new BackOfTheCardImage().getImageView(), new BackOfTheCardImage().getImageView());
-        setupCommunityCards();
 
-//        out.writeBoolean(true);
     }
 
-    public void runGame() throws IOException {
-        boolean openConnection = true;
-        while (openConnection) {
-            int intIn = in.readInt();
-            System.out.println("Int sent from server: " + intIn);
-            switch (intIn) {
-                case SEND_REDUCE_USER_BANK:
-                    thisPlayer.getBank().decreaseTotal(MINIMUM_ANTE);
-                    break;
-                case SENDING_CARDS:
-                    updateHandCards();
-                    openConnection = false;
-                    break;
-                case COLLECTING_WAGERS:
-                    do {
-                        out.writeInt(gamePane.getButtonID());
-                    } while (!in.readBoolean());
-                    break;
-                case DEALING_FLOP:
-                    for (int i = 0; i < CARDS_IN_FLOP; i++) {
-                        Card card = cardFromInt(in.readInt(), in.readInt());
-                        gamePane.addToCommunityCards(card);
-                    }
-                    openConnection = false;
-                    break;
-                case DEALING_TURN: {
+    public boolean runGame(int input) throws IOException {
+        int intIn = input;
+        System.out.println("Int sent from server: " + intIn);
+        switch (intIn) {
+            case SEND_REDUCE_USER_BANK:
+                thisPlayer.getBank().decreaseTotal(MINIMUM_ANTE);
+                return true;
+            case SENDING_CARDS:
+                updateHandCards();
+                return false;
+            //case COLLECTING_WAGERS:
+            //do {
+            //out.writeInt(gamePane.getButtonID());
+            //} while (!in.readBoolean());
+            //    return true;
+            case DEALING_FLOP:
+                for (int i = 0; i < CARDS_IN_FLOP; i++) {
                     Card card = cardFromInt(in.readInt(), in.readInt());
                     gamePane.addToCommunityCards(card);
                 }
-                break;
-                case DEALING_RIVER: {
-                    Card card = cardFromInt(in.readInt(), in.readInt());
-                    gamePane.addToCommunityCards(card);
-                    //System.out.println(gamePane.getCommunityCardsList().toString());
-
-                }
-                break;
-                case AWARDING_WINNINGS:
-                    if (in.readInt() == WINNING_PLAYER) {
-                        thisPlayer.getBank().addToTotal(in.readInt());
-                    }
-                    break;
-                case RESETTING_GAME:
-                    openConnection = false;
-                    break;
+                setupCommunityCards();
+                return false;
+            case DEALING_TURN: {
+                Card card = cardFromInt(in.readInt(), in.readInt());
+                gamePane.addToCommunityCards(card);
+                appendCard(card);
+                return false;
             }
+            case DEALING_RIVER: {
+                Card card = cardFromInt(in.readInt(), in.readInt());
+                gamePane.addToCommunityCards(card);
+                appendCard(card);
+                return false;
+            }
+            case AWARDING_WINNINGS:
+                if (in.readInt() == WINNING_PLAYER) {
+                    thisPlayer.getBank().addToTotal(in.readInt());
+                }
+                return true;
+            case RESETTING_GAME:
+                return false;
         }
+
+        return false;
     }
 
     /**
@@ -210,10 +211,17 @@ public class Client extends Application implements HoldemConstants {
         }
     }
 
+    /**
+     * Updates the GamePane's communityCards hbox with the Flop.
+     */
     public void setupCommunityCards() {
         for (Card card : gamePane.getCommunityCardsList().getCards()) {
             gamePane.getCommunityCards().getChildren().add(card.getImage().getImageView());
         }
+    }
+
+    public void appendCard(Card card) {
+        gamePane.getCommunityCards().getChildren().add(card.getImage().getImageView());
     }
 
     public static void main(String[] args) {
