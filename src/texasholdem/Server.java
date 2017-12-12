@@ -94,17 +94,19 @@ public class Server extends Application
         @Override
         public void run() {
             try {
-
+                in = new DataInputStream(socketList
+                        .get(socketList.size() - 1)
+                        .getInputStream());
                 collectAntes();
                 dealCards();
                 sendHandCards();
-//                collectWagers();
+                collectWagers();
                 dealFlop();
 //                collectWagers();
                 dealTurn();
-//                collectWagers();
+  //              collectWagers();
                 dealRiver();
-//                awardWinnings(determineWinner());
+                awardWinnings(determineWinner());
                 reset();
             } catch (IOException ex) {
                 Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
@@ -119,10 +121,10 @@ public class Server extends Application
         public void collectWagers() throws IOException {
             out.writeInt(COLLECTING_WAGERS);        // Client flag
             for (int i = 0; i < socketList.size(); i++) {
+
                 HoldemPlayer player = gameBoard.getPlayers().get(i);
                 if (player.isPlaying()) {
                     int userChoice = in.readInt();
-
                     int amountToMatch = gameBoard.getAmountToMatch();
                     int playerTotal = gameBoard.getPlayers().get(i).getBank().getTotal();
 

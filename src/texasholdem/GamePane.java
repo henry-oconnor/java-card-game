@@ -487,6 +487,9 @@ public class GamePane extends Pane {
     public void setButtonID(int buttonID) {
         this.buttonID = buttonID;
     }
+    public void setCommunityCards(HBox hBox){
+        this.communityCards = hBox;
+    }
     
     public void addToCommunityCards(Card card){
         gameBoard.addCardToBoard(card);

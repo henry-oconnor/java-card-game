@@ -101,4 +101,8 @@ public class HoldemPlayer implements Serializable {
         this.playerName = playerName;
     }
 
+    public void emptyHand(){
+        this.hand = new HoldemHand();
+    }
+    
 }

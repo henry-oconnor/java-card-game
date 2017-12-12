@@ -48,6 +48,8 @@ public class Client extends Application implements HoldemConstants {
         gamePane = new GamePane();
 
         connectToServer();
+        runGame(in.readInt());
+        runGame(in.readInt());
 
         pane = new BorderPane();
 
@@ -61,12 +63,6 @@ public class Client extends Application implements HoldemConstants {
                 Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
-        //scene.setFill(Color.BLACK);
-        boolean continueGame;
-
-        do {
-            continueGame = runGame(in.readInt());
-        } while (continueGame);
 
         scene = new Scene(pane, gamePane.getWidth(), gamePane.getHeight());
         primaryStage.setScene(scene);
@@ -81,10 +77,9 @@ public class Client extends Application implements HoldemConstants {
         gamePane.changeInt.addListener(new ChangeListener() {
             @Override
             public void changed(ObservableValue observable, Object oldValue, Object newValue) {
-                System.out.println(oldValue + " changed " + "->" + newValue);
+                gamePane.setButtonID(FOLD);
                 try {
-                    int intIn = in.readInt();
-                    runGame(intIn);
+                    runGame(in.readInt());
                 } catch (IOException ex) {
                     Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -108,17 +103,21 @@ public class Client extends Application implements HoldemConstants {
         System.out.println("Int sent from server: " + intIn);
         switch (intIn) {
             case SEND_REDUCE_USER_BANK:
+                System.out.println("ANTE");
                 thisPlayer.getBank().decreaseTotal(MINIMUM_ANTE);
                 return true;
             case SENDING_CARDS:
+                System.out.println("SENDING_CARDS");
                 updateHandCards();
                 return false;
-            //case COLLECTING_WAGERS:
-            //do {
-            //out.writeInt(gamePane.getButtonID());
-            //} while (!in.readBoolean());
-            //    return true;
+            case COLLECTING_WAGERS:
+                System.out.println("COLLECTING_WAGERS");
+                do {
+                    out.writeInt(gamePane.getButtonID());
+                } while (!in.readBoolean());
+                return true;
             case DEALING_FLOP:
+                System.out.println("DEALING_FLOP");
                 for (int i = 0; i < CARDS_IN_FLOP; i++) {
                     Card card = cardFromInt(in.readInt(), in.readInt());
                     gamePane.addToCommunityCards(card);
@@ -126,27 +125,41 @@ public class Client extends Application implements HoldemConstants {
                 setupCommunityCards();
                 return false;
             case DEALING_TURN: {
+                System.out.println("DEALING_TURN");
                 Card card = cardFromInt(in.readInt(), in.readInt());
                 gamePane.addToCommunityCards(card);
                 appendCard(card);
                 return false;
             }
             case DEALING_RIVER: {
+                System.out.println("DEALING_RIVER");
                 Card card = cardFromInt(in.readInt(), in.readInt());
                 gamePane.addToCommunityCards(card);
                 appendCard(card);
                 return false;
             }
             case AWARDING_WINNINGS:
+                System.out.println("AWARDING_WINNINGS");
                 if (in.readInt() == WINNING_PLAYER) {
                     thisPlayer.getBank().addToTotal(in.readInt());
+                    System.out.println("WINNING_PLAYER");
                 }
+
                 return true;
-            case RESETTING_GAME:
-                return false;
+//            case RESETTING_GAME:
+//                System.out.println("RESETTING_GAME");
+//                resetGame();
+//                return false;
         }
 
         return false;
+    }
+
+    public void resetGame() throws IOException {
+        gamePane = new GamePane();
+        setGamePane();
+        pane.setCenter(gamePane);
+        scene = new Scene(pane, gamePane.getWidth(), gamePane.getHeight());
     }
 
     /**
