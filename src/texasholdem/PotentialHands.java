@@ -26,8 +26,14 @@ public class PotentialHands {
     public PotentialHands(HoldemHand twoCards, FiveCardHand fiveCards) {
         this.holeCards = twoCards;
         this.communityCards = fiveCards;
-        this.allCards.addAll(holeCards.getCards());
-        this.allCards.addAll(communityCards.getCards());
+        
+        for (Card card : holeCards.getCards()) {
+            this.allCards.add(card);
+        }
+        for (Card card : communityCards.getCards()) {
+            this.allCards.add(card);
+        }
+        calcCombinations();
     }
 
     /**

@@ -26,6 +26,11 @@ public class SingleHandScore {
     final int THREE_OF_A_KIND = 3;
     final int FOUR_OF_A_KIND = 4;
 
+    public SingleHandScore() {
+        this.handToScore = new FiveCardHand();
+        this.score = new String();
+    }
+
     public SingleHandScore(FiveCardHand fiveCardHand) {
         this.handToScore = fiveCardHand;
         this.score = new String();
@@ -303,6 +308,9 @@ public class SingleHandScore {
      * @return integer score
      */
     public int getScoreAsInt() {
-        return Integer.parseInt(score, 16);
+        if (score.length() > 0) {
+            return Integer.parseInt(score, 16);
+        }
+        return 0;
     }
 }

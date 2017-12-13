@@ -13,21 +13,17 @@ import java.util.Stack;
 public class HoldemPlayer implements Serializable {
 
     private HoldemHand hand;
-    private PlayerBank bank;
-    private boolean playing = true;
 
-    // Amount the player has contributed this round
-    private int currentWager;
-
+    private BestHand bestHand;
     private int bestHandScore;
-    
+
     private String playerName;
 
-    public HoldemPlayer(){
-         hand = new HoldemHand();
-         bank = new PlayerBank(1000);
+    public HoldemPlayer() {
+        hand = new HoldemHand();
+
     }
-    
+
     /**
      * Wrapper method for HoldemHand.addCard()
      *
@@ -36,53 +32,24 @@ public class HoldemPlayer implements Serializable {
     public void addCard(Card card) {
         hand.addCard(card);
     }
+
     /**
      * Adds multiple cards to a hand.
-     * @param cards 
+     *
+     * @param cards
      */
-    public void addCards(Card...cards){
-        for(Card card : cards){
+    public void addCards(Card... cards) {
+        for (Card card : cards) {
             hand.addCard(card);
         }
-    }
-
-    /**
-     * Wrapper method for Bank.getChips()
-     *
-     * @param betAmount
-     * @return chip stack
-     */
-    public Stack<Chip> placeBet(int betAmount) {
-        currentWager += betAmount;
-        return bank.getChips(betAmount);
-    }
-
-    public Stack<Chip> allIn() {
-        return bank.getChips(bank.getTotal());
     }
 
     public HoldemHand getHand() {
         return hand;
     }
 
-    public PlayerBank getBank() {
-        return bank;
-    }
-
-    public boolean isPlaying() {
-        return playing;
-    }
-
-    public void setPlaying(boolean isPlaying) {
-        this.playing = isPlaying;
-    }
-
-    public int getCurrentWagers() {
-        return currentWager;
-    }
-
-    public void setCurrentWager(int currentWager) {
-        this.currentWager = currentWager;
+    public void setHand(HoldemHand hand) {
+        this.hand = hand;
     }
 
     public int getBestHandScore() {
@@ -101,8 +68,15 @@ public class HoldemPlayer implements Serializable {
         this.playerName = playerName;
     }
 
-    public void emptyHand(){
+    public void emptyHand() {
         this.hand = new HoldemHand();
     }
-    
+
+    public void determineBestHand(FiveCardHand communityCards) {
+        bestHand = new BestHand(
+                new PotentialHands(hand, communityCards));
+    }
+    public void determineBestHandScore(){
+        bestHandScore = bestHand.getBestHandScore();
+    }
 }

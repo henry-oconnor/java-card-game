@@ -21,8 +21,8 @@ import javafx.stage.Stage;
 
 public class Server extends Application
         implements HoldemConstants {
-
-    // unused, server user could input a port number
+    
+    // unused, server user could bufferedReader a port number
     private int port;
     // client sockets
     private ArrayList<Socket> socketList;
@@ -31,20 +31,17 @@ public class Server extends Application
     private DataInputStream in;
     private TextArea log = new TextArea();
     private boolean readyToStart = false;
-    
-    
+
     
     // delete after debug 
-    
-        BufferedReader input;
-        DataOutputStream output;
-        int request;
-        String username;
-        String password;
-        boolean result;
-        
-//
+    BufferedReader bufferedReader;
+    BufferedWriter bufferedWriter;
+    int request;
+    String username;
+    String password;
+    boolean result;
 
+//
     @Override
     public void start(Stage primaryStage) {
 
@@ -53,96 +50,86 @@ public class Server extends Application
         primaryStage.setScene(scene);
         primaryStage.show();
 
-
-            
         // start a new 
         new Thread(() -> {
             try {
                 Platform.runLater(() -> log.appendText(new Date()
                         + ": Running\n"));
-                
-                initializeJdbc();
-                DatabaseMetaData dmb = connection.getMetaData();
-                ResultSet rs = dmb.getCatalogs();
-                
-                Platform.runLater(() -> {
-                    try {
-                        rs.first();
-                        log.appendText(new Date()
-                                + ": Connected to schema \'" + rs.getString(1) + "\'\n");
-                    } catch (SQLException ex) {
-                        Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                });
-                                
 
+//                initializeJdbc();
+//                DatabaseMetaData dmb = connection.getMetaData();
+//                ResultSet rs = dmb.getCatalogs();
+//                
+//                Platform.runLater(() -> {
+//                    try {
+//                        rs.first();
+//                        log.appendText(new Date()
+//                                + ": Connected to schema \'" + rs.getString(1) + "\'\n");
+//                    } catch (SQLException ex) {
+//                        Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+//                    }
+//                });
                 ServerSocket serverSocket = new ServerSocket(PORT_NUMBER);
                 Platform.runLater(() -> log.appendText(new Date()
                         + ": Server started at port " + PORT_NUMBER + "\n"));
 
                 socketList = new ArrayList<>();
-            
-                while (true) {
-                    while (socketList.size() < 1) {
 
-                        Platform.runLater(() -> log.appendText(new Date()
-                                + ": Waiting for players\n"));
+                // while (true) {
+                while (socketList.size() < 1) {
 
-                        Socket client = serverSocket.accept();
-                        socketList.add(client);
-                            
-                        Platform.runLater(()
-                                -> log.appendText(new Date() + ": Player " + socketList.size() + " joined session\n"));
-                        
+                    Platform.runLater(() -> log.appendText(new Date()
+                            + ": Waiting for players\n"));
 
-                        new DataOutputStream(
-                                socketList.get(socketList.size() - 1).getOutputStream()).writeInt(socketList.size());
+                    Socket client = serverSocket.accept();
+                    socketList.add(client);
 
-                        Platform.runLater(()
-                                -> log.appendText(new Date() + ": Starting game...\n"));
-                        
-                        
-                        
-                                // delete after debug 
-        
-                                    input = new BufferedReader(new InputStreamReader(client.getInputStream()));
-                                    output = new DataOutputStream(client.getOutputStream());
-        
-                                    System.out.println("In LoginHandler thread");
-                                        try {
-                                            request = (int)in.readByte();
-                                            username = input.readLine();
-                                            password = input.readLine();
+                    Platform.runLater(()
+                            -> log.appendText(new Date() + ": Player " + socketList.size() + " joined session\n"));
 
-                                            if(request == REQUEST_LOGIN){
-                                                result = verifyLogin(username, password);
-                                                System.out.println("Login status: " + result);
-                                                output.writeBoolean(result);
-                                            }
-                                            else if(request == REQUEST_REGISTER){
-                                                result = createAccount(username, password);
-                                                System.out.println("Registration status: " + result);
-                                                output.writeBoolean(result);
-                                            }
-                                        } catch (Exception ex) {
-                                            Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
-                                        }
-                                        finally{
-                                            try {
-                                                input.close();                
-                                                output.close();
-                                            } catch (IOException ex) {
-                                                Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
-                                            }
-                                        }
-                                //    
-                        
-                        
-                        new Thread(new SessionHandler(socketList)).start();
-                    }
+                    new DataOutputStream(
+                            socketList.get(socketList.size() - 1).getOutputStream()).writeInt(socketList.size());
+
+                    Platform.runLater(()
+                            -> log.appendText(new Date() + ": Starting game...\n"));
+
+                    // delete after debug        
+                    bufferedReader = new BufferedReader(new InputStreamReader(client.getInputStream()));
+                    bufferedWriter = new BufferedWriter(new OutputStreamWriter(client.getOutputStream()));
+                    in = new DataInputStream(client.getInputStream());
+                    System.out.println("In LoginHandler thread");
+//                                        try {
+//                                            request = in.readInt();
+//                                            username = bufferedReader.readLine();
+//                                            password = bufferedReader.readLine();
+//                                            
+//                                            if(request == REQUEST_LOGIN){
+//                                                result = verifyLogin(username, password);
+//                                                System.out.println("Login status: " + result);
+//                                                bufferedWriter.write("" + result);
+//                                            }
+//                                            else if(request == REQUEST_REGISTER){
+//                                                result = createAccount(username, password);
+//                                                System.out.println("Registration status: " + result);
+//                                                bufferedWriter.write("" + result);
+//                                            }
+//                                        } catch (Exception ex) {
+//                                            Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+//                                        }
+//                                        finally{
+//                                            try {
+//                                                bufferedReader.close();                
+//                                                bufferedWriter.close();
+//                                            } catch (IOException ex) {
+//                                                Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+//                                            }
+//                                        }
+                    //    
+
+                    new Thread(new SessionHandler(socketList)).start();
                 }
-                
-                
+                //     }
+
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
@@ -150,42 +137,41 @@ public class Server extends Application
     }
 
     class LoginHandler implements Runnable, HoldemConstants {
+
         BufferedReader input;
         DataOutputStream output;
         int request;
         String username;
         String password;
         boolean result;
-        
-        public LoginHandler(Socket client, Connection connection) throws IOException{
+
+        public LoginHandler(Socket client, Connection connection) throws IOException {
             input = new BufferedReader(new InputStreamReader(client.getInputStream()));
             output = new DataOutputStream(client.getOutputStream());
         }
-        
+
         @Override
-        public void run(){
+        public void run() {
             System.out.println("In LoginHandler thread");
             try {
                 request = input.read();
                 username = input.readLine();
                 password = input.readLine();
-                
-                if(request == REQUEST_LOGIN){
+
+                if (request == REQUEST_LOGIN) {
                     result = verifyLogin(username, password);
                     System.out.println("Login status: " + result);
                     output.writeBoolean(result);
-                }
-                else if(request == REQUEST_REGISTER){
+                } else if (request == REQUEST_REGISTER) {
                     result = createAccount(username, password);
                     System.out.println("Registration status: " + result);
                     output.writeBoolean(result);
                 }
             } catch (Exception ex) {
                 Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            finally{
+            } finally {
                 try {
-                    input.close();                
+                    input.close();
                     output.close();
                 } catch (IOException ex) {
                     Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
@@ -193,16 +179,18 @@ public class Server extends Application
             }
         }
     }
-    
-    class SessionHandler implements Runnable, HoldemConstants {
 
+    class SessionHandler implements Runnable, HoldemConstants {
+        
+        private int highScore = 0;
+        
         // contains players, deck, pot, and other key game data
         private final GameBoard gameBoard;
         // connections to each client
         private ArrayList<Socket> socketList;
 
         // initialize socketList
-        public SessionHandler(ArrayList<Socket> argList) {
+        public SessionHandler(ArrayList<Socket> argList) throws IOException {
             socketList = argList;
 
             // create player for each client
@@ -212,204 +200,32 @@ public class Server extends Application
             }
             // initialize gameBoard
             gameBoard = new GameBoard(playerList);
+            // Open the streams
+            in = new DataInputStream(socketList
+                    .get(socketList.size() - 1)
+                    .getInputStream());
+            out = new DataOutputStream(socketList
+                    .get(socketList.size() - 1)
+                    .getOutputStream());
         }
 
         @Override
         public void run() {
             try {
-                in = new DataInputStream(socketList
-                        .get(socketList.size() - 1)
-                        .getInputStream());
                 collectAntes();
                 dealCards();
                 sendHandCards();
-                collectWagers();
+                dealCommunityCards();
                 dealFlop();
-//                collectWagers();
                 dealTurn();
-  //              collectWagers();
                 dealRiver();
-                awardWinnings(determineWinner());
+                setBestHands();
+                notifyWinners(determineWinners(determineHighestScore()));
                 reset();
             } catch (IOException ex) {
                 Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
 
             }
-        }
-
-        public void beginGame() throws IOException {
-            out.writeBoolean(OPEN_CONNECTION);
-        }
-
-        public void collectWagers() throws IOException {
-            out.writeInt(COLLECTING_WAGERS);        // Client flag
-            for (int i = 0; i < socketList.size(); i++) {
-
-                HoldemPlayer player = gameBoard.getPlayers().get(i);
-                if (player.isPlaying()) {
-                    int userChoice = in.readInt();
-                    int amountToMatch = gameBoard.getAmountToMatch();
-                    int playerTotal = gameBoard.getPlayers().get(i).getBank().getTotal();
-
-                    switch (userChoice) {
-                        case FOLD:
-                            player.setPlaying(false);
-                            out.writeBoolean(true);    // Choice was good
-                            break;
-                        case CHECK:
-                            // If nothing needs to be bet, it's okay to check
-                            out.writeBoolean(amountToMatch == 0);
-                            break;
-                        case CALL:
-                            if (player.getBank().getTotal() > amountToMatch) {
-                                updatePot(amountToMatch, i, i);
-                                // Just take everything if they don't have enough
-                            } else {
-                                updatePot(playerTotal, i, i);
-                            }
-                            out.writeBoolean(true);
-                            break;
-                        case RAISE:
-                            if (player.getBank().getTotal() >= RAISE_AMOUNT + amountToMatch) {
-                                updatePot(RAISE_AMOUNT + amountToMatch, i, i);
-                                amountToMatch += RAISE_AMOUNT;
-                                out.writeBoolean(true);
-                            } else {
-                                out.writeBoolean(false);
-                            }
-                            break;
-                    }
-                }
-            }
-
-        }
-
-        /**
-         * Adds to the pot and subtracts from the user's bank
-         *
-         * @param amount
-         * @param socketIndex
-         * @param playerIndex
-         * @throws IOException
-         */
-        public void updatePot(int amount, int socketIndex, int playerIndex) throws IOException {
-            gameBoard.getPot().addToTotal(amount);
-            gameBoard.getPlayers().get(playerIndex)
-                    .getBank().decreaseTotal(amount);
-            out = new DataOutputStream(socketList
-                    .get(socketIndex).getOutputStream());
-            // Reduce player's pot by this much
-            out.writeInt(amount);
-
-            waitForConfirmation(socketList);
-
-        }
-
-        /**
-         * Looks at each player's scores, determining the winner(s)
-         *
-         * @return a list of the winners as a boolean arraylist
-         */
-        public ArrayList<Boolean> determineWinner() {
-            ArrayList<Boolean> winners = new ArrayList<>();
-            ArrayList<Integer> scores = new ArrayList<>();
-            ArrayList<HoldemPlayer> players = gameBoard.getPlayers();
-
-            for (HoldemPlayer player : players) {
-                scores.add(player.getBestHandScore());
-            }
-            int bestScore = Collections.max(scores);
-            for (HoldemPlayer player : players) {
-                if (player.getBestHandScore() == bestScore) {
-                    winners.add(true);
-                } else {
-                    winners.add(false);
-                }
-            }
-            return winners;
-        }
-
-        /**
-         * Each player has 21 potential hands, one of which is the best, so the
-         * player has their best hand's score attached to them.
-         *
-         */
-        public void determineBestScores() {
-            for (HoldemPlayer player : gameBoard.getPlayers()) {
-                if (player.isPlaying()) {
-                    BestHand bestHand
-                            = new BestHand(new PotentialHands(player.getHand(),
-                                    gameBoard.getCommunityCards()));
-                    player.setBestHandScore(bestHand.getBestHandScore());
-                } else {
-                    // Marker to tell us that this player didn't have a hand to score
-                    player.setBestHandScore(-1);
-                }
-            }
-        }
-
-        public void awardWinnings(ArrayList<Boolean> winners) throws IOException {
-            out.writeInt(AWARDING_WINNINGS);
-            int numWinners = Collections.frequency(winners, true);
-            int award = gameBoard.getPot().getTotal() / numWinners;
-
-            for (int i = 0; i < gameBoard.getPlayers().size(); i++) {
-                if (winners.get(i)) {
-                    gameBoard.getPlayers().get(i).getBank().addToTotal(award);
-                    out.writeInt(WINNING_PLAYER);
-                    out.writeInt(award);
-                } else {
-                    out.writeInt(LOSING_PLAYER);
-                }
-            }
-        }
-
-        public void updateClientBank(int amount, int socketIndex) throws IOException {
-            out = new DataOutputStream(socketList.get(socketIndex).getOutputStream());
-            // Reduce player's pot by this much
-            out.writeInt(amount);
-        }
-
-        /**
-         * Deals three cards to the gameboard, notifying the clients of the
-         * cards.
-         */
-        public void dealFlop() throws IOException {
-            out.writeInt(DEALING_FLOP);
-            dealCardToBoard(3);
-        }
-
-        /**
-         * dealTurn and dealFlop are the same, but have different names to match
-         * the naming of the texas holdem game. They deal one card to the
-         * gameboard.
-         */
-        public void dealTurn() throws IOException {
-            out.writeInt(DEALING_TURN);
-            dealCardToBoard(1);
-        }
-
-        public void dealRiver() throws IOException {
-            out.writeInt(DEALING_RIVER);
-            dealCardToBoard(1);
-        }
-
-        /**
-         * Deals a card to the board and tells the client the card info. Burns a
-         * card before dealing, as is the custom in texas holdem.
-         *
-         * @param numToDeal
-         */
-        public void dealCardToBoard(int numToDeal) throws IOException {
-            gameBoard.getDeck().burnCard();
-            for (int i = 0; i < numToDeal; i++) {
-                Card card = gameBoard.getDeck().dealCard();
-                gameBoard.getCommunityCards().addCard(card);
-                for (Socket socket : socketList) {
-                    sendCard(card);
-                }
-            }
-
         }
 
         /**
@@ -422,18 +238,117 @@ public class Server extends Application
         public void collectAntes() throws IOException {
             ArrayList<HoldemPlayer> players = gameBoard.getPlayers();
             for (int i = 0; i < players.size(); i++) {
-                if (players.get(i).getBank().getTotal() < MINIMUM_ANTE) {
-                    players.get(i).setPlaying(false);
-                } else {
-                    gameBoard.getPot().addToTotal(MINIMUM_ANTE);
+                    out.writeInt(SEND_REDUCE_USER_BANK);     
+            }
+        }
+        
+        public void setBestHands() throws IOException {
+            for (HoldemPlayer player : gameBoard.getPlayers()) {
+                PotentialHands potentialHands = new PotentialHands(player.getHand(), gameBoard.getCommunityCards());
+                BestHand bestHand = new BestHand(potentialHands);
+                player.setBestHandScore(bestHand.getBestHandScore());
+                
+                System.out.println(gameBoard.getCommunityCards());
+                System.out.println(player.getHand());
+            }
+        }
 
-                    // reduce player chip count
-                    players.get(i).getBank().decreaseTotal(MINIMUM_ANTE);
-
-                    out = new DataOutputStream(socketList.get(i).getOutputStream());
-                    out.writeInt(SEND_REDUCE_USER_BANK);
-
+        public int determineHighestScore() {
+            int highestScore = gameBoard.getPlayers().get(0).getBestHandScore();
+            for (HoldemPlayer player : gameBoard.getPlayers()) {
+                if (player.getBestHandScore() > highestScore) {
+                    highestScore = player.getBestHandScore();
                 }
+            }
+            this.highScore = highestScore;
+            return highestScore;
+        }
+
+        public ArrayList<Boolean> determineWinners(int highestScore) {
+            ArrayList<Boolean> winners = new ArrayList<>();
+            for (HoldemPlayer player : gameBoard.getPlayers()) {
+                if (player.getBestHandScore() == highestScore) {
+                    winners.add(true);
+                } else {
+                    winners.add(false);
+                }
+            }
+            return winners;
+        }
+
+        /**
+         * Takes the score, gets the first digit of the score, and passes it
+         * into PokerHandRanking's static getRankingName function.
+         *
+         * @param player
+         * @return
+         */
+        public String determineHandType(int score) {
+            char firstChar = (score + "").charAt(0);
+            return PokerHandRanking.getRankingName(firstChar - '0');
+        }
+
+        public void notifyWinners(ArrayList<Boolean> winners) throws IOException {
+            out.writeInt(AWARDING_WINNINGS);
+            String winnerString = "Winner(s):\n";
+            for (int i = 0; i < winners.size(); i++) {
+                if (winners.get(i) == true) {
+                    winnerString += gameBoard.getPlayers().get(i).getPlayerName();
+                    winnerString += "\n";
+                }
+            }
+            //winnerString += "With: " + determineHandType(highScore);
+            //System.out.println(winnerString);
+            bufferedWriter.write(winnerString);
+            
+        }
+
+//        public void updateClientBank(int amount, int socketIndex) throws IOException {
+//            out = new DataOutputStream(socketList.get(socketIndex).getOutputStream());
+//            // Reduce player's pot by this much
+//            out.writeInt(amount);
+//        }
+        /**
+         * Deals first three community cards to the players.
+         *
+         * @throws IOException
+         */
+        public void dealFlop() throws IOException {
+            out.writeInt(DEALING_FLOP);
+            dealCardToBoard(0);
+            dealCardToBoard(1);
+            dealCardToBoard(2);
+        }
+
+        /**
+         * Deals fourth card out to the players.
+         *
+         * @throws IOException
+         */
+        public void dealTurn() throws IOException {
+            out.writeInt(DEALING_TURN);
+            dealCardToBoard(3);
+        }
+
+        /**
+         * Deals final card to the players
+         *
+         * @throws IOException
+         */
+        public void dealRiver() throws IOException {
+            out.writeInt(DEALING_RIVER);
+            dealCardToBoard(4);
+
+        }
+
+        /**
+         * Sends the cards from the community cards to the players.
+         *
+         * @param numToDeal
+         */
+        public void dealCardToBoard(int index) throws IOException {
+            for (Socket socket : socketList) {
+                sendCard(gameBoard.getCommunityCards().getCards().get(index));
             }
         }
 
@@ -441,14 +356,33 @@ public class Server extends Application
          * Add a card to each player's hands.
          */
         public void dealCards() {
-            ArrayList<HoldemPlayer> players = gameBoard.getPlayers();
             for (int i = 0; i < gameBoard.getHAND_SIZE(); i++) {
                 for (int j = 0; j < gameBoard.getPlayers().size(); j++) {
-                    if (players.get(j).isPlaying()) {
-                        players.get(j).addCard(gameBoard.getDeck().dealCard());
-                    }
+                    gameBoard.getPlayers().get(j)
+                            .addCard(gameBoard.getDeck().dealCard());
+
                 }
             }
+        }
+
+        public void dealSingleToBoard() {
+            Card card = gameBoard.getDeck().dealCard();
+            gameBoard.getCommunityCards().addCard(card);
+        }
+
+        /**
+         * Sets the community cards before the game begins.
+         */
+        public void dealCommunityCards() {
+            gameBoard.getDeck().burnCard();
+            dealSingleToBoard();
+            dealSingleToBoard();
+            dealSingleToBoard();
+            gameBoard.getDeck().burnCard();
+            dealSingleToBoard();
+            gameBoard.getDeck().burnCard();
+            dealSingleToBoard();
+
         }
 
         /**
@@ -495,30 +429,28 @@ public class Server extends Application
 
         }
 
-        // sends all clients an update of one player, the pot, and control vars
-        public void updatePlayerState(int playerIndex) throws IOException {
-            out.flush();
-
-            out.writeInt(gameBoard.getPlayers().get(playerIndex).getBank().whiteChips.size());
-            out.writeInt(gameBoard.getPlayers().get(playerIndex).getBank().redChips.size());
-            out.writeInt(gameBoard.getPlayers().get(playerIndex).getBank().blueChips.size());
-            out.writeInt(gameBoard.getPlayers().get(playerIndex).getBank().greenChips.size());
-            out.writeInt(gameBoard.getPlayers().get(playerIndex).getBank().blackChips.size());
-
-        }
-
+//        // sends all clients an update of one player, the pot, and control vars
+//        public void updatePlayerState(int playerIndex) throws IOException {
+//            out.flush();
+//
+//            out.writeInt(gameBoard.getPlayers().get(playerIndex).getBank().whiteChips.size());
+//            out.writeInt(gameBoard.getPlayers().get(playerIndex).getBank().redChips.size());
+//            out.writeInt(gameBoard.getPlayers().get(playerIndex).getBank().blueChips.size());
+//            out.writeInt(gameBoard.getPlayers().get(playerIndex).getBank().greenChips.size());
+//            out.writeInt(gameBoard.getPlayers().get(playerIndex).getBank().blackChips.size());
+//
+//        }
         // send client the number of players, and chip counts for each player
-        private void initializeClientGui() throws IOException {
-            for (int i = 0; i < socketList.size(); i++) {
-                out = new DataOutputStream(socketList.get(i).getOutputStream());
-                out.writeInt(socketList.size());
-
-                for (int j = 0; j < socketList.size(); j++) {
-                    updatePlayerState(j);
-                }
-            }
-        }
-
+//        private void initializeClientGui() throws IOException {
+//            for (int i = 0; i < socketList.size(); i++) {
+//                out = new DataOutputStream(socketList.get(i).getOutputStream());
+//                out.writeInt(socketList.size());
+//
+//                for (int j = 0; j < socketList.size(); j++) {
+//                    updatePlayerState(j);
+//                }
+//            }
+//        }
     }
 
     public void waitForConfirmation(ArrayList<Socket> socketList) throws IOException {
@@ -526,13 +458,13 @@ public class Server extends Application
             new DataInputStream(s.getInputStream()).readBoolean();
         }
     }
-    
+
     private void initializeJdbc() {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             System.out.println("Driver loaded");
 
-             connection = DriverManager.getConnection("jdbc:mysql://localhost/holdemDB", "group", "group");
+            connection = DriverManager.getConnection("jdbc:mysql://localhost/holdemDB", "group", "group");
 
 //            statement = connection.prepareStatement("insert into users (username,"
 //                    + " password, wincount) values (" + username + password + wincount
@@ -541,23 +473,24 @@ public class Server extends Application
              * connect to or create sql table here
              */
         } catch (Exception ex) {
-            ex.getMessage();
+            System.out.println(ex.getMessage());
         }
     }
-    
+
     private boolean createAccount(String username, String password) throws SQLException {
         PreparedStatement statement = connection.prepareStatement("insert into users (username, password)"
                 + "values ((?), (?))");
         statement.setString(1, username);
         statement.setString(2, password);
-        
+
         // if account is created successfully, try to log in
-        if(statement.execute())
+        if (statement.execute()) {
             return verifyLogin(username, password);
-        
+        }
+
         return false;
     }
-    
+
     private boolean verifyLogin(String username, String password) throws SQLException {
         PreparedStatement statement = connection.prepareStatement("select password from users"
                 + " where username = (?)");
@@ -573,7 +506,6 @@ public class Server extends Application
         }
         return false;
     }
-    
 
     public static void main(String args[]) {
         launch(args);

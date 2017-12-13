@@ -24,6 +24,11 @@ import javafx.scene.text.FontWeight;
 /**
  *
  * @author jiach
+ *
+ * SIGNIFICANT CHANGES: Removing the functionality of wagering/folding. Rather,
+ * there will be a single button — Continue. When all players have pressed the
+ * button, the game will move to the next step (flop, river, turn, winner,
+ * reset).
  */
 public class GamePane extends Pane {
 
@@ -32,26 +37,28 @@ public class GamePane extends Pane {
     private ImageView tableView;
     private HBox holeCards[], communityCards, raiseChipBox;
     private VBox blackChip[][], greenChip[][], blueChip[][], redChip[][], whiteChip[][];
-    private Button btnFold, btnCall, btnRaise, btnCheck, btnRaiseChip[];
+    //private Button btnFold, btnCall, btnRaise, btnCheck, btnRaiseChip[];
+    private Button btnContinue;
     private SettingIconAnimation settingIcon;
 
-    
     //public BooleanProperty buttonPressed;
     public IntegerProperty changeInt;
-    
+
     private int buttonID;
-    private final ArrayList<HoldemPlayer> players = new ArrayList<HoldemPlayer>(){{
-        add(new HoldemPlayer());
-    }};
+    private final ArrayList<HoldemPlayer> players = new ArrayList<HoldemPlayer>() {
+        {
+            add(new HoldemPlayer());
+        }
+    };
     private GameBoard gameBoard = new GameBoard(players);
 
     public GamePane() {
         changeInt = new SimpleIntegerProperty(0);
-        blackChip=new VBox[5][5];
-        greenChip=new VBox[5][5];
-        blueChip=new VBox[5][5];
-        redChip=new VBox[5][5];
-        whiteChip=new VBox[5][5];
+        blackChip = new VBox[5][5];
+        greenChip = new VBox[5][5];
+        blueChip = new VBox[5][5];
+        redChip = new VBox[5][5];
+        whiteChip = new VBox[5][5];
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 5; j++) {
                 blackChip[i][j] = new VBox();
@@ -61,17 +68,16 @@ public class GamePane extends Pane {
                 whiteChip[i][j] = new VBox();
             }
         }
-        
-        settingIcon=new SettingIconAnimation();
-        btnRaiseChip=new Button[5];
-        btnRaiseChip[0]=new Button();
-        btnRaiseChip[1]=new Button();
-        btnRaiseChip[2]=new Button();
-        btnRaiseChip[3]=new Button();
-        btnRaiseChip[4]=new Button();
-        raiseChipBox=new HBox();
-        raiseChipBox.getChildren().addAll(btnRaiseChip[0],btnRaiseChip[1],btnRaiseChip[2],btnRaiseChip[3],btnRaiseChip[4]);
-        
+
+        settingIcon = new SettingIconAnimation();
+//        btnRaiseChip=new Button[5];
+//        btnRaiseChip[0]=new Button();
+//        btnRaiseChip[1]=new Button();
+//        btnRaiseChip[2]=new Button();
+//        btnRaiseChip[3]=new Button();
+//        btnRaiseChip[4]=new Button();
+//        raiseChipBox=new HBox();
+//        raiseChipBox.getChildren().addAll(btnRaiseChip[0],btnRaiseChip[1],btnRaiseChip[2],btnRaiseChip[3],btnRaiseChip[4]);
 
         tableImage = new Image("Image/aa.png");
         tableView = new ImageView(tableImage);
@@ -79,12 +85,11 @@ public class GamePane extends Pane {
         tableView.setFitWidth(1200);
         getChildren().addAll(tableView);
 
-        
         /*
         
         get usernames from database here
         
-        */
+         */
         name = new Label[4];
         name[0] = new Label("Jiachao");
         name[1] = new Label("Moses");
@@ -98,14 +103,18 @@ public class GamePane extends Pane {
         holeCards[3] = new HBox();
 
         communityCards = new HBox();
-        btnFold = new Button("Fold");
-        btnCall = new Button("Call");
-        btnRaise = new Button("Raise");
-        btnCheck = new Button("Check");
+        btnContinue = new Button("Continue");
+//        btnFold = new Button("Fold");
+//        btnCall = new Button("Call");
+//        btnRaise = new Button("Raise");
+//        btnCheck = new Button("Check");
+
         getChildren().addAll(name[0], name[1], name[2], name[3]);
         getChildren().addAll(holeCards[0], holeCards[1], holeCards[2], holeCards[3]);
-        getChildren().addAll(btnFold, btnCall, btnRaise, btnCheck, communityCards);
-        getChildren().addAll(settingIcon,raiseChipBox);
+        getChildren().add(btnContinue);
+        getChildren().add(communityCards);
+//        getChildren().addAll(btnFold, btnCall, btnRaise, btnCheck, communityCards);
+        getChildren().add(settingIcon);
 
         for (int i = 0; i < 5; i++) {
             getChildren().addAll(blackChip[i][0], blackChip[i][1], blackChip[i][2], blackChip[i][3], blackChip[i][4]);
@@ -116,39 +125,35 @@ public class GamePane extends Pane {
         }
         setTo1200x800();
 
-        btnRaise.setOnMouseClicked(e-> {setRaiseChipBtn(true);});
-
-      
-                
-        btnFold.setOnAction(e -> {
-            this.buttonID = HoldemConstants.FOLD;
-            if(changeInt.getValue() == 0){
+        //btnRaise.setOnMouseClicked(e-> {setRaiseChipBtn(true);});
+        btnContinue.setOnAction(e -> {
+            if (changeInt.getValue() == 0) {
                 changeInt.set(1);
             } else {
                 changeInt.set(0);
             }
         });
-        btnCall.setOnAction(e -> {
-            this.buttonID = HoldemConstants.CALL;
-        });
-        btnRaise.setOnAction(e -> {
-            this.buttonID = HoldemConstants.RAISE;
-        });
-        btnCheck.setOnAction(e -> {
-            this.buttonID = HoldemConstants.CHECK;
-
-        });
+//        btnCall.setOnAction(e -> {
+//            this.buttonID = HoldemConstants.CALL;
+//        });
+//        btnRaise.setOnAction(e -> {
+//            this.buttonID = HoldemConstants.RAISE;
+//        });
+//        btnCheck.setOnAction(e -> {
+//            this.buttonID = HoldemConstants.CHECK;
+//
+//        });
 
     }
-    
-    public void setRaiseChipBtn(boolean value)
-      {
-          btnRaiseChip[0].setVisible(value);
-          btnRaiseChip[1].setVisible(value);
-          btnRaiseChip[2].setVisible(value);
-          btnRaiseChip[3].setVisible(value);
-          btnRaiseChip[4].setVisible(value);
-      }
+
+//    public void setRaiseChipBtn(boolean value)
+//      {
+//          btnRaiseChip[0].setVisible(value);
+//          btnRaiseChip[1].setVisible(value);
+//          btnRaiseChip[2].setVisible(value);
+//          btnRaiseChip[3].setVisible(value);
+//          btnRaiseChip[4].setVisible(value);
+//      }
 
     /* public void deleteChips(int player,int numDelete)
     {  
@@ -253,8 +258,7 @@ public class GamePane extends Pane {
             }
         }
     }
-    
-    
+
     // probly shouldn't use this function at all
     public void addChips(int player, int num) {
         int black, green, blue, red;
@@ -444,22 +448,6 @@ public class GamePane extends Pane {
         return communityCards;
     }
 
-    public Button getFoldBtn() {
-        return btnFold;
-    }
-
-    public Button getCallBtn() {
-        return btnCall;
-    }
-
-    public Button getRaiseBtn() {
-        return btnRaise;
-    }
-
-    public Button getCheckBtn() {
-        return btnCheck;
-    }
-
     public HBox getSelfHoleCards() {
         return holeCards[0];
     }
@@ -479,54 +467,61 @@ public class GamePane extends Pane {
     public int getButtonID() {
         return buttonID;
     }
-    
-    public FiveCardHand getCommunityCardsList(){
+
+    public FiveCardHand getCommunityCardsList() {
         return gameBoard.getCommunityCards();
     }
 
     public void setButtonID(int buttonID) {
         this.buttonID = buttonID;
     }
-    public void setCommunityCards(HBox hBox){
+
+    public void setCommunityCards(HBox hBox) {
         this.communityCards = hBox;
     }
-    
-    public void addToCommunityCards(Card card){
+
+    public void addToCommunityCards(Card card) {
         gameBoard.addCardToBoard(card);
     }
-    
-    
+    public void setName(String username, int index){
+        name[index].setText(username);
+    }
+
     public void setTo1200x800() {
-        btnFold.setMinSize(80, 24);
-        btnFold.setMaxSize(80, 24);
-        btnFold.setLayoutX(450);
-        btnFold.setLayoutY(655);
+//        btnFold.setMinSize(80, 24);
+//        btnFold.setMaxSize(80, 24);
+//        btnFold.setLayoutX(450);
+//        btnFold.setLayoutY(655);
+//
+//        btnCall.setMinSize(80, 24);
+//        btnCall.setMaxSize(80, 24);
+//        btnCall.setLayoutX(530);
+//        btnCall.setLayoutY(655);
+//
+//        btnRaise.setMinSize(80, 24);
+//        btnRaise.setMaxSize(80, 24);
+//        btnRaise.setLayoutX(610);
+//        btnRaise.setLayoutY(655);
 
-        btnCall.setMinSize(80, 24);
-        btnCall.setMaxSize(80, 24);
-        btnCall.setLayoutX(530);
-        btnCall.setLayoutY(655);
+        btnContinue.setMinSize(USE_PREF_SIZE, USE_PREF_SIZE);
+        btnContinue.setMaxSize(USE_PREF_SIZE, USE_PREF_SIZE);
+        btnContinue.setLayoutX(610);
+        btnContinue.setLayoutY(655);
 
-        btnRaise.setMinSize(80, 24);
-        btnRaise.setMaxSize(80, 24);
-        btnRaise.setLayoutX(610);
-        btnRaise.setLayoutY(655);
-
-        raiseChipBox.setLayoutX(610);
-        raiseChipBox.setLayoutY(690);
-        raiseChipBox.setSpacing(5);
-        btnRaiseChip[0].setMinSize(40, 24);
-        btnRaiseChip[1].setMinSize(40, 24);
-        btnRaiseChip[2].setMinSize(40, 24);
-        btnRaiseChip[3].setMinSize(40, 24);
-        btnRaiseChip[4].setMinSize(40, 24);
-        setRaiseChipBtn(false);
-        
-        btnCheck.setMinSize(80, 24);
-        btnCheck.setMaxSize(80, 24);
-        btnCheck.setLayoutX(690);
-        btnCheck.setLayoutY(655);
-
+//        raiseChipBox.setLayoutX(610);
+//        raiseChipBox.setLayoutY(690);
+//        raiseChipBox.setSpacing(5);
+//        btnRaiseChip[0].setMinSize(40, 24);
+//        btnRaiseChip[1].setMinSize(40, 24);
+//        btnRaiseChip[2].setMinSize(40, 24);
+//        btnRaiseChip[3].setMinSize(40, 24);
+//        btnRaiseChip[4].setMinSize(40, 24);
+//        setRaiseChipBtn(false);
+//        
+//        btnCheck.setMinSize(80, 24);
+//        btnCheck.setMaxSize(80, 24);
+//        btnCheck.setLayoutX(690);
+//        btnCheck.setLayoutY(655);
         communityCards.setSpacing(7);
         communityCards.setLayoutX(400);
         communityCards.setLayoutY(400);
@@ -583,19 +578,19 @@ public class GamePane extends Pane {
 
         settingIcon.setLayoutX(1180);
         settingIcon.setLayoutY(20);
-        
-        int selfChipX=0; // self Chip layout X at the first set
-        int selfChipY=550; // self Chip layout Y at the first set
-        int leftChipX=0;
-        int leftChipY=520;
-        int topChipX=0;
-        int topChipY=230;
-        int rightChipX=0;
-        int rightChipY=270;
-        int betInChipX=0;
-        int betInChipY=335;
-        
-        for(int i = 0; i < 4; i++){
+
+        int selfChipX = 0; // self Chip layout X at the first set
+        int selfChipY = 550; // self Chip layout Y at the first set
+        int leftChipX = 0;
+        int leftChipY = 520;
+        int topChipX = 0;
+        int topChipY = 230;
+        int rightChipX = 0;
+        int rightChipY = 270;
+        int betInChipX = 0;
+        int betInChipY = 335;
+
+        for (int i = 0; i < 4; i++) {
             //--------------self Chip layout---------------
             selfChipX = 660;
             blackChip[0][i].setLayoutX(selfChipX);
@@ -703,32 +698,32 @@ public class GamePane extends Pane {
             whiteChip[3][i].setLayoutY(rightChipY);
             whiteChip[3][i].setSpacing(-16);
             rightChipY += 15;
-            
-            betInChipX=568;
+
+            betInChipX = 568;
             blackChip[4][i].setLayoutX(betInChipX);
             blackChip[4][i].setLayoutY(betInChipY);
             blackChip[4][i].setSpacing(-16);
-            
-            betInChipX+=15;
+
+            betInChipX += 15;
             greenChip[4][i].setLayoutX(betInChipX);
             greenChip[4][i].setLayoutY(betInChipY);
             greenChip[4][i].setSpacing(-16);
-            
-            betInChipX+=15;
+
+            betInChipX += 15;
             blueChip[4][i].setLayoutX(betInChipX);
             blueChip[4][i].setLayoutY(betInChipY);
             blueChip[4][i].setSpacing(-16);
-            
-            betInChipX+=15;
+
+            betInChipX += 15;
             redChip[4][i].setLayoutX(betInChipX);
             redChip[4][i].setLayoutY(betInChipY);
             redChip[4][i].setSpacing(-16);
-            
-            betInChipX+=15;
+
+            betInChipX += 15;
             whiteChip[4][i].setLayoutX(betInChipX);
             whiteChip[4][i].setLayoutY(betInChipY);
             whiteChip[4][i].setSpacing(-16);
-            betInChipY+=15;
+            betInChipY += 15;
         }
     }
 //

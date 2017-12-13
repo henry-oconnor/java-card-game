@@ -5,9 +5,13 @@ package texasholdem;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -18,6 +22,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import static texasholdem.HoldemConstants.DEALING_FLOP;
 
@@ -33,6 +38,8 @@ public class Client extends Application implements HoldemConstants {
     private Socket socket;
     private DataOutputStream out;
     private DataInputStream in;
+    private BufferedReader bufferedReader;
+    private BufferedWriter bufferedWriter;
     private BorderPane pane;
 
     // number of players in game
@@ -40,86 +47,79 @@ public class Client extends Application implements HoldemConstants {
     private boolean myTurn;
     private HoldemPlayer thisPlayer = new HoldemPlayer();
 
-    private int buttonID = 5;
-
     @Override
     public void start(Stage primaryStage) throws IOException {
         pane = new BorderPane();
         loginPane = new LoginPane();
         gamePane = new GamePane();
-        
-        
+
+        connectToServer();
+
         Button loginBtn = (Button) loginPane.getChildren().get(6);
         loginBtn.setOnAction(e -> {
             try {
                 String username = ((TextField) loginPane.getChildren().get(4)).getText();
                 String password = ((TextField) loginPane.getChildren().get(5)).getText();
-                
-                if(username.length() == 0 || password.length() == 0)
+
+                if (username.length() == 0 || password.length() == 0) {
                     System.out.println("Tell em you have to enter something");
-                else{
-                    out.writeInt(REQUEST_LOGIN);
-                    out.writeBytes(username + "\n");
-                    out.writeBytes(password + "\n");
+                } else {
+//                    out.writeInt(REQUEST_LOGIN);
+//                    bufferedWriter.write(username + "\n");
+//                    bufferedWriter.write(password + "\n");
+                    setGamePane();
+                    runGame(in.readInt());
                     // server will return boolean indicating outcome of login
-                    if(in.readBoolean()){
-                        System.out.println("Logged in");
-                        setGamePane();
-                        runGame(in.readInt());
-                        runGame(in.readInt());
-                    }
+//                    if (bufferedReader.readLine().equals("" + true)) {
+//                        System.out.println("Logged in");
+//                        setGamePane();
+//                        runGame(in.readInt());
+//                        runGame(in.readInt());
+//                    }
                 }
-                
             } catch (IOException ex) {
                 Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
-        
-        
+
         Button registerBtn = (Button) loginPane.getChildren().get(7);
         registerBtn.setOnAction(e -> {
             try {
                 String username = ((TextField) loginPane.getChildren().get(4)).getText();
                 String password = ((TextField) loginPane.getChildren().get(5)).getText();
-                
-                if(username.length() == 0 || password.length() == 0)
-                    System.out.println("Tell em you have to enter something");
-                else{
-                    out.close();
-                    out = new DataOutputStream(socket.getOutputStream());
-                    out.writeInt(REQUEST_REGISTER);
-                    out.writeBytes(username + "\n");
-                    out.writeBytes(password + "\n");
+
+//                if (username.length() == 0 || password.length() == 0) {
+//                    System.out.println("Tell em you have to enter something");
+//                } else {
+//                    out.writeInt(REQUEST_REGISTER);
+//                    bufferedWriter.write(username + "\n");
+//                    bufferedWriter.write(password + "\n");
+                    setGamePane();
+                    runGame(in.readInt());
                     // server will return boolean indicating outcome of registration
-                    if(in.readBoolean()){
-                        System.out.println("Registered");
-                        setGamePane();
-                        runGame(in.readInt());
-                        runGame(in.readInt());
-                    }
-                }
-                
+//                    if (bufferedReader.readLine().equals("" + true)) {
+//                        System.out.println("Registered");
+//                        setGamePane();
+//                        runGame(in.readInt());
+//                        runGame(in.readInt());
+//                    }
+//                }
             } catch (IOException ex) {
                 Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
-        
-        
-
-
-        connectToServer();
 
         pane.setCenter(loginPane);
-        
+
         scene = new Scene(pane, loginPane.getWidth(), loginPane.getHeight());
         primaryStage.setScene(scene);
         primaryStage.setTitle("Texas Hold'em");
         primaryStage.show();
 
     }
-    
-    private void createAccount(){
-        
+
+    private void createAccount() {
+
     }
 
     private void setGamePane() throws IOException {
@@ -128,7 +128,6 @@ public class Client extends Application implements HoldemConstants {
         gamePane.changeInt.addListener(new ChangeListener() {
             @Override
             public void changed(ObservableValue observable, Object oldValue, Object newValue) {
-                gamePane.setButtonID(FOLD);
                 try {
                     runGame(in.readInt());
                 } catch (IOException ex) {
@@ -137,15 +136,22 @@ public class Client extends Application implements HoldemConstants {
             }
         });
 
-        Card card1 = thisPlayer.getHand().getCards().get(FIRST_CARD);
-        Card card2 = thisPlayer.getHand().getCards().get(SECOND_CARD);
-//        Card card1 = new Card();
-//        Card card2 = new Card();
-
-        gamePane.getSelfHoleCards().getChildren().addAll(card1.getImage().getImageView(), card2.getImage().getImageView());
-        gamePane.getLeftHoleCards().getChildren().addAll(new BackOfTheCardImage().getImageView(), new BackOfTheCardImage().getImageView());
-        gamePane.getTopHoleCards().getChildren().addAll(new BackOfTheCardImage().getImageView(), new BackOfTheCardImage().getImageView());
-        gamePane.getRightHoleCards().getChildren().addAll(new BackOfTheCardImage().getImageView(), new BackOfTheCardImage().getImageView());
+        gamePane.getSelfHoleCards()
+                .getChildren()
+                .addAll(new BackOfTheCardImage().getImageView(),
+                        new BackOfTheCardImage().getImageView());
+        gamePane.getLeftHoleCards()
+                .getChildren()
+                .addAll(new BackOfTheCardImage().getImageView(),
+                        new BackOfTheCardImage().getImageView());
+        gamePane.getTopHoleCards()
+                .getChildren()
+                .addAll(new BackOfTheCardImage().getImageView(),
+                        new BackOfTheCardImage().getImageView());
+        gamePane.getRightHoleCards()
+                .getChildren()
+                .addAll(new BackOfTheCardImage().getImageView(),
+                        new BackOfTheCardImage().getImageView());
 
     }
 
@@ -155,7 +161,6 @@ public class Client extends Application implements HoldemConstants {
         switch (intIn) {
             case SEND_REDUCE_USER_BANK:
                 System.out.println("ANTE");
-                thisPlayer.getBank().decreaseTotal(MINIMUM_ANTE);
                 return true;
             case SENDING_CARDS:
                 System.out.println("SENDING_CARDS");
@@ -191,11 +196,7 @@ public class Client extends Application implements HoldemConstants {
             }
             case AWARDING_WINNINGS:
                 System.out.println("AWARDING_WINNINGS");
-                if (in.readInt() == WINNING_PLAYER) {
-                    thisPlayer.getBank().addToTotal(in.readInt());
-                    System.out.println("WINNING_PLAYER");
-                }
-
+                System.out.println(bufferedReader.read());
                 return true;
 //            case RESETTING_GAME:
 //                System.out.println("RESETTING_GAME");
@@ -222,6 +223,7 @@ public class Client extends Application implements HoldemConstants {
         Card card1 = cardFromInt(in.readInt(), in.readInt());
         Card card2 = cardFromInt(in.readInt(), in.readInt());
         thisPlayer.addCards(card1, card2);
+        updateGamePaneSelfHoleCards(card1, card2);
     }
 
     /**
@@ -240,7 +242,7 @@ public class Client extends Application implements HoldemConstants {
      * @param args the command line arguments
      */
     /**
-     * initializes gui with number of players, chip counts, card counts
+     * Opens data streams between client and server
      *
      * at the time this function is called, server should send an int
      * representing player count, followed by ints representing the five chip
@@ -253,6 +255,8 @@ public class Client extends Application implements HoldemConstants {
             socket = new Socket(SERVER_NAME, PORT_NUMBER);
             in = new DataInputStream(socket.getInputStream());
             out = new DataOutputStream(socket.getOutputStream());
+            bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
             numPlayers = in.readInt();
             System.out.println("numPlayers: " + numPlayers);
         } catch (Exception ex) {
@@ -273,6 +277,19 @@ public class Client extends Application implements HoldemConstants {
             //   gamePane.addBlackChips(i, in.readInt());
 
         }
+    }
+
+    /**
+     * Removes all children from selfHoleCards and replaces
+     * them with new images.
+     * @param card1
+     * @param card2 
+     */
+    public void updateGamePaneSelfHoleCards(Card card1, Card card2) {
+        gamePane.getSelfHoleCards().getChildren().clear();
+        gamePane.getSelfHoleCards().getChildren()
+                .addAll(card1.getImage().getImageView(),
+                        card2.getImage().getImageView());
     }
 
     /**

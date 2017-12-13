@@ -77,47 +77,48 @@ public class CardImage {
 
     private double findXCoordinate(Rank rank) {
         final int SPACING = 73;
+        final int ADJUSTMENT = 0;
         int returnVal = 0;
         if (null != rank) 
             switch (rank) {
             case TWO:
-                returnVal = (SPACING * 1) + 1;
+                returnVal = (SPACING * 0) + ADJUSTMENT;
                 break;
             case THREE:
-                returnVal = (SPACING * 2) + 1;
+                returnVal = (SPACING * 1) + ADJUSTMENT;
                 break;
             case FOUR:
-                returnVal = (SPACING * 3) + 1;
+                returnVal = (SPACING * 2) + ADJUSTMENT;
                 break;
             case FIVE:
-                returnVal = (SPACING * 4) + 1;
+                returnVal = (SPACING * 3) + ADJUSTMENT;
                 break;
             case SIX:
-                returnVal = (SPACING * 5) + 1;
+                returnVal = (SPACING * 4) + ADJUSTMENT;
                 break;
             case SEVEN:
-                returnVal = (SPACING * 6) + 1;
+                returnVal = (SPACING * 5) + ADJUSTMENT;
                 break;
             case EIGHT:
-                returnVal = (SPACING * 7) + 1;
+                returnVal = (SPACING * 6) + ADJUSTMENT;
                 break;
             case NINE:
-                returnVal = (SPACING * 8) + 1;
+                returnVal = (SPACING * 7) + ADJUSTMENT;
                 break;
             case TEN:
-                returnVal = (SPACING * 9) + 1;
+                returnVal = (SPACING * 8) + ADJUSTMENT;
                 break;
             case JACK:
-                returnVal = (SPACING * 10) + 1;
+                returnVal = (SPACING * 9) + ADJUSTMENT;
                 break;
             case QUEEN:
-                returnVal = (SPACING * 11) + 1;
+                returnVal = (SPACING * 10) + ADJUSTMENT;
                 break;
             case KING:
-                returnVal = (SPACING * 12) + 1;
+                returnVal = (SPACING * 11) + ADJUSTMENT;
                 break;
             case ACE:
-                returnVal = (SPACING * 13) + 1;
+                returnVal = (SPACING * 12) + ADJUSTMENT;
                 break;
             default:
                 break;

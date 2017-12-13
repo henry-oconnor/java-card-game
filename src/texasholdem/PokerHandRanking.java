@@ -29,4 +29,28 @@ public enum PokerHandRanking {
     public String getRanking() {
         return ranking;
     }
+
+    public static String getRankingName(int ranking) {
+        switch (ranking) {
+            case 0:
+                return "High Card";
+            case 1:
+                return "Pair";
+            case 2:
+                return "Two Pair";
+            case 3:
+                return "Three of a Kind";
+            case 4:
+                return "Straight";
+            case 5:
+                return "Flush";
+            case 6:
+                return "Full House";
+            case 7:
+                return "Four of a Kind";
+            case 8:
+                return "Straight Flush";
+        }
+        return "";
+    }
 }

@@ -15,11 +15,11 @@ import java.util.Arrays;
 public final class BestHand {
 
     private PotentialHands potentialHands;
-    private ArrayList<FiveCardHand> allHands;
+    private ArrayList<FiveCardHand> allHands = new ArrayList<>();
 
-    private ArrayList<SingleHandScore> scoredHands;
+    private ArrayList<SingleHandScore> scoredHands = new ArrayList<>();
 
-    private SingleHandScore bestHand;
+    private SingleHandScore bestHand = new SingleHandScore();
     private int bestHandScore;
 
     public BestHand(PotentialHands potential) {
@@ -79,10 +79,12 @@ public final class BestHand {
      * Compare all the scores of each hand and get the best scoring hand
      */
     public void setHighestScore() {
-        bestHand = scoredHands.get(0);
-        for (SingleHandScore hand : scoredHands) {
-            if (bestHand.getScoreAsInt() < hand.getScoreAsInt()) {
-                bestHand = hand;
+        if (!scoredHands.isEmpty()) {
+            bestHand = scoredHands.get(0);
+            for (SingleHandScore hand : scoredHands) {
+                if (bestHand.getScoreAsInt() < hand.getScoreAsInt()) {
+                    bestHand = hand;
+                }
             }
         }
     }
