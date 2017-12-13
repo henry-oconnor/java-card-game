@@ -88,22 +88,30 @@ public class Client extends Application implements HoldemConstants {
                 String username = ((TextField) loginPane.getChildren().get(4)).getText();
                 String password = ((TextField) loginPane.getChildren().get(5)).getText();
 
-//                if (username.length() == 0 || password.length() == 0) {
-//                    System.out.println("Tell em you have to enter something");
-//                } else {
+                if (username.length() == 0 || password.length() == 0) {
+                    System.out.println("Tell em you have to enter something");
+                } else {
+//                    System.out.println("Writing " + REQUEST_REGISTER + " to server");
 //                    out.writeInt(REQUEST_REGISTER);
-//                    bufferedWriter.write(username + "\n");
-//                    bufferedWriter.write(password + "\n");
+                    
+                    System.out.println("Writing " + username + " to server");
+                    bufferedWriter.write(username + "\r\n");
+                    bufferedWriter.flush();
+                    
+                    System.out.println("Writing " + password + " to server");
+                    bufferedWriter.write(password + "\r\n");
+                    bufferedWriter.flush();
+                    
                     setGamePane();
-                    runGame(in.readInt());
-                    // server will return boolean indicating outcome of registration
-//                    if (bufferedReader.readLine().equals("" + true)) {
-//                        System.out.println("Registered");
-//                        setGamePane();
-//                        runGame(in.readInt());
-//                        runGame(in.readInt());
-//                    }
-//                }
+                    
+                     //server will return boolean indicating outcome of registration
+                    if (bufferedReader.readLine().equals("" + true)) {
+                        System.out.println("Registered");
+                        setGamePane();
+                        runGame(in.readInt());
+                        runGame(in.readInt());
+                    }
+                }
             } catch (IOException ex) {
                 Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -235,6 +243,7 @@ public class Client extends Application implements HoldemConstants {
      */
     public Card cardFromInt(int rankInt, int suitInt) {
         Card card = new Card(Suit.valueOf(suitInt), Rank.valueOf(rankInt));
+        System.out.println(card.toString());
         return card;
     }
 

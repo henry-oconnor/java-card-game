@@ -57,26 +57,23 @@ public enum Rank {
             case 3:
                 return FIVE;
             case 4:
-                return TWO;
-            case 5:
                 return SIX;
-            case 6:
+            case 5:
                 return SEVEN;
-            case 7:
+            case 6:
                 return EIGHT;
-            case 8:
+            case 7:
                 return NINE;
-            case 9:
+            case 8:
                 return TEN;
-            case 10:
+            case 9:
                 return JACK;
-            case 11:
+            case 10:
                 return QUEEN;
-            case 12:
+            case 11:
                 return KING;
-            case 13:
+            case 12:
                 return ACE;
-
         }
         return null;
     }

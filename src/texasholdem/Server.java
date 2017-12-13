@@ -10,7 +10,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,7 +20,7 @@ import javafx.stage.Stage;
 
 public class Server extends Application
         implements HoldemConstants {
-    
+
     // unused, server user could bufferedReader a port number
     private int port;
     // client sockets
@@ -32,7 +31,6 @@ public class Server extends Application
     private TextArea log = new TextArea();
     private boolean readyToStart = false;
 
-    
     // delete after debug 
     BufferedReader bufferedReader;
     BufferedWriter bufferedWriter;
@@ -56,19 +54,19 @@ public class Server extends Application
                 Platform.runLater(() -> log.appendText(new Date()
                         + ": Running\n"));
 
-//                initializeJdbc();
-//                DatabaseMetaData dmb = connection.getMetaData();
-//                ResultSet rs = dmb.getCatalogs();
-//                
-//                Platform.runLater(() -> {
-//                    try {
-//                        rs.first();
-//                        log.appendText(new Date()
-//                                + ": Connected to schema \'" + rs.getString(1) + "\'\n");
-//                    } catch (SQLException ex) {
-//                        Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
-//                    }
-//                });
+                initializeJdbc();
+                DatabaseMetaData dmb = connection.getMetaData();
+                ResultSet rs = dmb.getCatalogs();
+                
+                Platform.runLater(() -> {
+                    try {
+                        rs.first();
+                        log.appendText(new Date()
+                                + ": Connected to schema \'" + rs.getString(1) + "\'\n");
+                    } catch (SQLException ex) {
+                        Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                });
                 ServerSocket serverSocket = new ServerSocket(PORT_NUMBER);
                 Platform.runLater(() -> log.appendText(new Date()
                         + ": Server started at port " + PORT_NUMBER + "\n"));
@@ -93,38 +91,44 @@ public class Server extends Application
                     Platform.runLater(()
                             -> log.appendText(new Date() + ": Starting game...\n"));
 
-                    // delete after debug        
+                    // delete after debug 
+                    in = new DataInputStream(client.getInputStream());
                     bufferedReader = new BufferedReader(new InputStreamReader(client.getInputStream()));
                     bufferedWriter = new BufferedWriter(new OutputStreamWriter(client.getOutputStream()));
-                    in = new DataInputStream(client.getInputStream());
+                    
                     System.out.println("In LoginHandler thread");
-//                                        try {
+                                        try {
 //                                            request = in.readInt();
-//                                            username = bufferedReader.readLine();
-//                                            password = bufferedReader.readLine();
-//                                            
-//                                            if(request == REQUEST_LOGIN){
-//                                                result = verifyLogin(username, password);
-//                                                System.out.println("Login status: " + result);
-//                                                bufferedWriter.write("" + result);
-//                                            }
-//                                            else if(request == REQUEST_REGISTER){
-//                                                result = createAccount(username, password);
-//                                                System.out.println("Registration status: " + result);
-//                                                bufferedWriter.write("" + result);
-//                                            }
-//                                        } catch (Exception ex) {
-//                                            Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
-//                                        }
-//                                        finally{
-//                                            try {
-//                                                bufferedReader.close();                
-//                                                bufferedWriter.close();
-//                                            } catch (IOException ex) {
-//                                                Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
-//                                            }
-//                                        }
-                    //    
+//                                            System.out.println("Request: " + request);
+                                            
+                                            username = bufferedReader.readLine();
+                                            System.out.println("Username: " + username);
+                                            
+                                            password = bufferedReader.readLine();
+                                            System.out.println("Password: " + password);
+                                            
+                                            if(request == REQUEST_LOGIN){
+                                                result = verifyLogin(username, password);
+                                                System.out.println("Login status: " + result);
+                                                bufferedWriter.write("" + result + "\r\n");
+                                            }
+                                            else if(request == REQUEST_REGISTER){
+                                                result = createAccount(username, password);
+                                                System.out.println("Registration status: " + result);
+                                                bufferedWriter.write("" + result + "\r\n");
+                                            }
+                                        } catch (Exception ex) {
+                                            Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+                                        }
+                                        finally{
+                                            try {
+                                                bufferedReader.close();                
+                                                bufferedWriter.close();
+                                            } catch (IOException ex) {
+                                                Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+                                            }
+                                        }
+                        
 
                     new Thread(new SessionHandler(socketList)).start();
                 }
@@ -181,9 +185,9 @@ public class Server extends Application
     }
 
     class SessionHandler implements Runnable, HoldemConstants {
-        
+
         private int highScore = 0;
-        
+
         // contains players, deck, pot, and other key game data
         private final GameBoard gameBoard;
         // connections to each client
@@ -238,16 +242,16 @@ public class Server extends Application
         public void collectAntes() throws IOException {
             ArrayList<HoldemPlayer> players = gameBoard.getPlayers();
             for (int i = 0; i < players.size(); i++) {
-                    out.writeInt(SEND_REDUCE_USER_BANK);     
+                out.writeInt(SEND_REDUCE_USER_BANK);
             }
         }
-        
+
         public void setBestHands() throws IOException {
             for (HoldemPlayer player : gameBoard.getPlayers()) {
                 PotentialHands potentialHands = new PotentialHands(player.getHand(), gameBoard.getCommunityCards());
                 BestHand bestHand = new BestHand(potentialHands);
                 player.setBestHandScore(bestHand.getBestHandScore());
-                
+
                 System.out.println(gameBoard.getCommunityCards());
                 System.out.println(player.getHand());
             }
@@ -300,7 +304,7 @@ public class Server extends Application
             //winnerString += "With: " + determineHandType(highScore);
             //System.out.println(winnerString);
             bufferedWriter.write(winnerString);
-            
+
         }
 
 //        public void updateClientBank(int amount, int socketIndex) throws IOException {
@@ -382,7 +386,6 @@ public class Server extends Application
             dealSingleToBoard();
             gameBoard.getDeck().burnCard();
             dealSingleToBoard();
-
         }
 
         /**
