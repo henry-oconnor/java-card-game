@@ -4,13 +4,11 @@ import javafx.application.Application;
 import java.io.*;
 import java.net.*;
 import java.sql.Connection;
-import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,7 +19,7 @@ import javafx.stage.Stage;
 
 public class Server extends Application
         implements HoldemConstants {
-    
+
     // unused, server user could bufferedReader a port number
     private int port;
     // client sockets
@@ -32,7 +30,6 @@ public class Server extends Application
     private TextArea log = new TextArea();
     private boolean readyToStart = false;
 
-    
     // delete after debug 
     BufferedReader bufferedReader;
     BufferedWriter bufferedWriter;
@@ -181,9 +178,9 @@ public class Server extends Application
     }
 
     class SessionHandler implements Runnable, HoldemConstants {
-        
+
         private int highScore = 0;
-        
+
         // contains players, deck, pot, and other key game data
         private final GameBoard gameBoard;
         // connections to each client
@@ -238,16 +235,16 @@ public class Server extends Application
         public void collectAntes() throws IOException {
             ArrayList<HoldemPlayer> players = gameBoard.getPlayers();
             for (int i = 0; i < players.size(); i++) {
-                    out.writeInt(SEND_REDUCE_USER_BANK);     
+                out.writeInt(SEND_REDUCE_USER_BANK);
             }
         }
-        
+
         public void setBestHands() throws IOException {
             for (HoldemPlayer player : gameBoard.getPlayers()) {
                 PotentialHands potentialHands = new PotentialHands(player.getHand(), gameBoard.getCommunityCards());
                 BestHand bestHand = new BestHand(potentialHands);
                 player.setBestHandScore(bestHand.getBestHandScore());
-                
+
                 System.out.println(gameBoard.getCommunityCards());
                 System.out.println(player.getHand());
             }
@@ -300,7 +297,7 @@ public class Server extends Application
             //winnerString += "With: " + determineHandType(highScore);
             //System.out.println(winnerString);
             bufferedWriter.write(winnerString);
-            
+
         }
 
 //        public void updateClientBank(int amount, int socketIndex) throws IOException {
@@ -382,7 +379,6 @@ public class Server extends Application
             dealSingleToBoard();
             gameBoard.getDeck().burnCard();
             dealSingleToBoard();
-
         }
 
         /**

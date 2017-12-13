@@ -235,6 +235,7 @@ public class Client extends Application implements HoldemConstants {
      */
     public Card cardFromInt(int rankInt, int suitInt) {
         Card card = new Card(Suit.valueOf(suitInt), Rank.valueOf(rankInt));
+        System.out.println(card.toString());
         return card;
     }
 
