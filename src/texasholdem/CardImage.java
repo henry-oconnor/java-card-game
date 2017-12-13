@@ -49,7 +49,7 @@ public class CardImage {
         double x, y;
         x = findXCoordinate(rank);
         y = findYCoordinate(suit);
-        imageView.setViewport(new Rectangle2D(x, y, 72, 98));
+        imageView.setViewport(new Rectangle2D(x, y, 71.5, 97.5));
     }
 
     private double findYCoordinate(Suit suit) {
@@ -77,47 +77,47 @@ public class CardImage {
 
     private double findXCoordinate(Rank rank) {
         final int SPACING = 73;
-        final int ADJUSTMENT = 0;
+        final int ADJUSTMENT = 1;
         int returnVal = 0;
         if (null != rank) 
             switch (rank) {
-            case TWO:
+            case ACE:
                 returnVal = (SPACING * 0) + ADJUSTMENT;
                 break;
-            case THREE:
+            case TWO:
                 returnVal = (SPACING * 1) + ADJUSTMENT;
                 break;
-            case FOUR:
+            case THREE:
                 returnVal = (SPACING * 2) + ADJUSTMENT;
                 break;
-            case FIVE:
+            case FOUR:
                 returnVal = (SPACING * 3) + ADJUSTMENT;
                 break;
-            case SIX:
+            case FIVE:
                 returnVal = (SPACING * 4) + ADJUSTMENT;
                 break;
-            case SEVEN:
+            case SIX:
                 returnVal = (SPACING * 5) + ADJUSTMENT;
                 break;
-            case EIGHT:
+            case SEVEN:
                 returnVal = (SPACING * 6) + ADJUSTMENT;
                 break;
-            case NINE:
+            case EIGHT:
                 returnVal = (SPACING * 7) + ADJUSTMENT;
                 break;
-            case TEN:
+            case NINE:
                 returnVal = (SPACING * 8) + ADJUSTMENT;
                 break;
-            case JACK:
+            case TEN:
                 returnVal = (SPACING * 9) + ADJUSTMENT;
                 break;
-            case QUEEN:
+            case JACK:
                 returnVal = (SPACING * 10) + ADJUSTMENT;
                 break;
-            case KING:
+            case QUEEN:
                 returnVal = (SPACING * 11) + ADJUSTMENT;
                 break;
-            case ACE:
+            case KING:
                 returnVal = (SPACING * 12) + ADJUSTMENT;
                 break;
             default:
