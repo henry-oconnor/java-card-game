@@ -16,8 +16,8 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import static texasholdem.HoldemConstants.DEALING_FLOP;
 
@@ -44,31 +44,82 @@ public class Client extends Application implements HoldemConstants {
 
     @Override
     public void start(Stage primaryStage) throws IOException {
+        pane = new BorderPane();
         loginPane = new LoginPane();
         gamePane = new GamePane();
-
-        connectToServer();
-        runGame(in.readInt());
-        runGame(in.readInt());
-
-        pane = new BorderPane();
-
-        pane.setCenter(loginPane);
-
-        Button button = (Button) loginPane.getChildren().get(7);
-        button.setOnAction(e -> {
+        
+        
+        Button loginBtn = (Button) loginPane.getChildren().get(6);
+        loginBtn.setOnAction(e -> {
             try {
-                setGamePane();
+                String username = ((TextField) loginPane.getChildren().get(4)).getText();
+                String password = ((TextField) loginPane.getChildren().get(5)).getText();
+                
+                if(username.length() == 0 || password.length() == 0)
+                    System.out.println("Tell em you have to enter something");
+                else{
+                    out.writeInt(REQUEST_LOGIN);
+                    out.writeBytes(username + "\n");
+                    out.writeBytes(password + "\n");
+                    // server will return boolean indicating outcome of login
+                    if(in.readBoolean()){
+                        System.out.println("Logged in");
+                        setGamePane();
+                        runGame(in.readInt());
+                        runGame(in.readInt());
+                    }
+                }
+                
             } catch (IOException ex) {
                 Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
+        
+        
+        Button registerBtn = (Button) loginPane.getChildren().get(7);
+        registerBtn.setOnAction(e -> {
+            try {
+                String username = ((TextField) loginPane.getChildren().get(4)).getText();
+                String password = ((TextField) loginPane.getChildren().get(5)).getText();
+                
+                if(username.length() == 0 || password.length() == 0)
+                    System.out.println("Tell em you have to enter something");
+                else{
+                    out.close();
+                    out = new DataOutputStream(socket.getOutputStream());
+                    out.writeInt(REQUEST_REGISTER);
+                    out.writeBytes(username + "\n");
+                    out.writeBytes(password + "\n");
+                    // server will return boolean indicating outcome of registration
+                    if(in.readBoolean()){
+                        System.out.println("Registered");
+                        setGamePane();
+                        runGame(in.readInt());
+                        runGame(in.readInt());
+                    }
+                }
+                
+            } catch (IOException ex) {
+                Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
+        
+        
 
-        scene = new Scene(pane, gamePane.getWidth(), gamePane.getHeight());
+
+        connectToServer();
+
+        pane.setCenter(loginPane);
+        
+        scene = new Scene(pane, loginPane.getWidth(), loginPane.getHeight());
         primaryStage.setScene(scene);
         primaryStage.setTitle("Texas Hold'em");
         primaryStage.show();
 
+    }
+    
+    private void createAccount(){
+        
     }
 
     private void setGamePane() throws IOException {

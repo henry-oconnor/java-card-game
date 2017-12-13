@@ -3,6 +3,12 @@ package texasholdem;
 import javafx.application.Application;
 import java.io.*;
 import java.net.*;
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -20,10 +26,24 @@ public class Server extends Application
     private int port;
     // client sockets
     private ArrayList<Socket> socketList;
-
+    private Connection connection;
     private DataOutputStream out;
     private DataInputStream in;
     private TextArea log = new TextArea();
+    private boolean readyToStart = false;
+    
+    
+    
+    // delete after debug 
+    
+        BufferedReader input;
+        DataOutputStream output;
+        int request;
+        String username;
+        String password;
+        boolean result;
+        
+//
 
     @Override
     public void start(Stage primaryStage) {
@@ -33,18 +53,36 @@ public class Server extends Application
         primaryStage.setScene(scene);
         primaryStage.show();
 
+
+            
         // start a new 
         new Thread(() -> {
             try {
                 Platform.runLater(() -> log.appendText(new Date()
                         + ": Running\n"));
+                
+                initializeJdbc();
+                DatabaseMetaData dmb = connection.getMetaData();
+                ResultSet rs = dmb.getCatalogs();
+                
+                Platform.runLater(() -> {
+                    try {
+                        rs.first();
+                        log.appendText(new Date()
+                                + ": Connected to schema \'" + rs.getString(1) + "\'\n");
+                    } catch (SQLException ex) {
+                        Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                });
+                                
 
                 ServerSocket serverSocket = new ServerSocket(PORT_NUMBER);
                 Platform.runLater(() -> log.appendText(new Date()
                         + ": Server started at port " + PORT_NUMBER + "\n"));
 
+                socketList = new ArrayList<>();
+            
                 while (true) {
-                    socketList = new ArrayList<>();
                     while (socketList.size() < 1) {
 
                         Platform.runLater(() -> log.appendText(new Date()
@@ -52,25 +90,110 @@ public class Server extends Application
 
                         Socket client = serverSocket.accept();
                         socketList.add(client);
+                            
                         Platform.runLater(()
                                 -> log.appendText(new Date() + ": Player " + socketList.size() + " joined session\n"));
+                        
 
                         new DataOutputStream(
                                 socketList.get(socketList.size() - 1).getOutputStream()).writeInt(socketList.size());
 
-                    }
-                    Platform.runLater(()
-                            -> log.appendText(new Date() + ": Starting game...\n"));
+                        Platform.runLater(()
+                                -> log.appendText(new Date() + ": Starting game...\n"));
+                        
+                        
+                        
+                                // delete after debug 
+        
+                                    input = new BufferedReader(new InputStreamReader(client.getInputStream()));
+                                    output = new DataOutputStream(client.getOutputStream());
+        
+                                    System.out.println("In LoginHandler thread");
+                                        try {
+                                            request = (int)in.readByte();
+                                            username = input.readLine();
+                                            password = input.readLine();
 
-//                    waitForConfirmation(socketList);
-                    new Thread(new SessionHandler(socketList)).start();
+                                            if(request == REQUEST_LOGIN){
+                                                result = verifyLogin(username, password);
+                                                System.out.println("Login status: " + result);
+                                                output.writeBoolean(result);
+                                            }
+                                            else if(request == REQUEST_REGISTER){
+                                                result = createAccount(username, password);
+                                                System.out.println("Registration status: " + result);
+                                                output.writeBoolean(result);
+                                            }
+                                        } catch (Exception ex) {
+                                            Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+                                        }
+                                        finally{
+                                            try {
+                                                input.close();                
+                                                output.close();
+                                            } catch (IOException ex) {
+                                                Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+                                            }
+                                        }
+                                //    
+                        
+                        
+                        new Thread(new SessionHandler(socketList)).start();
+                    }
                 }
+                
+                
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
         }).start();
     }
 
+    class LoginHandler implements Runnable, HoldemConstants {
+        BufferedReader input;
+        DataOutputStream output;
+        int request;
+        String username;
+        String password;
+        boolean result;
+        
+        public LoginHandler(Socket client, Connection connection) throws IOException{
+            input = new BufferedReader(new InputStreamReader(client.getInputStream()));
+            output = new DataOutputStream(client.getOutputStream());
+        }
+        
+        @Override
+        public void run(){
+            System.out.println("In LoginHandler thread");
+            try {
+                request = input.read();
+                username = input.readLine();
+                password = input.readLine();
+                
+                if(request == REQUEST_LOGIN){
+                    result = verifyLogin(username, password);
+                    System.out.println("Login status: " + result);
+                    output.writeBoolean(result);
+                }
+                else if(request == REQUEST_REGISTER){
+                    result = createAccount(username, password);
+                    System.out.println("Registration status: " + result);
+                    output.writeBoolean(result);
+                }
+            } catch (Exception ex) {
+                Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            finally{
+                try {
+                    input.close();                
+                    output.close();
+                } catch (IOException ex) {
+                    Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+    }
+    
     class SessionHandler implements Runnable, HoldemConstants {
 
         // contains players, deck, pot, and other key game data
@@ -403,6 +526,54 @@ public class Server extends Application
             new DataInputStream(s.getInputStream()).readBoolean();
         }
     }
+    
+    private void initializeJdbc() {
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            System.out.println("Driver loaded");
+
+             connection = DriverManager.getConnection("jdbc:mysql://localhost/holdemDB", "group", "group");
+
+//            statement = connection.prepareStatement("insert into users (username,"
+//                    + " password, wincount) values (" + username + password + wincount
+//                + ") on duplicate key set wincount = wincount + 1");
+            /**
+             * connect to or create sql table here
+             */
+        } catch (Exception ex) {
+            ex.getMessage();
+        }
+    }
+    
+    private boolean createAccount(String username, String password) throws SQLException {
+        PreparedStatement statement = connection.prepareStatement("insert into users (username, password)"
+                + "values ((?), (?))");
+        statement.setString(1, username);
+        statement.setString(2, password);
+        
+        // if account is created successfully, try to log in
+        if(statement.execute())
+            return verifyLogin(username, password);
+        
+        return false;
+    }
+    
+    private boolean verifyLogin(String username, String password) throws SQLException {
+        PreparedStatement statement = connection.prepareStatement("select password from users"
+                + " where username = (?)");
+        statement.setString(1, username);
+        ResultSet rs = statement.executeQuery();
+        if (!rs.next()) {
+            return false;
+        }
+        rs.first();
+
+        if (rs.getString(1).equals(password)) {
+            return true;
+        }
+        return false;
+    }
+    
 
     public static void main(String args[]) {
         launch(args);

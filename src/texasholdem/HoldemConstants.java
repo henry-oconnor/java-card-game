@@ -54,6 +54,8 @@ public interface HoldemConstants {
     
     public static final boolean OPEN_CONNECTION = true;
     
+    public static final int REQUEST_LOGIN = 0;
+    public static final int REQUEST_REGISTER = 1;
     
     public static final String SERVER_NAME = "localhost";
     public static final int PORT_NUMBER = 8000;
