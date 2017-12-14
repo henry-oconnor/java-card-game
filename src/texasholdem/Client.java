@@ -19,10 +19,11 @@ import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import static texasholdem.HoldemConstants.DEALING_FLOP;
 
@@ -64,18 +65,30 @@ public class Client extends Application implements HoldemConstants {
                 if (username.length() == 0 || password.length() == 0) {
                     System.out.println("Tell em you have to enter something");
                 } else {
-//                    out.writeInt(REQUEST_LOGIN);
-//                    bufferedWriter.write(username + "\n");
-//                    bufferedWriter.write(password + "\n");
-                    setGamePane();
-                    runGame(in.readInt());
-                    // server will return boolean indicating outcome of login
-//                    if (bufferedReader.readLine().equals("" + true)) {
-//                        System.out.println("Logged in");
-//                        setGamePane();
-//                        runGame(in.readInt());
-//                        runGame(in.readInt());
-//                    }
+                    System.out.println("Writing " + REQUEST_LOGIN + " to server");
+                    out.writeInt(REQUEST_LOGIN);
+                    
+                    System.out.println("Writing " + username + " to server");
+                    bufferedWriter.write(username + "\r\n");
+                    bufferedWriter.flush();
+                    
+                    System.out.println("Writing " + password + " to server");
+                    bufferedWriter.write(password + "\r\n");
+                    bufferedWriter.flush();
+                    
+                    
+                     //server will return boolean indicating outcome of registration
+                    if (Boolean.parseBoolean(bufferedReader.readLine())) {
+                        System.out.println("Logged in");
+                        setGamePane();
+                        runGame(in.readInt());
+                        runGame(in.readInt());
+                    }
+                    else{
+                        Alert alert = new Alert(Alert.AlertType.ERROR, "Login failed");
+                        alert.showAndWait().filter(response->response == ButtonType.OK)
+                                .ifPresent(response-> alert.close());
+                    }
                 }
             } catch (IOException ex) {
                 Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
@@ -91,8 +104,8 @@ public class Client extends Application implements HoldemConstants {
                 if (username.length() == 0 || password.length() == 0) {
                     System.out.println("Tell em you have to enter something");
                 } else {
-//                    System.out.println("Writing " + REQUEST_REGISTER + " to server");
-//                    out.writeInt(REQUEST_REGISTER);
+                    System.out.println("Writing " + REQUEST_REGISTER + " to server");
+                    out.writeInt(REQUEST_REGISTER);
                     
                     System.out.println("Writing " + username + " to server");
                     bufferedWriter.write(username + "\r\n");
@@ -102,14 +115,17 @@ public class Client extends Application implements HoldemConstants {
                     bufferedWriter.write(password + "\r\n");
                     bufferedWriter.flush();
                     
-                    setGamePane();
-                    
                      //server will return boolean indicating outcome of registration
-                    if (bufferedReader.readLine().equals("" + true)) {
-                        System.out.println("Registered");
+                    if (Boolean.parseBoolean(bufferedReader.readLine())) {
+                        System.out.println("Logged in");
                         setGamePane();
                         runGame(in.readInt());
                         runGame(in.readInt());
+                    }
+                    else{
+                        Alert alert = new Alert(Alert.AlertType.ERROR, "Login failed");
+                        alert.showAndWait().filter(response->response == ButtonType.OK)
+                                .ifPresent(response-> alert.close());
                     }
                 }
             } catch (IOException ex) {

@@ -57,7 +57,7 @@ public class Server extends Application
                 initializeJdbc();
                 DatabaseMetaData dmb = connection.getMetaData();
                 ResultSet rs = dmb.getCatalogs();
-                
+
                 Platform.runLater(() -> {
                     try {
                         rs.first();
@@ -95,40 +95,37 @@ public class Server extends Application
                     in = new DataInputStream(client.getInputStream());
                     bufferedReader = new BufferedReader(new InputStreamReader(client.getInputStream()));
                     bufferedWriter = new BufferedWriter(new OutputStreamWriter(client.getOutputStream()));
-                    
+
                     System.out.println("In LoginHandler thread");
-                                        try {
-//                                            request = in.readInt();
-//                                            System.out.println("Request: " + request);
-                                            
-                                            username = bufferedReader.readLine();
-                                            System.out.println("Username: " + username);
-                                            
-                                            password = bufferedReader.readLine();
-                                            System.out.println("Password: " + password);
-                                            
-                                            if(request == REQUEST_LOGIN){
-                                                result = verifyLogin(username, password);
-                                                System.out.println("Login status: " + result);
-                                                bufferedWriter.write("" + result + "\r\n");
-                                            }
-                                            else if(request == REQUEST_REGISTER){
-                                                result = createAccount(username, password);
-                                                System.out.println("Registration status: " + result);
-                                                bufferedWriter.write("" + result + "\r\n");
-                                            }
-                                        } catch (Exception ex) {
-                                            Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
-                                        }
-                                        finally{
-                                            try {
-                                                bufferedReader.close();                
-                                                bufferedWriter.close();
-                                            } catch (IOException ex) {
-                                                Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
-                                            }
-                                        }
-                        
+
+                    // login validation loop
+                    while (!result) {
+                        try {
+                            request = in.readInt();
+                            System.out.println("Request: " + request);
+
+                            username = bufferedReader.readLine();
+                            System.out.println("Username: " + username);
+
+                            password = bufferedReader.readLine();
+                            System.out.println("Password: " + password);
+
+                            if (request == REQUEST_LOGIN) {
+                                result = verifyLogin(username, password);
+                                System.out.println("Login status: " + result);
+                                bufferedWriter.write(result + "\r\n");
+                                bufferedWriter.flush();
+                            } else if (request == REQUEST_REGISTER) {
+                                result = createAccount(username, password);
+                                System.out.println("Registration status: " + result);
+                                bufferedWriter.write(result + "\r\n");
+                                bufferedWriter.flush();
+                            }
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                            System.out.println("\n\n" + ex.getMessage());
+                        }
+                    }
 
                     new Thread(new SessionHandler(socketList)).start();
                 }
@@ -481,23 +478,25 @@ public class Server extends Application
     }
 
     private boolean createAccount(String username, String password) throws SQLException {
-        PreparedStatement statement = connection.prepareStatement("insert into users (username, password)"
-                + "values ((?), (?))");
-        statement.setString(1, username);
-        statement.setString(2, password);
-
-        // if account is created successfully, try to log in
-        if (statement.execute()) {
-            return verifyLogin(username, password);
+        try {
+            PreparedStatement statement = connection.prepareStatement("insert into users (username, password)"
+                    + "values ((?), (?))");
+            statement.setString(1, username);
+            statement.setString(2, password);
+            statement.execute();
+        } catch (Exception ex) {
+            return false;
         }
 
-        return false;
+        return verifyLogin(username, password);
     }
 
     private boolean verifyLogin(String username, String password) throws SQLException {
         PreparedStatement statement = connection.prepareStatement("select password from users"
                 + " where username = (?)");
         statement.setString(1, username);
+
+        // idk why i have to do this like this but i do, dont worry about it
         ResultSet rs = statement.executeQuery();
         if (!rs.next()) {
             return false;
