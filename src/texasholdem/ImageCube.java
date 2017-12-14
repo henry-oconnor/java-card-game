@@ -15,7 +15,11 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Rotate;
 
 /**
- *
+ * Texas Hold'em
+ * Java-285 group project
+ * Group 2
+ * Jiachao Chen, Bernard Heres, Moses Hong, Henry O'Connor
+ * 
  * @author jiach
  */
 public class ImageCube extends Group{

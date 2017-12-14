@@ -9,6 +9,11 @@ import java.util.Map;
 
 /**
  *
+ * Texas Hold'em
+ * Java-285 group project
+ * Group 2
+ * Jiachao Chen, Bernard Heres, Moses Hong, Henry O'Connor
+ * 
  * @author Henry O'Connor
  */
 public class Chip {

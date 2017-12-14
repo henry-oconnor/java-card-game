@@ -1,13 +1,17 @@
-/*
- * Henry O'Connor
- */
+
 package texasholdem;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
 /**
- *
+ * 
+ * Texas Hold'em
+ * Java-285 group project
+ * Group 2
+ * Jiachao Chen, Bernard Heres, Moses Hong, Henry O'Connor
+ * 
+ * Henry O'Connor
  */
 public class GameBoard implements HoldemConstants {
 

@@ -31,6 +31,11 @@ import static texasholdem.HoldemConstants.DEALING_FLOP;
 
 /**
  *
+ * Texas Hold'em
+ * Java-285 group project
+ * Group 2
+ * Jiachao Chen, Bernard Heres, Moses Hong, Henry O'Connor
+ * 
  * @author jiach
  */
 public class Client extends Application implements HoldemConstants {
@@ -61,6 +66,7 @@ public class Client extends Application implements HoldemConstants {
 
         connectToServer();
 
+        // Login button client/server validation
         Button loginBtn = (Button) loginPane.getChildren().get(6);
         loginBtn.setOnAction(e -> {
             try {
@@ -84,6 +90,7 @@ public class Client extends Application implements HoldemConstants {
                     //server will return boolean indicating outcome of registration
                     if (Boolean.parseBoolean(bufferedReader.readLine())) {
                         System.out.println("Logged in");
+                        gamePane.setName(username, 0);
                         setGamePane();
                         runGame(in.readInt());
                     } else {
@@ -97,6 +104,7 @@ public class Client extends Application implements HoldemConstants {
             }
         });
 
+        // Register button client/server validation
         Button registerBtn = (Button) loginPane.getChildren().get(7);
         registerBtn.setOnAction(e -> {
             try {
@@ -120,6 +128,7 @@ public class Client extends Application implements HoldemConstants {
                     //server will return boolean indicating outcome of registration
                     if (Boolean.parseBoolean(bufferedReader.readLine())) {
                         System.out.println("Logged in");
+                        gamePane.setName(username, 0);
                         setGamePane();
                         runGame(in.readInt());
                     } else {
@@ -141,10 +150,10 @@ public class Client extends Application implements HoldemConstants {
 
     }
 
-    private void createAccount() {
-
-    }
-
+    /**
+     * Initializes the starting state of the GamePane
+     * @throws IOException 
+     */
     private void setGamePane() throws IOException {
         pane.setCenter(gamePane);
 
@@ -182,6 +191,13 @@ public class Client extends Application implements HoldemConstants {
 
     }
 
+    /**
+     * Takes an int, which is read from the server, and executes based
+     * on the int by walking through a switch statement.
+     * @param input
+     * @return
+     * @throws IOException 
+     */
     public boolean runGame(int input) throws IOException {
         int intIn = input;
         System.out.println("Int sent from server: " + intIn);
@@ -230,6 +246,7 @@ public class Client extends Application implements HoldemConstants {
                 char inChar = in.readChar();
                 System.out.println(PokerHandRanking.getRankingName(inChar));
                 String bestHandString = "Best hand: " + PokerHandRanking.getRankingName(inChar);
+                //Alert to tell the user what the best hand is
                 Alert alert = new Alert(AlertType.INFORMATION);
                 alert.setContentText(bestHandString);
                 alert.setHeaderText(null);
@@ -244,6 +261,10 @@ public class Client extends Application implements HoldemConstants {
         return false;
     }
 
+    /**
+     * Start the game over with a fresh board
+     * @throws IOException 
+     */
     public void resetGame() throws IOException {
         gamePane = new GamePane();
         setGamePane();
@@ -304,21 +325,6 @@ public class Client extends Application implements HoldemConstants {
         }
     }
 
-    private void initializeGamePane() throws IOException {
-        // listen for number of players from server
-//        numPlayers = in.readInt();
-
-        // lay out 
-        for (int i = 0; i < numPlayers; i++) {
-            //   gamePane.addWhiteChips(i, in.readInt());
-            //   gamePane.addGreenChips(i, in.readInt());
-            //  gamePane.addBlueChips(i, in.readInt());
-            //  gamePane.addRedChips(i, in.readInt());
-            //   gamePane.addBlackChips(i, in.readInt());
-
-        }
-    }
-
     /**
      * Removes all children from selfHoleCards and replaces them with new
      * images.
@@ -342,6 +348,10 @@ public class Client extends Application implements HoldemConstants {
         }
     }
 
+    /**
+     * Appends a card to the communityCard hbox
+     * @param card 
+     */
     public void appendCard(Card card) {
         gamePane.getCommunityCards().getChildren().add(card.getImage().getImageView());
     }

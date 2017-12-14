@@ -16,7 +16,11 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 /**
- *
+ * Texas Hold'em
+ * Java-285 group project
+ * Group 2
+ * Jiachao Chen, Bernard Heres, Moses Hong, Henry O'Connor
+ * 
  * @author 09/20/17
  *
  * NOTE: This is currently a testing area for classes. The logic of the card

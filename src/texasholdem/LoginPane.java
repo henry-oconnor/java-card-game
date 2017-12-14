@@ -26,7 +26,11 @@ import javafx.util.Duration;
 import texasholdem.StartSceneAnimaton;
 
 /**
- *
+ * Texas Hold'em
+ * Java-285 group project
+ * Group 2
+ * Jiachao Chen, Bernard Heres, Moses Hong, Henry O'Connor
+ * 
  * @author jiach
  */
 public class LoginPane extends Pane{

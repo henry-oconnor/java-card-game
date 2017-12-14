@@ -9,7 +9,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
- *
+ * Texas Hold'em
+ * Java-285 group project
+ * Group 2
+ * Jiachao Chen, Bernard Heres, Moses Hong, Henry O'Connor
+ * 
  * @author Bernard Heres
  */
 public final class BestHand {

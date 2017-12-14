@@ -7,7 +7,11 @@ import java.util.HashMap;
 import java.util.Stack;
 
 /**
- *
+ * Texas Hold'em
+ * Java-285 group project
+ * Group 2
+ * Jiachao Chen, Bernard Heres, Moses Hong, Henry O'Connor
+ * 
  * @author henoc
  */
 public abstract class Bank {

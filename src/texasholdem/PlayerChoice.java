@@ -6,7 +6,11 @@
 package texasholdem;
 
 /**
- *
+ * Texas Hold'em
+ * Java-285 group project
+ * Group 2
+ * Jiachao Chen, Bernard Heres, Moses Hong, Henry O'Connor
+ * 
  * Enumerator for Folding, Checking, Calling, and Raising
  *
  * @author Bernard Heres

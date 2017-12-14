@@ -9,7 +9,11 @@ import java.util.Arrays;
  * and open the template in the editor.
  */
 /**
- *
+ * Texas Hold'em
+ * Java-285 group project
+ * Group 2
+ * Jiachao Chen, Bernard Heres, Moses Hong, Henry O'Connor
+ * 
  * @author Bernard Heres
  *
  * Takes a HoldemHand object and a FiveCardHand object (total of 7 cards) and

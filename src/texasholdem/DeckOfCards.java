@@ -10,7 +10,11 @@ import java.util.Random;
 import java.util.Stack;
 
 /**
- *
+ * Texas Hold'em
+ * Java-285 group project
+ * Group 2
+ * Jiachao Chen, Bernard Heres, Moses Hong, Henry O'Connor
+ * 
  * @author 09/20/17
  *
  * A collection of card objects, stored in a stack because a deck of cards is

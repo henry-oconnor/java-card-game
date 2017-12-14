@@ -8,9 +8,28 @@ import java.util.Map;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-/**
- * Hexadecimal rankValues for each rank Two = 2 Three = 3 Four = 4 Five = 5 Six
- * = 6 Seven = 7 Eight = 8 Nine = 9 Ten = A Jack = B Queen = C King = D Ace = E
+/** 
+ * 
+ * Texas Hold'em
+ * Java-285 group project
+ * Group 2
+ * Jiachao Chen, Bernard Heres, Moses Hong, Henry O'Connor
+ * 
+ * Hexadecimal rankValues for each rank 
+ * 
+ * Two = 2 
+ * Three = 3 
+ * Four = 4 
+ * Five = 5 
+ * Six = 6 
+ * Seven = 7 
+ * Eight = 8 
+ * Nine = 9 
+ * Ten = A 
+ * Jack = B 
+ * Queen = C 
+ * King = D 
+ * Ace = E
  */
 public enum Rank {
     TWO("Two", "2"),
