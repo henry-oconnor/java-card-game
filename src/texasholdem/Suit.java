@@ -9,7 +9,13 @@ import java.util.Map;
  * and open the template in the editor.
  */
 /**
- *
+ * Texas Hold'em
+ * Java-285 group project
+ * Group 2
+ * Jiachao Chen, Bernard Heres, Moses Hong, Henry O'Connor
+ * 
+ * @author Bernard Heres
+ * 
  */
 public enum Suit {
     HEARTS("Hearts", 0),

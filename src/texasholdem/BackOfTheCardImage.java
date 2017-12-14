@@ -10,7 +10,11 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 /**
- *
+ * Texas Hold'em
+ * Java-285 group project
+ * Group 2
+ * Jiachao Chen, Bernard Heres, Moses Hong, Henry O'Connor
+ * 
  * @author jiach
  */
 public class BackOfTheCardImage {

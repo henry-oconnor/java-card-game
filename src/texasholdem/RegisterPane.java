@@ -12,7 +12,11 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 
 /**
- *
+ * Texas Hold'em
+ * Java-285 group project
+ * Group 2
+ * Jiachao Chen, Bernard Heres, Moses Hong, Henry O'Connor
+ * 
  * @author jiach
  */
 public class RegisterPane extends Pane{

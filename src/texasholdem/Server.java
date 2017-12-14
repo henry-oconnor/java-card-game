@@ -17,7 +17,15 @@ import javafx.application.Platform;
 import javafx.scene.*;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
-
+/**
+ * 
+ * Texas Hold'em
+ * Java-285 group project
+ * Group 2
+ * Jiachao Chen, Bernard Heres, Moses Hong, Henry O'Connor
+ * 
+ * @author henoc
+ */
 public class Server extends Application
         implements HoldemConstants {
 
@@ -142,49 +150,49 @@ public class Server extends Application
         }).start();
     }
 
-    class LoginHandler implements Runnable, HoldemConstants {
-
-        BufferedReader input;
-        DataOutputStream output;
-        int request;
-        String username;
-        String password;
-        boolean result;
-
-        public LoginHandler(Socket client, Connection connection) throws IOException {
-            input = new BufferedReader(new InputStreamReader(client.getInputStream()));
-            output = new DataOutputStream(client.getOutputStream());
-        }
-
-        @Override
-        public void run() {
-            System.out.println("In LoginHandler thread");
-            try {
-                request = input.read();
-                username = input.readLine();
-                password = input.readLine();
-
-                if (request == REQUEST_LOGIN) {
-                    result = verifyLogin(username, password);
-                    System.out.println("Login status: " + result);
-                    output.writeBoolean(result);
-                } else if (request == REQUEST_REGISTER) {
-                    result = createAccount(username, password);
-                    System.out.println("Registration status: " + result);
-                    output.writeBoolean(result);
-                }
-            } catch (Exception ex) {
-                Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
-            } finally {
-                try {
-                    input.close();
-                    output.close();
-                } catch (IOException ex) {
-                    Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        }
-    }
+//    class LoginHandler implements Runnable, HoldemConstants {
+//
+//        BufferedReader input;
+//        DataOutputStream output;
+//        int request;
+//        String username;
+//        String password;
+//        boolean result;
+//
+//        public LoginHandler(Socket client, Connection connection) throws IOException {
+//            input = new BufferedReader(new InputStreamReader(client.getInputStream()));
+//            output = new DataOutputStream(client.getOutputStream());
+//        }
+//
+//        @Override
+//        public void run() {
+//            System.out.println("In LoginHandler thread");
+//            try {
+//                request = input.read();
+//                username = input.readLine();
+//                password = input.readLine();
+//
+//                if (request == REQUEST_LOGIN) {
+//                    result = verifyLogin(username, password);
+//                    System.out.println("Login status: " + result);
+//                    output.writeBoolean(result);
+//                } else if (request == REQUEST_REGISTER) {
+//                    result = createAccount(username, password);
+//                    System.out.println("Registration status: " + result);
+//                    output.writeBoolean(result);
+//                }
+//            } catch (Exception ex) {
+//                Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+//            } finally {
+//                try {
+//                    input.close();
+//                    output.close();
+//                } catch (IOException ex) {
+//                    Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+//                }
+//            }
+//        }
+//    }
 
     class SessionHandler implements Runnable, HoldemConstants {
 
@@ -295,15 +303,20 @@ public class Server extends Application
             return PokerHandRanking.getRankingName(firstChar);
         }
 
+        /**
+         * Sends the win type (pair, flush, etc.) to the client
+         * @param winners
+         * @throws IOException 
+         */
         public void notifyWinners(ArrayList<Boolean> winners) throws IOException {
-            out.writeInt(AWARDING_WINNINGS);
-            String winnerString = "Winner(s):\n";
-            for (int i = 0; i < winners.size(); i++) {
-                if (winners.get(i) == true) {
-                    winnerString += gameBoard.getPlayers().get(i).getPlayerName();
-                    winnerString += "\n";
-                }
-            }
+//            out.writeInt(AWARDING_WINNINGS);
+//            String winnerString = "Winner(s):\n";
+//            for (int i = 0; i < winners.size(); i++) {
+//                if (winners.get(i) == true) {
+//                    winnerString += gameBoard.getPlayers().get(i).getPlayerName();
+//                    winnerString += "\n";
+//                }
+//            }
             out.writeInt(WIN_TYPE);
             out.writeChar(highScore.charAt(0));
         }
@@ -343,7 +356,6 @@ public class Server extends Application
         public void dealRiver() throws IOException {
             out.writeInt(DEALING_RIVER);
             dealCardToBoard(4);
-
         }
 
         /**
@@ -370,6 +382,9 @@ public class Server extends Application
             }
         }
 
+        /**
+         * Takes a single card from the deck and adds it to the community card list
+         */
         public void dealSingleToBoard() {
             Card card = gameBoard.getDeck().dealCard();
             gameBoard.getCommunityCards().addCard(card);
@@ -377,6 +392,9 @@ public class Server extends Application
 
         /**
          * Sets the community cards before the game begins.
+         * Texas hold'em is a solved game in that the winning hand is 
+         * known after the deck has been shuffled. No actions of the player(s)
+         * can alter what cards will be dealt to the board.
          */
         public void dealCommunityCards() {
             gameBoard.getDeck().burnCard();

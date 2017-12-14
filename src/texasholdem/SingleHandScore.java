@@ -8,7 +8,11 @@ import java.util.Collections;
  * and open the template in the editor.
  */
 /**
- *
+ * Texas Hold'em
+ * Java-285 group project
+ * Group 2
+ * Jiachao Chen, Bernard Heres, Moses Hong, Henry O'Connor
+ * 
  * @author Bernard Heres
  *
  * Takes an arraylist of hands, from PotentialHands, and determines the best
@@ -178,7 +182,7 @@ public class SingleHandScore {
                 }
             } else {
                 card = cardAtIndex;
-                numCardsMatch = 0;
+                numCardsMatch = 1;
             }
         }
         // If there's at least numCardsNeeded matches, return true

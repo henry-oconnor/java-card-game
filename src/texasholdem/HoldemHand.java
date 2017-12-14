@@ -6,7 +6,11 @@ package texasholdem;
  * and open the template in the editor.
  */
 /**
- *
+ * Texas Hold'em
+ * Java-285 group project
+ * Group 2
+ * Jiachao Chen, Bernard Heres, Moses Hong, Henry O'Connor
+ * 
  * @author Bernard Heres
  *
  * Holds some number of cards that make up the players hand. In texas holdem,

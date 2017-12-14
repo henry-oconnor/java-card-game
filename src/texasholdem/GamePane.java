@@ -22,6 +22,12 @@ import javafx.scene.text.FontWeight;
  * and open the template in the editor.
  */
 /**
+ * 
+ * Texas Hold'em
+ * Java-285 group project
+ * Group 2
+ * Jiachao Chen, Bernard Heres, Moses Hong, Henry O'Connor
+ * 
  *
  * @author jiach
  *
@@ -91,10 +97,10 @@ public class GamePane extends Pane {
         
          */
         name = new Label[4];
-        name[0] = new Label("Jiachao");
-        name[1] = new Label("Moses");
-        name[2] = new Label("Bheres");
-        name[3] = new Label("Honery");
+        name[0] = new Label("username");
+        name[1] = new Label("Henry");
+        name[2] = new Label("Bernard");
+        name[3] = new Label("Jiachao");
 
         holeCards = new HBox[4];
         holeCards[0] = new HBox();
@@ -483,7 +489,8 @@ public class GamePane extends Pane {
     public void addToCommunityCards(Card card) {
         gameBoard.addCardToBoard(card);
     }
-    public void setName(String username, int index){
+
+    public void setName(String username, int index) {
         name[index].setText(username);
     }
 
@@ -505,7 +512,7 @@ public class GamePane extends Pane {
 
         btnContinue.setMinSize(USE_PREF_SIZE, USE_PREF_SIZE);
         btnContinue.setMaxSize(USE_PREF_SIZE, USE_PREF_SIZE);
-        btnContinue.setLayoutX(610);
+        btnContinue.setLayoutX(540);
         btnContinue.setLayoutY(655);
 
 //        raiseChipBox.setLayoutX(610);

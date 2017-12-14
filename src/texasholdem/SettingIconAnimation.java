@@ -14,7 +14,11 @@ import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
 /**
- *
+ * Texas Hold'em
+ * Java-285 group project
+ * Group 2
+ * Jiachao Chen, Bernard Heres, Moses Hong, Henry O'Connor
+ * 
  * @author jiach
  */
 public class SettingIconAnimation extends Group{
