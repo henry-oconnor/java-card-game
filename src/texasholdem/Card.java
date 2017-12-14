@@ -6,11 +6,9 @@ package texasholdem;
  * and open the template in the editor.
  */
 /**
- * Texas Hold'em
- * Java-285 group project
- * Group 2
- * Jiachao Chen, Bernard Heres, Moses Hong, Henry O'Connor
- * 
+ * Texas Hold'em Java-285 group project Group 2 Jiachao Chen, Bernard Heres,
+ * Moses Hong, Henry O'Connor
+ *
  * @author Bernard Heres
  */
 public class Card implements Comparable {
@@ -120,5 +118,18 @@ public class Card implements Comparable {
     @Override
     public int compareTo(Object t) {
         return this.rank.compareTo(((Card) t).getRank());
+    }
+
+    /**
+     * Compares suit and rank of two cards. 
+     * Return true if the same.
+     *
+     * @param t
+     * @return
+     */
+    @Override
+    public boolean equals(Object t) {
+        return this.rank.equals(((Card) t).getRank())
+                && this.suit.equals(((Card) t).getSuit());
     }
 }

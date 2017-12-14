@@ -164,4 +164,8 @@ public class DeckOfCards {
     public int getDeckSize() {
         return STANDARD_DECK_SIZE;
     }
+    @Override
+    public boolean equals(Object o){
+        return this.deck.equals(((DeckOfCards)o ).getDeck());
+    }
 }

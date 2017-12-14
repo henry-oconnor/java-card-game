@@ -261,9 +261,6 @@ public class Server extends Application
                 PotentialHands potentialHands = new PotentialHands(player.getHand(), gameBoard.getCommunityCards());
                 BestHand bestHand = new BestHand(potentialHands);
                 player.setBestHandScore(bestHand.getBestHandScore());
-
-                System.out.println(gameBoard.getCommunityCards());
-                System.out.println(player.getHand());
             }
         }
 
@@ -272,7 +269,6 @@ public class Server extends Application
             for (HoldemPlayer player : gameBoard.getPlayers()) {
                 if (player.getBestHandScore().compareTo(highestScore) > 0) {
                     highestScore = player.getBestHandScore();
-                    System.out.println(highestScore);
                 }
             }
             this.highScore = highestScore;
