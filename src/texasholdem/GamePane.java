@@ -79,7 +79,7 @@ public class GamePane extends Pane {
 //        raiseChipBox=new HBox();
 //        raiseChipBox.getChildren().addAll(btnRaiseChip[0],btnRaiseChip[1],btnRaiseChip[2],btnRaiseChip[3],btnRaiseChip[4]);
 
-        tableImage = new Image("Image/aa.png");
+        tableImage = new Image("Image/emptyTable.png");
         tableView = new ImageView(tableImage);
         tableView.setFitHeight(800);
         tableView.setFitWidth(1200);

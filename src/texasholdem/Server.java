@@ -31,6 +31,8 @@ public class Server extends Application
     private TextArea log = new TextArea();
     private boolean readyToStart = false;
 
+    public static int counter = 0;
+
     // delete after debug 
     BufferedReader bufferedReader;
     BufferedWriter bufferedWriter;
@@ -126,7 +128,10 @@ public class Server extends Application
                             System.out.println("\n\n" + ex.getMessage());
                         }
                     }
-
+//                    int intIn = in.readInt();
+//                    if(intIn == CONTINUE_COUNTER_FOUR){
+//                        bufferedWriter.write(true + "\r\n");
+//                    }
                     new Thread(new SessionHandler(socketList)).start();
                 }
                 //     }

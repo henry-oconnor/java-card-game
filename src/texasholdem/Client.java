@@ -24,6 +24,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import static texasholdem.HoldemConstants.DEALING_FLOP;
 
@@ -44,7 +45,7 @@ public class Client extends Application implements HoldemConstants {
     private BorderPane pane;
 
     // number of players in game
-    private int numPlayers;
+    private int numPlayers = 1;
     private boolean myTurn;
     private HoldemPlayer thisPlayer = new HoldemPlayer();
 
@@ -53,7 +54,7 @@ public class Client extends Application implements HoldemConstants {
         pane = new BorderPane();
         loginPane = new LoginPane();
         gamePane = new GamePane();
-
+        
         connectToServer();
 
         Button loginBtn = (Button) loginPane.getChildren().get(6);
@@ -134,8 +135,7 @@ public class Client extends Application implements HoldemConstants {
         });
 
         pane.setCenter(loginPane);
-
-        scene = new Scene(pane, loginPane.getWidth(), loginPane.getHeight());
+        scene = new Scene(pane, 1200, 800);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Texas Hold'em");
         primaryStage.show();
@@ -153,7 +153,11 @@ public class Client extends Application implements HoldemConstants {
             @Override
             public void changed(ObservableValue observable, Object oldValue, Object newValue) {
                 try {
-                    runGame(in.readInt());
+//                    Server.counter++;
+//                    if(Boolean.parseBoolean(bufferedReader.readLine())){
+                        runGame(in.readInt());
+//                    }
+                    
                 } catch (IOException ex) {
                     Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
                 }

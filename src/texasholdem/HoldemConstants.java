@@ -53,6 +53,7 @@ public interface HoldemConstants {
     public static final int DISPLAY_GAMEBOARD = 21;
     public static final int END_GAME = 22;
     public static final int DETERMINE_BEST_HAND = 22;
+    public static final int CONTINUE_COUNTER_FOUR = 23;
 
     public static final boolean OPEN_CONNECTION = true;
 
