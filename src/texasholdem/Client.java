@@ -20,6 +20,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
@@ -49,12 +50,15 @@ public class Client extends Application implements HoldemConstants {
     private boolean myTurn;
     private HoldemPlayer thisPlayer = new HoldemPlayer();
 
+    Stage resetStage;
+
     @Override
     public void start(Stage primaryStage) throws IOException {
+        resetStage = primaryStage;
         pane = new BorderPane();
         loginPane = new LoginPane();
         gamePane = new GamePane();
-        
+
         connectToServer();
 
         Button loginBtn = (Button) loginPane.getChildren().get(6);
@@ -68,27 +72,24 @@ public class Client extends Application implements HoldemConstants {
                 } else {
                     System.out.println("Writing " + REQUEST_LOGIN + " to server");
                     out.writeInt(REQUEST_LOGIN);
-                    
+
                     System.out.println("Writing " + username + " to server");
                     bufferedWriter.write(username + "\r\n");
                     bufferedWriter.flush();
-                    
+
                     System.out.println("Writing " + password + " to server");
                     bufferedWriter.write(password + "\r\n");
                     bufferedWriter.flush();
-                    
-                    
-                     //server will return boolean indicating outcome of registration
+
+                    //server will return boolean indicating outcome of registration
                     if (Boolean.parseBoolean(bufferedReader.readLine())) {
                         System.out.println("Logged in");
                         setGamePane();
                         runGame(in.readInt());
-                        runGame(in.readInt());
-                    }
-                    else{
+                    } else {
                         Alert alert = new Alert(Alert.AlertType.ERROR, "Login failed");
-                        alert.showAndWait().filter(response->response == ButtonType.OK)
-                                .ifPresent(response-> alert.close());
+                        alert.showAndWait().filter(response -> response == ButtonType.OK)
+                                .ifPresent(response -> alert.close());
                     }
                 }
             } catch (IOException ex) {
@@ -107,26 +108,24 @@ public class Client extends Application implements HoldemConstants {
                 } else {
                     System.out.println("Writing " + REQUEST_REGISTER + " to server");
                     out.writeInt(REQUEST_REGISTER);
-                    
+
                     System.out.println("Writing " + username + " to server");
                     bufferedWriter.write(username + "\r\n");
                     bufferedWriter.flush();
-                    
+
                     System.out.println("Writing " + password + " to server");
                     bufferedWriter.write(password + "\r\n");
                     bufferedWriter.flush();
-                    
-                     //server will return boolean indicating outcome of registration
+
+                    //server will return boolean indicating outcome of registration
                     if (Boolean.parseBoolean(bufferedReader.readLine())) {
                         System.out.println("Logged in");
                         setGamePane();
                         runGame(in.readInt());
-                        runGame(in.readInt());
-                    }
-                    else{
+                    } else {
                         Alert alert = new Alert(Alert.AlertType.ERROR, "Login failed");
-                        alert.showAndWait().filter(response->response == ButtonType.OK)
-                                .ifPresent(response-> alert.close());
+                        alert.showAndWait().filter(response -> response == ButtonType.OK)
+                                .ifPresent(response -> alert.close());
                     }
                 }
             } catch (IOException ex) {
@@ -136,9 +135,9 @@ public class Client extends Application implements HoldemConstants {
 
         pane.setCenter(loginPane);
         scene = new Scene(pane, 1200, 800);
-        primaryStage.setScene(scene);
-        primaryStage.setTitle("Texas Hold'em");
-        primaryStage.show();
+        resetStage.setScene(scene);
+        resetStage.setTitle("Texas Hold'em");
+        resetStage.show();
 
     }
 
@@ -155,9 +154,9 @@ public class Client extends Application implements HoldemConstants {
                 try {
 //                    Server.counter++;
 //                    if(Boolean.parseBoolean(bufferedReader.readLine())){
-                        runGame(in.readInt());
+                    runGame(in.readInt());
 //                    }
-                    
+
                 } catch (IOException ex) {
                     Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -222,14 +221,24 @@ public class Client extends Application implements HoldemConstants {
                 appendCard(card);
                 return false;
             }
-            case AWARDING_WINNINGS:
-                System.out.println("AWARDING_WINNINGS");
-                System.out.println(bufferedReader.read());
-                return true;
-//            case RESETTING_GAME:
-//                System.out.println("RESETTING_GAME");
-//                resetGame();
-//                return false;
+//            case AWARDING_WINNINGS:
+//                System.out.println("AWARDING_WINNINGS");
+//                //System.out.println("winner" + bufferedReader.read());
+//                return true;
+            case WIN_TYPE:
+                System.out.println("WIN_TYPE");
+                char inChar = in.readChar();
+                System.out.println(PokerHandRanking.getRankingName(inChar));
+                String bestHandString = "Best hand: " + PokerHandRanking.getRankingName(inChar);
+                Alert alert = new Alert(AlertType.INFORMATION);
+                alert.setContentText(bestHandString);
+                alert.setHeaderText(null);
+                alert.showAndWait();
+                break;
+            case RESETTING_GAME:
+                System.out.println("RESETTING_GAME");
+                resetGame();
+                return false;
         }
 
         return false;
@@ -238,8 +247,10 @@ public class Client extends Application implements HoldemConstants {
     public void resetGame() throws IOException {
         gamePane = new GamePane();
         setGamePane();
+        pane = new BorderPane();
         pane.setCenter(gamePane);
-        scene = new Scene(pane, gamePane.getWidth(), gamePane.getHeight());
+        scene = new Scene(pane, 1200, 800);
+        resetStage.setScene(scene);
     }
 
     /**
@@ -309,10 +320,11 @@ public class Client extends Application implements HoldemConstants {
     }
 
     /**
-     * Removes all children from selfHoleCards and replaces
-     * them with new images.
+     * Removes all children from selfHoleCards and replaces them with new
+     * images.
+     *
      * @param card1
-     * @param card2 
+     * @param card2
      */
     public void updateGamePaneSelfHoleCards(Card card1, Card card2) {
         gamePane.getSelfHoleCards().getChildren().clear();

@@ -15,7 +15,7 @@ public class HoldemPlayer implements Serializable {
     private HoldemHand hand;
 
     private BestHand bestHand;
-    private int bestHandScore;
+    private String bestHandScore;
 
     private String playerName;
 
@@ -52,11 +52,11 @@ public class HoldemPlayer implements Serializable {
         this.hand = hand;
     }
 
-    public int getBestHandScore() {
+    public String getBestHandScore() {
         return bestHandScore;
     }
 
-    public void setBestHandScore(int bestHandScore) {
+    public void setBestHandScore(String bestHandScore) {
         this.bestHandScore = bestHandScore;
     }
 

@@ -188,7 +188,7 @@ public class Server extends Application
 
     class SessionHandler implements Runnable, HoldemConstants {
 
-        private int highScore = 0;
+        private String highScore = "0";
 
         // contains players, deck, pot, and other key game data
         private final GameBoard gameBoard;
@@ -259,21 +259,22 @@ public class Server extends Application
             }
         }
 
-        public int determineHighestScore() {
-            int highestScore = gameBoard.getPlayers().get(0).getBestHandScore();
+        public String determineHighestScore() {
+            String highestScore = gameBoard.getPlayers().get(0).getBestHandScore();
             for (HoldemPlayer player : gameBoard.getPlayers()) {
-                if (player.getBestHandScore() > highestScore) {
+                if (player.getBestHandScore().compareTo(highestScore) > 0) {
                     highestScore = player.getBestHandScore();
+                    System.out.println(highestScore);
                 }
             }
             this.highScore = highestScore;
             return highestScore;
         }
 
-        public ArrayList<Boolean> determineWinners(int highestScore) {
+        public ArrayList<Boolean> determineWinners(String highestScore) {
             ArrayList<Boolean> winners = new ArrayList<>();
             for (HoldemPlayer player : gameBoard.getPlayers()) {
-                if (player.getBestHandScore() == highestScore) {
+                if (player.getBestHandScore().equals(highestScore)) {
                     winners.add(true);
                 } else {
                     winners.add(false);
@@ -289,9 +290,9 @@ public class Server extends Application
          * @param player
          * @return
          */
-        public String determineHandType(int score) {
-            char firstChar = (score + "").charAt(0);
-            return PokerHandRanking.getRankingName(firstChar - '0');
+        public String determineHandType(String score) {
+            char firstChar = (score).charAt(0);
+            return PokerHandRanking.getRankingName(firstChar);
         }
 
         public void notifyWinners(ArrayList<Boolean> winners) throws IOException {
@@ -303,10 +304,8 @@ public class Server extends Application
                     winnerString += "\n";
                 }
             }
-            //winnerString += "With: " + determineHandType(highScore);
-            //System.out.println(winnerString);
-            bufferedWriter.write(winnerString);
-
+            out.writeInt(WIN_TYPE);
+            out.writeChar(highScore.charAt(0));
         }
 
 //        public void updateClientBank(int amount, int socketIndex) throws IOException {
@@ -391,14 +390,14 @@ public class Server extends Application
         }
 
         /**
-         * Puts amountToMatch back to 0 and creates a new shuffled deck
+         * Resets data and starts a new game.
          */
         public void reset() throws IOException {
-            gameBoard.setAmountToMatch(0);
             DeckOfCards deck = new DeckOfCards();
             deck.manyShuffles(NUM_SHUFFLES);
             gameBoard.setDeck(deck);
             out.writeInt(RESETTING_GAME);
+            new Thread(new SessionHandler(socketList)).start();
         }
 
         /**

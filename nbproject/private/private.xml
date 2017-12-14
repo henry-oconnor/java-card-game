@@ -3,9 +3,16 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/D:/GitHub/java-card-game/src/texasholdem/SingleHandScore.java</file>
+            <file>file:/D:/GitHub/java-card-game/src/texasholdem/Card.java</file>
             <file>file:/D:/GitHub/java-card-game/src/texasholdem/Client.java</file>
+            <file>file:/D:/GitHub/java-card-game/src/texasholdem/PokerHandRanking.java</file>
+            <file>file:/D:/GitHub/java-card-game/src/texasholdem/Rank.java</file>
+            <file>file:/D:/GitHub/java-card-game/src/texasholdem/HoldemPlayer.java</file>
             <file>file:/D:/GitHub/java-card-game/src/texasholdem/Server.java</file>
             <file>file:/D:/GitHub/java-card-game/src/texasholdem/HoldemConstants.java</file>
+            <file>file:/D:/GitHub/java-card-game/src/texasholdem/BestHand.java</file>
+            <file>file:/D:/GitHub/java-card-game/src/texasholdem/PotentialHands.java</file>
         </group>
     </open-files>
 </project-private>

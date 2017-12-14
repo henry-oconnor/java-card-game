@@ -98,7 +98,7 @@ public final class BestHand {
         return bestHand;
     }
 
-    public int getBestHandScore() {
-        return bestHand.getScoreAsInt();
+    public String getBestHandScore() {
+        return bestHand.getScore();
     }
 }

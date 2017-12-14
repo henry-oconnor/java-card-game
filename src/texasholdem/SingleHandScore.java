@@ -18,7 +18,7 @@ public class SingleHandScore {
 
     private final FiveCardHand handToScore;
     // Stores the score as a string which will later be converted to hexadecimal
-    private String score;
+    private String score = "";
 
     // Used in some of the methods determining the rank of the hand
     final int ONE_PAIR = 1;
@@ -58,7 +58,7 @@ public class SingleHandScore {
      */
     public void scoreHand() {
         this.sortHand();
-
+        
         // Does it have a pair?
         if (hasOnePair(ONE_PAIR)) {
             // Does it have two pairs AND ToaK?
@@ -217,7 +217,7 @@ public class SingleHandScore {
                 // the next card is one less than the previous.
                 // 10, 9, 8, 7, 6 — 9 is one less than 10, 
                 // 8 is two less than 10 and one less than 9, and so on
-                if ((higherCardValue - lowerCardValue) == i) {
+                if ((higherCardValue - lowerCardValue) != i) {
                     return false;
                 }
             }
