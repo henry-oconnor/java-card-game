@@ -3,10 +3,37 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+<<<<<<< HEAD
             <file>file:/D:/GitHub/java-card-game/src/texasholdem/Card.java</file>
             <file>file:/D:/GitHub/java-card-game/src/texasholdem/Server.java</file>
             <file>file:/D:/GitHub/java-card-game/test/texasholdem/DeckOfCardsTest.java</file>
             <file>file:/D:/GitHub/java-card-game/src/texasholdem/DeckOfCards.java</file>
+=======
+<<<<<<< HEAD
+            <file>file:/C:/Users/henoc/OneDrive/Documents/NetBeansProjects/java-card-game/src/texasholdem/Server.java</file>
+=======
+            <file>file:/D:/GitHub/java-card-game/src/texasholdem/PlayerBank.java</file>
+            <file>file:/D:/GitHub/java-card-game/src/texasholdem/SettingIconAnimation.java</file>
+            <file>file:/D:/GitHub/java-card-game/src/texasholdem/HoldemHand.java</file>
+            <file>file:/D:/GitHub/java-card-game/src/texasholdem/ImageCube.java</file>
+            <file>file:/D:/GitHub/java-card-game/src/texasholdem/SingleHandScore.java</file>
+            <file>file:/D:/GitHub/java-card-game/src/texasholdem/StartSceneAnimaton.java</file>
+            <file>file:/D:/GitHub/java-card-game/src/texasholdem/Hand.java</file>
+            <file>file:/D:/GitHub/java-card-game/src/texasholdem/PokerHandRanking.java</file>
+            <file>file:/D:/GitHub/java-card-game/src/texasholdem/Rank.java</file>
+            <file>file:/D:/GitHub/java-card-game/src/texasholdem/HoldemPlayer.java</file>
+            <file>file:/D:/GitHub/java-card-game/src/texasholdem/RegisterPane.java</file>
+            <file>file:/D:/GitHub/java-card-game/src/texasholdem/PotentialHands.java</file>
+            <file>file:/D:/GitHub/java-card-game/src/texasholdem/LoginPane.java</file>
+            <file>file:/D:/GitHub/java-card-game/src/texasholdem/GroupProjectCardGame.java</file>
+            <file>file:/D:/GitHub/java-card-game/src/texasholdem/HoldemConstants.java</file>
+            <file>file:/D:/GitHub/java-card-game/src/texasholdem/Server.java</file>
+            <file>file:/D:/GitHub/java-card-game/src/texasholdem/Pot.java</file>
+            <file>file:/D:/GitHub/java-card-game/src/texasholdem/SettingPane.java</file>
+            <file>file:/D:/GitHub/java-card-game/src/texasholdem/PlayerChoice.java</file>
+            <file>file:/D:/GitHub/java-card-game/src/texasholdem/Suit.java</file>
+>>>>>>> 65fbe8a8cec0d6d3ff1cddca57a12f70ddd86cd2
+>>>>>>> 374af4ede0164b23eee29395b637d12283b03fa2
         </group>
     </open-files>
 </project-private>
