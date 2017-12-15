@@ -502,6 +502,28 @@ public class Server extends Application
             statement.setString(1, username);
             statement.setString(2, password);
             statement.execute();
+            
+            statement = connection.prepareStatement("select ID from users where username = (?)");
+            statement.setString(1, username);
+            ResultSet resultSet = statement.executeQuery();
+            resultSet.first();
+            String newID = resultSet.getString(1);
+            
+            statement = connection.prepareStatement("insert into scores (ID) values (?)");
+            statement.setString(1, newID);
+            statement.execute();
+            
+            statement = connection.prepareStatement("select users.username, scores.score, scores.chipcount"
+                    + " from users, scores"
+                    + " where users.id = scores.id"
+                    + " and users.id = (?)");
+            statement.setString(1, newID);
+            resultSet = statement.executeQuery();
+            resultSet.first();
+            String[] userInfo = {resultSet.getString(1), resultSet.getString(2), resultSet.getString(3)};
+            
+            System.out.printf("%s logged in.\nScore: %s\nChip count: %s\n", userInfo[0], userInfo[1],userInfo[2]);
+            
         } catch (Exception ex) {
             return false;
         }
@@ -515,13 +537,33 @@ public class Server extends Application
         statement.setString(1, username);
 
         // idk why i have to do this like this but i do, dont worry about it
-        ResultSet rs = statement.executeQuery();
-        if (!rs.next()) {
+        ResultSet resultSet = statement.executeQuery();
+        if (!resultSet.next()) {
             return false;
         }
-        rs.first();
+        resultSet.first();
 
-        if (rs.getString(1).equals(password)) {
+        if (resultSet.getString(1).equals(password)) {
+            statement = connection.prepareStatement("select ID from users where username = (?)");
+            statement.setString(1, username);
+            resultSet = statement.executeQuery();
+            resultSet.first();
+            String newID = resultSet.getString(1);
+            
+            statement = connection.prepareStatement("select users.username, scores.score, scores.chipcount"
+                    + " from users, scores"
+                    + " where users.id = scores.id"
+                    + " and users.id = (?)");
+            statement.setString(1, newID);
+            
+            resultSet = statement.executeQuery();
+            resultSet.first();
+            String[] userInfo = {resultSet.getString(1), resultSet.getString(2), resultSet.getString(3)};
+            
+            String msg = String.format("New player logged in.\nUsername: %s\nScore: %s\nChip count: %s\n", userInfo[0], userInfo[1],userInfo[2]);
+            Platform.runLater(() -> log.appendText(new Date()
+                        + ": " + msg + "\n"));
+            
             return true;
         }
         return false;
