@@ -10,9 +10,9 @@ package texasholdem;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -23,7 +23,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.util.Duration;
-import texasholdem.StartSceneAnimaton;
 
 /**
  * Texas Hold'em
@@ -36,7 +35,8 @@ import texasholdem.StartSceneAnimaton;
 public class LoginPane extends Pane{
     private StartSceneAnimaton animation;
     private Label usernameLabel,passwordLabel,titleLabel;
-    private TextField usernameText,passwordText;
+    private TextField usernameText;
+    private PasswordField passwordText;
     private Button loginBtn,registerBtn;
     private Stop[] stops;
     private LinearGradient color;
@@ -54,7 +54,7 @@ public class LoginPane extends Pane{
         passwordLabel=new Label("Password: ");
         titleLabel=new Label("Texas hold 'em");
         usernameText=new TextField("");
-        passwordText=new TextField("");
+        passwordText=new PasswordField();
         loginBtn=new Button("Login");
         registerBtn=new Button("Register");
         getChildren().addAll(animation,titleLabel,usernameLabel,passwordLabel,usernameText,passwordText,loginBtn,registerBtn);

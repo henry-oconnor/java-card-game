@@ -84,7 +84,7 @@ public class Server extends Application
                 socketList = new ArrayList<>();
 
                 // while (true) {
-                while (socketList.size() < 1) {
+//                while (socketList.size() < 1) {
 
                     Platform.runLater(() -> log.appendText(new Date()
                             + ": Waiting for players\n"));
@@ -141,7 +141,8 @@ public class Server extends Application
 //                        bufferedWriter.write(true + "\r\n");
 //                    }
                     new Thread(new SessionHandler(socketList)).start();
-                }
+
+//                }
                 //     }
 
             } catch (Exception ex) {
@@ -235,7 +236,6 @@ public class Server extends Application
                 dealRiver();
                 setBestHands();
                 notifyWinners(determineWinners(determineHighestScore()));
-                reset();
             } catch (IOException ex) {
                 Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
 
@@ -411,6 +411,7 @@ public class Server extends Application
             deck.manyShuffles(NUM_SHUFFLES);
             gameBoard.setDeck(deck);
             out.writeInt(RESETTING_GAME);
+            
             new Thread(new SessionHandler(socketList)).start();
         }
 
