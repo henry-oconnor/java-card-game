@@ -12,10 +12,18 @@ grant select, insert, update, delete, create, create view, drop,
 use holdemDB;
 
 create table if not exists users (
-  username varchar(32) unique,
+ID int not null AUTO_INCREMENT,
+  username varchar(32) unique not null,
   password varchar(32) not null,
+  registrationdate TIMESTAMP default CURRENT_TIMESTAMP,
+  primary key(ID)
+);
+
+create table if not exists scores (
+ID int not null,
   score char(5) default 0,
-  registrationdate TIMESTAMP default CURRENT_TIMESTAMP
+  chipCount char(5) default 1000,
+  primary key (ID)
 );
 
 commit;
